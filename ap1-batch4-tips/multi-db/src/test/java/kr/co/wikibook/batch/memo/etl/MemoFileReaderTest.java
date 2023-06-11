@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.etl;
+package kr.co.wikibook.batch.memo.etl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

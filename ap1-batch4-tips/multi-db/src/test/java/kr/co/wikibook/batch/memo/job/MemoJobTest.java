@@ -1,15 +1,18 @@
-package kr.co.wikibook.batch.job;
+package kr.co.wikibook.batch.memo.job;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.Instant;
-import java.util.Date;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.test.JobLauncherTestUtils;
@@ -17,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest("spring.batch.job.enabled=false")
-class HelloParamsJobTest {
+class MemoJobTest {
 
   JobLauncherTestUtils testUtils = new JobLauncherTestUtils();
 
@@ -25,22 +28,23 @@ class HelloParamsJobTest {
   void setUp(
       @Autowired JobRepository jobRepository,
       @Autowired JobLauncher jobLauncher,
-      @Autowired Job helloParamsJob
+      @Autowired Job memoJob
   ) {
     this.testUtils.setJobRepository(jobRepository);
     this.testUtils.setJobLauncher(jobLauncher);
-    this.testUtils.setJob(helloParamsJob);
+    this.testUtils.setJob(memoJob);
   }
 
   @Test
-  void launchJob() throws Exception {
-    Date helloDate = Date.from(Instant.parse("2023-06-10T00:00:00Z"));
-    JobParameters parameters = this.testUtils.getUniqueJobParametersBuilder()
-        .addDate("helloDate", helloDate)
-        .addString("helloLocalDate", "2023.06.15")
+  void launchJob(@TempDir Path tempPath) throws Exception {
+    Path memoFile = tempPath.resolve(Path.of("memo.txt"));
+    Files.write(memoFile, List.of("hello", "world", "batch"));
+    JobParameters parameters = new JobParametersBuilder()
+        .addString("memoFile", "file:" + memoFile.toAbsolutePath())
         .toJobParameters();
 
-    JobExecution execution = this.testUtils.launchJob(parameters);
+    JobExecution execution = testUtils.launchJob(parameters);
+
     assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
   }
 }

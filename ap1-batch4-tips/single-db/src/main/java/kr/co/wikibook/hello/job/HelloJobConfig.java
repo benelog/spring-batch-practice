@@ -1,6 +1,6 @@
-package kr.co.wikibook.batch.job;
+package kr.co.wikibook.hello.job;
 
-import kr.co.wikibook.batch.tasklet.HelloTasklet;
+import kr.co.wikibook.hello.tasklet.HelloTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;

@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch;
+package kr.co.wikibook.batch.memo;
 
 
 import org.springframework.batch.core.scope.JobScope;

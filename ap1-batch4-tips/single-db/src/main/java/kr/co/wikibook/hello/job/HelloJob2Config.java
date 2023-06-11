@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.job;
+package kr.co.wikibook.hello.job;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -9,7 +9,7 @@ import org.springframework.batch.support.transaction.ResourcelessTransactionMana
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import kr.co.wikibook.batch.tasklet.HelloTasklet;
+import kr.co.wikibook.hello.tasklet.HelloTasklet;
 
 @Configuration
 public class HelloJob2Config {

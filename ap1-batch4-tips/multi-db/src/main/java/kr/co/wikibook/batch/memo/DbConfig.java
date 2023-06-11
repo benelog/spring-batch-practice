@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch;
+package kr.co.wikibook.batch.memo;
 
 import javax.sql.DataSource;
 import org.springframework.boot.autoconfigure.batch.BatchDataSource;

@@ -1,7 +1,7 @@
-package kr.co.wikibook.batch.job;
+package kr.co.wikibook.batch.memo.job;
 
 import javax.sql.DataSource;
-import kr.co.wikibook.batch.etl.MemoComponents;
+import kr.co.wikibook.batch.memo.etl.MemoComponents;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;

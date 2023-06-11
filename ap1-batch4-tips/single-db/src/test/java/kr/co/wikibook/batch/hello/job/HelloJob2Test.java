@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.job;
+package kr.co.wikibook.batch.hello.job;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
