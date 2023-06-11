@@ -1,0 +1,4 @@
+CREATE TABLE memo (
+  id IDENTITY NOT NULL PRIMARY KEY,
+  message VARCHAR(100)
+);
