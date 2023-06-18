@@ -2,27 +2,33 @@ package kr.co.wikibook.batch.hello.job;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Ignore;
+import kr.co.wikibook.hello.BatchApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest("spring.batch.job.enabled=false")
-@SpringBatchTest
+@SpringBootTest(
+    properties = "spring.batch.job.enabled=false",
+    classes = BatchApplication.class
+)
 class HelloJobTest {
-
-  @Ignore("job이 2개 설정된 상태에서는 실패")
   @Test
   void launchJob(
-      @Autowired JobLauncherTestUtils testUtils,
+      @Autowired JobRepository jobRepository,
+      @Autowired JobLauncher jobLauncher,
       @Autowired Job helloJob
   ) throws Exception {
+    JobLauncherTestUtils testUtils = new JobLauncherTestUtils();
+    testUtils.setJobRepository(jobRepository);
+    testUtils.setJobLauncher(jobLauncher);
     testUtils.setJob(helloJob);
+
     JobExecution execution = testUtils.launchJob();
     assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
   }
