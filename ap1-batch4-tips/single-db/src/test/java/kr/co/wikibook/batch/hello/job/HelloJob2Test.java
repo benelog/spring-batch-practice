@@ -13,10 +13,7 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(
-    properties = "spring.batch.job.enabled=false",
-    classes = BatchApplication.class
-)
+@SpringBootTest(classes = BatchApplication.class)
 class HelloJob2Test {
   @Test
   void launchJob(@Autowired JobRepository jobRepository, @Autowired Job helloJob2) throws Exception {

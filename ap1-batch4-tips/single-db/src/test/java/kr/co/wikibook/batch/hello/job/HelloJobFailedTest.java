@@ -12,15 +12,10 @@ import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(
-    properties = "spring.batch.job.enabled=false",
-    classes = BatchApplication.class
-)
+@SpringBootTest(classes = BatchApplication.class)
 @SpringBatchTest
 class HelloJobFailedTest {
-
-  @Ignore("job이 2개 설정된 상태에서는 실패")
-  @Test
+  // @Test 실패하는 테스트
   void launchJob(@Autowired JobLauncherTestUtils testUtils) throws Exception {
     JobExecution execution = testUtils.launchJob();
     assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
