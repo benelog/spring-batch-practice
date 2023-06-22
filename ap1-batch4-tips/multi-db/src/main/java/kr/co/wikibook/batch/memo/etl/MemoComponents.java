@@ -10,6 +10,16 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
 
 public class MemoComponents {
+
+  public static FlatFileItemReader<String> memoFileReader(Resource resource) {
+    var reader = new FlatFileItemReaderBuilder<String>()
+        .name("postNoFileReader")
+        .lineMapper(((line, lineNumber) -> line))
+        .resource(resource)
+        .build();
+    return afterPropertiesSet(reader);
+  }
+
   public static JdbcBatchItemWriter<String> memoDbWriter(DataSource dataSource) {
     var writer = new JdbcBatchItemWriterBuilder<String>()
         .dataSource(dataSource)
@@ -19,15 +29,6 @@ public class MemoComponents {
         )
         .build();
     return afterPropertiesSet(writer);
-  }
-
-  public static FlatFileItemReader<String> memoFileReader(Resource resource) {
-    var reader = new FlatFileItemReaderBuilder<String>()
-        .name("postNoFileReader")
-        .lineMapper(((line, lineNumber) -> line))
-        .resource(resource)
-        .build();
-    return afterPropertiesSet(reader);
   }
 
   private static <T extends InitializingBean> T afterPropertiesSet(T bean) {

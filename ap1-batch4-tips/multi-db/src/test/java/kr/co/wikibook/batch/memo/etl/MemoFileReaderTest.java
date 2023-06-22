@@ -17,14 +17,14 @@ class MemoFileReaderTest {
   void readMemo(@TempDir Path tempPath) throws Exception {
     // given
     Path memoFile = tempPath.resolve(Path.of("memo.txt"));
-    Files.write(memoFile, List.of("hello", "world", "batch"));
+    Files.write(memoFile, List.of("hello", "batch", "Hi, batch"));
 
     // when, then
     FlatFileItemReader<String> reader = MemoComponents.memoFileReader(new PathResource(memoFile));
     reader.open(new ExecutionContext());
     assertThat(reader.read()).isEqualTo("hello");
-    assertThat(reader.read()).isEqualTo("world");
     assertThat(reader.read()).isEqualTo("batch");
+    assertThat(reader.read()).isEqualTo("Hi, batch");
     assertThat(reader.read()).isNull();
     reader.close();
   }

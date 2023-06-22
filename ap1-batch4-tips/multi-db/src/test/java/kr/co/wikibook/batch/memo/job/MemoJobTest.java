@@ -19,7 +19,7 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest("spring.batch.job.enabled=false")
+@SpringBootTest
 class MemoJobTest {
 
   JobLauncherTestUtils testUtils = new JobLauncherTestUtils();

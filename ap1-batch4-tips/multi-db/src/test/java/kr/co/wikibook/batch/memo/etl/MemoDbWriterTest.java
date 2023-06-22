@@ -24,18 +24,14 @@ class MemoDbWriterTest {
     int beforeCount = countRowsInTable(mainDataSource);
 
     // when
-    writer.write(List.of(
-        "hello",
-        "world",
-        "bach"
-    ));
+    writer.write(List.of("hello", "world", "batch"));
 
     // then
     int afterCount = countRowsInTable(mainDataSource);
     assertThat(beforeCount + 3).isEqualTo(afterCount);
   }
 
-  private static int countRowsInTable(DataSource mainDataSource) {
-    return JdbcTestUtils.countRowsInTable(new JdbcTemplate(mainDataSource), "memo");
+  private static int countRowsInTable(DataSource dataSource) {
+    return JdbcTestUtils.countRowsInTable(new JdbcTemplate(dataSource), "memo");
   }
 }
