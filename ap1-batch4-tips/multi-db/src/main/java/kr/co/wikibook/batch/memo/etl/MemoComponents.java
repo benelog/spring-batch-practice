@@ -13,7 +13,7 @@ public class MemoComponents {
 
   public static FlatFileItemReader<String> memoFileReader(Resource resource) {
     var reader = new FlatFileItemReaderBuilder<String>()
-        .name("postNoFileReader")
+        .name("memoFileReader")
         .lineMapper(((line, lineNumber) -> line))
         .resource(resource)
         .build();

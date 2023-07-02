@@ -2,9 +2,9 @@ package kr.co.wikibook.batch.logbatch;
 
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 
@@ -21,6 +21,6 @@ public class TestDbConfig {
 
   @Bean
   public PlatformTransactionManager transactionManager(DataSource dataSource) {
-    return new DataSourceTransactionManager(dataSource);
+    return new JdbcTransactionManager(dataSource);
   }
 }

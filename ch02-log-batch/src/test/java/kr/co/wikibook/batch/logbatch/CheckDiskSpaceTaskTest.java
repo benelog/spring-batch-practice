@@ -5,15 +5,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import slf4jtest.Settings;
-import slf4jtest.TestLoggerFactory;
 
 class CheckDiskSpaceTaskTest {
 
-  TestLoggerFactory loggerFactory = Settings.instance()
-      .enableAll()
-      .buildLogging();
-  CheckDiskSpaceTask task = new CheckDiskSpaceTask(loggerFactory);
+  MockNotificationService notificationService = new MockNotificationService();
+  CheckDiskSpaceTask task = new CheckDiskSpaceTask(notificationService);
 
   @DisplayName("지정된 디렉토리가 없으면 아무것도 하지 않는다.")
   @Test
@@ -25,7 +21,8 @@ class CheckDiskSpaceTaskTest {
   @Test
   void checkDiskSpaceWhenSufficient() {
     task.run("/", "1");
-    assertThat(loggerFactory.matches("남은 용량 \\d{1,3}%"));
+    String message = notificationService.getLastMessage();
+    assertThat(message.matches("남은 용량 \\d{1,3}%"));
   }
 
   @DisplayName("디스크 용량이 기대치보다 적다")

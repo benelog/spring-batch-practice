@@ -6,27 +6,22 @@ import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import slf4jtest.LogMessage;
-import slf4jtest.Settings;
-import slf4jtest.TestLoggerFactory;
 
 class CountAccessLogTaskTest {
 
   @Test
   void countAccessLog() {
     // given
-    TestLoggerFactory loggerFactory = Settings.instance()
-        .enableAll()
-        .buildLogging();
     DataSource dataSource = buildDataSource();
-    var task = new CountAccessLogTask(dataSource, loggerFactory);
+    var notificationService = new MockNotificationService();
+    var task = new CountAccessLogTask(dataSource, notificationService);
 
     // when
     task.run();
 
     // then
-    LogMessage logMessage = loggerFactory.lines().iterator().next();
-    assertThat(logMessage.text).isEqualTo("access_log 테이블의 건 수 : 0");
+    String message = notificationService.getLastMessage();
+    assertThat(message).isEqualTo("access_log 테이블의 건 수 : 0");
   }
 
   private DataSource buildDataSource() {
