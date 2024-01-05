@@ -5,15 +5,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.WritableResource;
 
 public class UserAccessSummaryCsvWriter {
   public static final String LINE_SEPARATOR = System.getProperty("line.separator");
-  private final Resource resource;
+  private final WritableResource resource;
   private final UserAccessSummaryLineAggregator lineAggregator = new UserAccessSummaryLineAggregator();
   private BufferedWriter lineWriter;
 
-  public UserAccessSummaryCsvWriter(Resource resource) {
+  public UserAccessSummaryCsvWriter(WritableResource resource) {
     this.resource = resource;
   }
 

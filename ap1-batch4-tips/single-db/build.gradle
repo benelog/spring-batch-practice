@@ -8,6 +8,9 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.batch:spring-batch-test'
+
+    implementation 'org.springframework:spring-oxm'
+    implementation 'com.sun.xml.bind:jaxb-impl'
 }
 
 tasks.named('test') {
