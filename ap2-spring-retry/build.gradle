@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'kr.co.wikibook.retry'
+version = '1.0-SNAPSHOT'
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = '21'
+}
+
+dependencies {
+    implementation 'org.springframework.retry:spring-retry'
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.springframework:spring-core:'
+    implementation 'org.springframework:spring-aspects'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
