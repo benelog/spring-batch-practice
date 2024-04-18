@@ -3,7 +3,6 @@ package kr.co.wikibook.batch.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
-import java.util.List;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.Chunk;
@@ -24,7 +23,7 @@ class AccessLogDbWriterTest {
     var item = new AccessLog(Instant.now(), "127.0.0.1", "benelog");
 
     // when
-    writer.write(new Chunk<>(List.of(item)));
+    writer.write(Chunk.of(item));
 
     // then
     int count = JdbcTestUtils.countRowsInTableWhere(

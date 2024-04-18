@@ -4,8 +4,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.retry.RetryCallback;
-import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryOperations;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
@@ -22,18 +20,15 @@ public class NotificationRetryDecorator implements NotificationService {
 			.retryOn(RuntimeException.class)
 			.maxAttempts(maxAttempts)
 			.exponentialBackoff(200L, 2d, 600L)
+			.withListener(new RetryLoggingListener())
 			.build();
 	}
 
 	@Override
 	public boolean send(String message) {
-		RetryCallback<Boolean, RuntimeException> retryCallback = (RetryContext context) -> {
-			logger.info("{}", context);
-			return this.target.send(message);
-		};
 		return this.retryOperations.execute(
-			retryCallback,
-			(RetryContext context) -> recover(context.getLastThrowable(), message)
+			(context) -> this.target.send(message),
+			(context) -> recover(context.getLastThrowable(), message)
 		);
 	}
 

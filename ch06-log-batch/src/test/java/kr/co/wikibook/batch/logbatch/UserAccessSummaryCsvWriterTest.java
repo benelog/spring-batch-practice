@@ -19,14 +19,14 @@ class UserAccessSummaryCsvWriterTest {
     String outputPath = tempPath.toString() + "/user-access-summary.csv";
     var resource = new FileSystemResource(outputPath);
     FlatFileItemWriter<UserAccessSummary> writer = UserAccessSummaryComponents.buildCsvWriter(resource);
-    var items = List.of(
+    var chunk = Chunk.of(
         new UserAccessSummary("benelog", 32),
         new UserAccessSummary("jojoldu", 42)
     );
 
     // when
     writer.open(new ExecutionContext());
-    writer.write(new Chunk<>(items));
+    writer.write(chunk);
     writer.close();
 
     // then

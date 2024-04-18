@@ -23,7 +23,7 @@ class ClassifierCompositeItemWriterTest {
     ));
 
     // when
-    compositeWriter.write(new Chunk<>(List.of(1, 2, 3, 4, 5)));
+    compositeWriter.write(Chunk.of(1, 2, 3, 4, 5));
 
     // then
     assertThat(delegate1.getWrittenItems()).isEqualTo(List.of(1, 4));

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class NotificationRetryDecoratorTest {
 	@Test
-	void retry() {
+	void successByRetry() {
 		// given
 		var target = new UnstableNotificationService(3);
 		var decorator = new NotificationRetryDecorator(target, 4);
@@ -20,7 +20,7 @@ class NotificationRetryDecoratorTest {
 	}
 
 	@Test
-	void retryWithRecover() {
+	void recover() {
 		// given
 		var target = new UnstableNotificationService(2);
 		var decorator = new NotificationRetryDecorator(target, 2);
@@ -31,5 +31,17 @@ class NotificationRetryDecoratorTest {
 		// then
 		assertThat(success).isFalse();
 		assertThat(target.getTryCount()).isEqualTo(2);
+	}
+
+	@Test
+	void successOnFirstTry() {
+		NotificationService target = (message) -> {
+			System.out.println("Message : " + message);
+			return true;
+		};
+		var decorator = new NotificationRetryDecorator(target, 2);
+
+		boolean success = decorator.send("hello");
+		assertThat(success).isTrue();
 	}
 }

@@ -5,8 +5,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.classify.BinaryExceptionClassifier;
-import org.springframework.retry.RetryCallback;
-import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryOperations;
 import org.springframework.retry.RetryState;
 import org.springframework.retry.policy.CircuitBreakerRetryPolicy;
@@ -20,7 +18,6 @@ public class NotificationCircuitDecorator implements NotificationService {
 	private final RetryOperations retryOperations;
 	private final RetryState state;
 
-
 	public NotificationCircuitDecorator(NotificationService target, int maxAttempts) {
 		this.target = target;
 		this.retryOperations = buildRetryOperations(maxAttempts);
@@ -31,13 +28,9 @@ public class NotificationCircuitDecorator implements NotificationService {
 
 	@Override
 	public boolean send(String message) {
-		RetryCallback<Boolean, RuntimeException> retryCallback = (RetryContext context) -> { // <4>
-			logger.info("{}", context);
-			return this.target.send(message);
-		};
 		return this.retryOperations.execute(
-			retryCallback,
-			(RetryContext context) -> recover(context.getLastThrowable(), message),
+			(context) -> this.target.send(message),
+			(context) -> recover(context.getLastThrowable(), message),
 			this.state
 		);
 	}
@@ -58,6 +51,7 @@ public class NotificationCircuitDecorator implements NotificationService {
 
 		var retryTemplate = new RetryTemplate();
 		retryTemplate.setRetryPolicy(circuitBreakerPolicy);
+		retryTemplate.registerListener(new RetryLoggingListener());
 		return retryTemplate;
 	}
 }
