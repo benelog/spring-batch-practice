@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.logbatch;
+package kr.co.wikibook.batch.logbatch.boot;
 
 import javax.sql.DataSource;
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;
