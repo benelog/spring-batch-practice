@@ -2,13 +2,14 @@ package kr.co.wikibook.batch.logbatch;
 
 import javax.sql.DataSource;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CountAccessLogTask implements CommandLineRunner {
 
-  private final JdbcTemplate jdbc;
+  private final JdbcOperations jdbc;
   private final NotificationService notificationService;
 
   public CountAccessLogTask(DataSource dataSource, NotificationService notificationService) { // <2>
