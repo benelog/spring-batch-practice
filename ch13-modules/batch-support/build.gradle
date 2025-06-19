@@ -10,7 +10,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
 }
 
-task jobDb(type: JavaExec) {
+tasks.register('jobDb', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'org.h2.tools.Console'
 
