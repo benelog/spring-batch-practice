@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(classes = {LogBatchApplication.class, HelloJobConfig.class})
 @ActiveProfiles("test")
-@Transactional
 class HelloJobTest {
 
   JobLauncherTestUtils testUtils = new JobLauncherTestUtils();
