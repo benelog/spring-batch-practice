@@ -30,8 +30,8 @@ public class HelloChunkJobConfig {
         .start(new StepBuilder("printSequence", jobRepository)
             .<Integer, Integer>chunk(completionPolicy, transactionManager)
             .reader(sequenceReader(1, 10))
-            .processor(plus10Processor())
-            .writer(consoleWriter())
+            .processor(item -> item + 10)
+            .writer(System.out::println)
             .stream(new HelloItemStream())
             .listener(completionPolicy)
             .build())
@@ -42,13 +42,5 @@ public class HelloChunkJobConfig {
     IntStream itemRange = IntStream.range(from, to + 1);
     PrimitiveIterator.OfInt iterator = itemRange.iterator();
     return new IteratorItemReader<>(iterator);
-  }
-
-  ItemProcessor<Integer, Integer> plus10Processor() {
-    return (item) -> item + 10;
-  }
-
-  ItemWriter<Integer> consoleWriter() {
-    return System.out::println;
   }
 }
