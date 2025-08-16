@@ -12,7 +12,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 public class JsonComponents {
 
-  private static ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json()
+  private static final ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json()
       .dateFormat(new StdDateFormat())
       .build();
 

@@ -14,12 +14,12 @@ import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AccessLogLineMapperTest {
+public class AccessLogRecordFieldSetMapperTest {
 
   @Test
   void mapLine() throws Exception {
     // given
-    var line = "2025-07-28 12:14:16,175.242.91.54,benelog";
+    var line = "2025-08-11 12:14:16,175.242.91.54,benelog";
     var jobConfig = new AccessLogJobConfig(null, null);
     LineMapper<AccessLog> lineMapper = buildAccessLogLineMapper();
 
@@ -27,15 +27,31 @@ class AccessLogLineMapperTest {
     AccessLog log = lineMapper.mapLine(line, 1);
 
     // then
-    assertThat(log.accessDateTime()).isEqualTo("2025-07-28T12:14:16Z");
+    assertThat(log.accessDateTime()).isEqualTo("2025-08-11T12:14:16Z");
     assertThat(log.ip()).isEqualTo("175.242.91.54");
     assertThat(log.username()).isEqualTo("benelog");
   }
 
   LineMapper<AccessLog> buildAccessLogLineMapper() {
     var lineMapper = new DefaultLineMapper<AccessLog>();
-    lineMapper.setLineTokenizer(new DelimitedLineTokenizer());
-    lineMapper.setFieldSetMapper(new AccessLogFieldSetMapper());
+    var lineTokenizer = new DelimitedLineTokenizer();
+    lineTokenizer.setNames("accessDateTime", "ip", "username");
+    lineMapper.setLineTokenizer(lineTokenizer);
+
+    Converter<String, Instant> converter = new Converter<>() {
+      private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(
+          "yyyy-MM-dd HH:mm:ss").withZone(ZoneOffset.UTC);
+
+      @Override
+      public Instant convert(String source) {
+        return Instant.from(FORMATTER.parse(source));
+      }
+    };
+    var conversionService = new DefaultConversionService();
+    conversionService.addConverter(converter);
+
+    var fieldSetMapper = new RecordFieldSetMapper<>(AccessLog.class, conversionService);
+    lineMapper.setFieldSetMapper(fieldSetMapper);
     return lineMapper;
   }
 }
