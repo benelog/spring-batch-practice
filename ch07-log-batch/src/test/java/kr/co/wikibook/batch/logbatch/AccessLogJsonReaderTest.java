@@ -15,7 +15,7 @@ class AccessLogJsonReaderTest {
     reader.open(new ExecutionContext());AccessLog item = reader.read();
     reader.close();
 
-    assertThat(item.accessDateTime()).isEqualTo("2023-12-10T11:14:16Z");
+    assertThat(item.accessDateTime()).isEqualTo("2025-07-28T11:14:16Z");
     assertThat(item.ip()).isEqualTo("175.242.91.54");
     assertThat(item.username()).isEqualTo("benelog");
   }

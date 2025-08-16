@@ -13,7 +13,7 @@ class AtomEntryXmlReaderTest {
   @Test
   void read() throws Exception {
     // given
-    var resource = new ClassPathResource("blog.atom");
+    var resource = new ClassPathResource("d2.atom");
     var jobConfig = new CollectBlogPostJobConfig();
     StaxEventItemReader<AtomEntry> reader = jobConfig.atomEntryXmlReader(resource);
     reader.afterPropertiesSet(); // <3>
@@ -24,9 +24,9 @@ class AtomEntryXmlReaderTest {
     reader.close();
 
     // then <4>
-    assertThat(item.getTitle()).startsWith("네이버에는 테크 월드를");
-    assertThat(item.getLink().getHref()).isEqualTo("https://d2.naver.com/news/4029141");
-    assertThat(item.getUpdated()).isEqualTo(Instant.parse("2023-12-22T14:26:03Z"));
+    assertThat(item.getTitle()).startsWith("[FE Ground]");
+    assertThat(item.getLink().getHref()).isEqualTo("https://d2.naver.com/news/6518915");
+    assertThat(item.getUpdated()).isEqualTo(Instant.parse("2025-08-13T11:07:21Z"));
     assertThat(item.getContent()).isNotBlank();
   }
 }
