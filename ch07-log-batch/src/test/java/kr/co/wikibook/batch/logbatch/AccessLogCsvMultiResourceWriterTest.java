@@ -19,12 +19,12 @@ public class AccessLogCsvMultiResourceWriterTest {
     Path outputPath = tempPath.resolve("access-log.txt");
     var resource = new PathResource(outputPath);
     MultiResourceItemWriter<AccessLog> writer = AccessLogComponents.buildMultiResourceItemWriter(resource, 1);
-    var item = new AccessLog(Instant.parse("2023-12-10T11:14:16Z"), "127.0.0.1", "benelog");
+    var item = new AccessLog(Instant.parse("2025-07-28T11:14:16Z"), "127.0.0.1", "benelog");
 
     // when
     writer.open(new ExecutionContext());
-    writer.write(new Chunk<>(List.of(item)));
-    writer.write(new Chunk<>(List.of(item)));
+    writer.write(Chunk.of(item));
+    writer.write(Chunk.of(item));
     writer.close();
 
     // then
