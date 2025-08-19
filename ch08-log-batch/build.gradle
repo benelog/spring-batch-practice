@@ -1,56 +1,60 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.1'
-	id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+    id 'org.springframework.boot' version '3.5.4'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'kr.co.wikibook.batch'
+group = 'kr.co.wikibook'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-batch'
-	implementation 'org.springframework.boot:spring-boot-starter-json'
-	implementation 'org.springframework:spring-oxm'
-	implementation 'org.glassfish.jaxb:jaxb-runtime'
-
-	runtimeOnly 'com.h2database:h2'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.batch:spring-batch-test'
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation 'org.springframework.boot:spring-boot-starter-json'
+    runtimeOnly 'com.h2database:h2'
+    implementation 'org.springframework:spring-oxm'
+    implementation 'org.glassfish.jaxb:jaxb-runtime'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.batch:spring-batch-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
-task h2MainDb(type: JavaExec) {
-	classpath = sourceSets.main.runtimeClasspath
-	mainClass = 'org.h2.tools.Console'
+tasks.register('h2MainDb', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.h2.tools.Console'
 
-	def props = new Properties()
-	file("src/main/resources/application.properties").withInputStream { props.load(it) }
+    def props = new Properties()
+    file("src/main/resources/application.properties").withInputStream { props.load(it) }
 
-	args(
-			'-driver', props.get('spring.datasource.driver-class-name'),
-			'-url', props.get('spring.datasource.jdbc-url'),
-			'-user', props.get('spring.datasource.username')
-	)
+    args(
+            '-driver', props.get('spring.datasource.driver-class-name'),
+            '-url', props.get('spring.datasource.jdbc-url'),
+            '-user', props.get('spring.datasource.username')
+    )
 }
 
-task h2JobDb(type: JavaExec) {
-	classpath = sourceSets.main.runtimeClasspath
-	mainClass = 'org.h2.tools.Console'
+tasks.register('h2JobDb', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.h2.tools.Console'
 
-	def props = new Properties()
-	file("src/main/resources/application.properties").withInputStream { props.load(it) }
+    def props = new Properties()
+    file("src/main/resources/application.properties").withInputStream { props.load(it) }
 
-	args(
-			'-driver', props.get('job-db.driver-class-name'),
-			'-url', props.get('job-db.jdbc-url'),
-			'-user', props.get('job-db.username')
-	)
+    args(
+            '-driver', props.get('job-db.driver-class-name'),
+            '-url', props.get('job-db.jdbc-url'),
+            '-user', props.get('job-db.username')
+    )
 }

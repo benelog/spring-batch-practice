@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.logbatch.boot;
+package kr.co.wikibook.batch.logbatch.bootconfig;
 
 
 import java.util.Collection;
@@ -6,7 +6,6 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner;
@@ -26,10 +25,9 @@ public class JobRunnerConfig {
   @Bean
   @ConditionalOnProperty(prefix = "spring.batch.job", name = "enabled", havingValue = "true", matchIfMissing = true)
   public JobLauncherApplicationRunner jobLauncherApplicationRunner(
-      JobLauncher jobLauncher, JobExplorer jobExplorer, JobRepository jobRepository, BatchProperties properties,
-      JobRegistry jobRegistry, Collection<Job> jobs
-
-  ) throws NoSuchJobException {
+      JobLauncher jobLauncher, JobExplorer jobExplorer, JobRepository jobRepository,
+      BatchProperties properties
+  ) {
     var runner = new JobLauncherApplicationRunner(jobLauncher, jobExplorer, jobRepository);
     String jobName = properties.getJob().getName();
 

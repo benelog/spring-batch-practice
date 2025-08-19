@@ -11,21 +11,23 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(classes = {LogBatchApplication.class, HelloJobConfig.class})
+@SpringBootTest(classes = {
+    LogBatchApplication.class,
+    TestJobRepositoryConfig.class
+})
 @ActiveProfiles("test")
 class HelloJobTest {
-
   JobLauncherTestUtils testUtils = new JobLauncherTestUtils();
 
   @BeforeEach
   void setUp(
       @Autowired JobRepository jobRepository,
       @Autowired JobLauncher jobLauncher,
-      @Autowired Job helloJob
+      @Autowired @Qualifier("helloJob") Job helloJob
   ) {
     this.testUtils.setJobRepository(jobRepository);
     this.testUtils.setJobLauncher(jobLauncher);

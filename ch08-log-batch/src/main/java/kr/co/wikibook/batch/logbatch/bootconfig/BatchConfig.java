@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.logbatch.boot;
+package kr.co.wikibook.batch.logbatch.bootconfig;
 
 import javax.sql.DataSource;
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Isolation;
 
-//@Configuration
+@Configuration
 public class BatchConfig extends DefaultBatchConfiguration {
   private final BatchProperties properties;
   private final PlatformTransactionManager transactionManager;
