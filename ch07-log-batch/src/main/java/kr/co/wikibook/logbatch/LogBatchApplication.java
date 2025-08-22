@@ -1,5 +1,7 @@
 package kr.co.wikibook.logbatch;
 
+import org.springframework.batch.core.repository.ExecutionContextSerializer;
+import org.springframework.batch.core.repository.dao.Jackson2ExecutionContextStringSerializer;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,5 +19,10 @@ public class LogBatchApplication {
   @Bean
   public ExitCodeGenerator codeGenerator() {
     return () -> 3;
+  }
+
+  @Bean
+  public ExecutionContextSerializer executionContextSerializer() {
+    return new Jackson2ExecutionContextStringSerializer();
   }
 }
