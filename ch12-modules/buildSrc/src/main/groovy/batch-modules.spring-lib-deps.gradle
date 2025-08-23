@@ -9,7 +9,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
-group = 'com.wikibook.batch'
+group = 'com.wikibook'
 version = '1.0'
 
 repositories {
