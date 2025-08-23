@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.healthchecker;
+package kr.co.wikibook.healthchecker.util;
 
 import org.springframework.beans.factory.InitializingBean;
 

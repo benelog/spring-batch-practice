@@ -1,8 +1,8 @@
-package kr.co.wikibook.batch.healthchecker.url;
+package kr.co.wikibook.healthchecker.url;
 
 import java.net.http.HttpConnectTimeoutException;
 import java.time.Duration;
-import kr.co.wikibook.batch.healthchecker.Configs;
+import kr.co.wikibook.healthchecker.util.Configs;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
@@ -57,7 +57,7 @@ public class CheckUrlJobConfig {
     return new StepBuilder("logResourceMetaStep", jobRepository)
         .allowStartIfComplete(true)
         .startLimit(5)
-        .tasklet(logResourceMetaTaslket(null), transactionManager)
+        .tasklet(logResourceMetaTasklet(null), transactionManager)
         .build();
   }
 
@@ -86,7 +86,7 @@ public class CheckUrlJobConfig {
 
   @Bean
   @JobScope
-  public Tasklet logResourceMetaTaslket(@Value(INPUT_FILE_PARAM_EXP) PathResource urlListFile) {
+  public Tasklet logResourceMetaTasklet(@Value(INPUT_FILE_PARAM_EXP) PathResource urlListFile) {
     var tasklet = new CallableTaskletAdapter();
     tasklet.setCallable(new LogResourceMetaTask(urlListFile));
     return tasklet;
