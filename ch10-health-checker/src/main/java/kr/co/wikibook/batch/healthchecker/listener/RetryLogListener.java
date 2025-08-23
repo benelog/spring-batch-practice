@@ -7,6 +7,7 @@ import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryListener;
 
 public class RetryLogListener implements RetryListener {
+
   private final Logger logger = LoggerFactory.getLogger(RetryLogListener.class);
 
   @Override

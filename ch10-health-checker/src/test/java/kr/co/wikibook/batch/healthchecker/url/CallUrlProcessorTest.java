@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class CallUrlProcessorTest {
+
   @Test
   @DisplayName("200 OK 응답을 받는다")
   void processOk() throws Exception {

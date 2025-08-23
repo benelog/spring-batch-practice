@@ -9,7 +9,6 @@ import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemStreamException;
 
 public class FileRecorder implements ItemStream {
-
   private final Path recordPath;
   private FileWriter writer;
 

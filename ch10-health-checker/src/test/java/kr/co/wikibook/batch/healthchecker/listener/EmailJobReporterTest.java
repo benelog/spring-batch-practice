@@ -22,6 +22,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 
 class EmailJobReporterTest {
+
   @Test
   void skipSendEmail() {
     // given

@@ -10,6 +10,7 @@ import org.springframework.core.io.PathResource;
 import org.springframework.core.io.Resource;
 
 public class LogResourceListener {
+
   private final Logger logger = LoggerFactory.getLogger(LogResourceListener.class);
   private final Resource resource;
 

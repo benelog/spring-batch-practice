@@ -17,6 +17,7 @@ import org.springframework.core.io.ClassPathResource;
 @SpringBootTest("spring.batch.job.enabled=false")
 @SpringBatchTest
 class CheckUrlJobTest {
+
   @Test
   void execute(
       @Autowired JobLauncherTestUtils testUtils,

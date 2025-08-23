@@ -37,9 +37,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 public class CheckUrlJobConfig {
+
   static final String INPUT_FILE_PARAM = "urlListFile";
   static final String OUTPUT_FILE_PATH = "./status.csv";
-  private static final String INPUT_FILE_PARAM_EXP = "#{jobParameters['" + INPUT_FILE_PARAM + "']}"; // <1>
+  private static final String INPUT_FILE_PARAM_EXP =
+      "#{jobParameters['" + INPUT_FILE_PARAM + "']}"; // <1>
 
   private final PlatformTransactionManager transactionManager = new ResourcelessTransactionManager(); // <2>
 
@@ -66,7 +68,8 @@ public class CheckUrlJobConfig {
 
   @Bean
   @JobScope
-  public LogResourceListener logResourceListener(@Value(INPUT_FILE_PARAM_EXP) PathResource urlListFile) {
+  public LogResourceListener logResourceListener(
+      @Value(INPUT_FILE_PARAM_EXP) PathResource urlListFile) {
     return new LogResourceListener(urlListFile);
   }
 
@@ -140,7 +143,7 @@ public class CheckUrlJobConfig {
 
   private FlatFileItemWriter<ResponseStatus> buildResponseStatusFileWriter() { // <6>
     var outputFile = new PathResource("status.csv");
-    var writer =  new FlatFileItemWriterBuilder<ResponseStatus>()
+    var writer = new FlatFileItemWriterBuilder<ResponseStatus>()
         .name("responseStatusFileWriter")
         .resource(outputFile)
         .delimited()

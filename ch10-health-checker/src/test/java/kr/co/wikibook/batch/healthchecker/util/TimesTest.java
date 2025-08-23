@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class TimesTest {
+
   @ParameterizedTest
   @CsvSource(value = {
       "2024-03-30T13:00:00, 2024-03-30T13:01:00, 0:01:00",

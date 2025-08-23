@@ -7,6 +7,7 @@ import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.StepExecution;
 
 public class JobReporter implements JobExecutionListener {
+
   private final Logger logger = LoggerFactory.getLogger(JobReporter.class);
 
   @Override

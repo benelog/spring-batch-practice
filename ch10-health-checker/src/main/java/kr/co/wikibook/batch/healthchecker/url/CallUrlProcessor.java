@@ -14,55 +14,56 @@ import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ItemProcessor;
 
 public class CallUrlProcessor implements
-		ItemProcessor<String, ResponseStatus>,
-		ItemProcessListener<String, ResponseStatus> {
-	private final Logger logger = LoggerFactory.getLogger(CallUrlProcessor.class);
+    ItemProcessor<String, ResponseStatus>,
+    ItemProcessListener<String, ResponseStatus> {
 
-	private final HttpClient client = HttpClient.newBuilder().build();
-	private final Duration requestTimeout;
+  private final Logger logger = LoggerFactory.getLogger(CallUrlProcessor.class);
 
-	public CallUrlProcessor(Duration requestTimeout) {
-		this.requestTimeout = requestTimeout;
-	}
+  private final HttpClient client = HttpClient.newBuilder().build();
+  private final Duration requestTimeout;
 
-	@BeforeStep
-	public void logRequestTimeout() {
-		logger.info("requestTimeout : {} seconds", this.requestTimeout.getSeconds());
-	}
+  public CallUrlProcessor(Duration requestTimeout) {
+    this.requestTimeout = requestTimeout;
+  }
 
-	@Override
-	public void beforeProcess(String rawUrl) {
-		logger.info("호출 시도 : {}", rawUrl);
-	}
+  @BeforeStep
+  public void logRequestTimeout() {
+    logger.info("requestTimeout : {} seconds", this.requestTimeout.getSeconds());
+  }
 
-	@Override
-	public ResponseStatus process(String rawUrl) throws IOException, InterruptedException {
-		URI uri = URI.create(rawUrl);
-		HttpRequest request = HttpRequest.newBuilder()
-			.uri(uri)
-			.timeout(this.requestTimeout)
-			.build();
+  @Override
+  public void beforeProcess(String rawUrl) {
+    logger.info("호출 시도 : {}", rawUrl);
+  }
 
-		long startTimeMillis = System.currentTimeMillis();
-		HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
-		long responseTimeMillis = System.currentTimeMillis() - startTimeMillis;
-		return new ResponseStatus(uri, response.statusCode(), responseTimeMillis);
-	}
+  @Override
+  public ResponseStatus process(String rawUrl) throws IOException, InterruptedException {
+    URI uri = URI.create(rawUrl);
+    HttpRequest request = HttpRequest.newBuilder()
+        .uri(uri)
+        .timeout(this.requestTimeout)
+        .build();
 
-	@Override
-	public void afterProcess(String rawUrl, ResponseStatus result) {
-		if (result == null) {
-			return;
-		}
+    long startTimeMillis = System.currentTimeMillis();
+    HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
+    long responseTimeMillis = System.currentTimeMillis() - startTimeMillis;
+    return new ResponseStatus(uri, response.statusCode(), responseTimeMillis);
+  }
 
-		logger.info("응답 시간 : {}ms", result.responseTimeMillis());
-		if(result.statusCode() == 404) {
-			logger.warn("404 응답 : {}", rawUrl);
-		}
-	}
+  @Override
+  public void afterProcess(String rawUrl, ResponseStatus result) {
+    if (result == null) {
+      return;
+    }
 
-	@Override
-	public void onProcessError(String rawUrl, Exception ex) {
-		logger.warn("호출 실패 : {}", rawUrl, ex); // <4>
-	}
+    logger.info("응답 시간 : {}ms", result.responseTimeMillis());
+    if (result.statusCode() == 404) {
+      logger.warn("404 응답 : {}", rawUrl);
+    }
+  }
+
+  @Override
+  public void onProcessError(String rawUrl, Exception ex) {
+    logger.warn("호출 실패 : {}", rawUrl, ex); // <4>
+  }
 }

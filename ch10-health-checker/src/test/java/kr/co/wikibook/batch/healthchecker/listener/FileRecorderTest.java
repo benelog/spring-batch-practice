@@ -10,6 +10,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.springframework.batch.item.ExecutionContext;
 
 class FileRecorderTest {
+
   @Test
   void write(@TempDir Path baseDir) throws IOException {
     Path recordPath = baseDir.resolve("record.txt");

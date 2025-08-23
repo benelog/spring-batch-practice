@@ -12,20 +12,21 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.core.io.PathResource;
 
 class LogResourceMetaTaskTest {
-	@Test
-	void execute(@TempDir Path tempDir) throws IOException {
-		// given
-		Path resourcePath = tempDir.resolve(Path.of("url.txt"));
-		Files.writeString(resourcePath, "");
-		Instant lastModified = Instant.parse("2024-02-16T12:58:54.113Z");
-		resourcePath.toFile().setLastModified(lastModified.toEpochMilli());
-		var resource = new PathResource(resourcePath);
-		var task = new LogResourceMetaTask(resource);
 
-		// when
-		RepeatStatus status = task.call();
+  @Test
+  void execute(@TempDir Path tempDir) throws IOException {
+    // given
+    Path resourcePath = tempDir.resolve(Path.of("url.txt"));
+    Files.writeString(resourcePath, "");
+    Instant lastModified = Instant.parse("2024-02-16T12:58:54.113Z");
+    resourcePath.toFile().setLastModified(lastModified.toEpochMilli());
+    var resource = new PathResource(resourcePath);
+    var task = new LogResourceMetaTask(resource);
 
-		// then
-		assertThat(status).isEqualTo(RepeatStatus.FINISHED);
-	}
+    // when
+    RepeatStatus status = task.call();
+
+    // then
+    assertThat(status).isEqualTo(RepeatStatus.FINISHED);
+  }
 }

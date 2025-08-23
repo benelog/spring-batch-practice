@@ -21,7 +21,7 @@ public class EmailJobReporter implements JobExecutionListener {
   private final boolean skipOnSuccess; // <4>
 
   public EmailJobReporter(JavaMailSender mailSender, List<String> receivers,
-                          boolean skipOnSuccess) { // <5>
+      boolean skipOnSuccess) { // <5>
     this.mailSender = mailSender;
     this.receivers = receivers;
     this.skipOnSuccess = skipOnSuccess;
