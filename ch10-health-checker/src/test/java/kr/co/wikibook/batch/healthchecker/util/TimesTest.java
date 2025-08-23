@@ -10,9 +10,9 @@ class TimesTest {
 
   @ParameterizedTest
   @CsvSource(value = {
-      "2024-03-30T13:00:00, 2024-03-30T13:01:00, 0:01:00",
-      "2024-03-30T13:00:00, 2024-03-30T14:01:50, 1:01:50",
-      "2024-03-30T13:40:40, 2024-03-30T14:10:21, 0:29:41" // <1>
+      "2025-07-28T13:00:00, 2025-07-28T13:01:00, 0:01:00",
+      "2025-07-28T13:00:00, 2025-07-28T14:01:50, 1:01:50",
+      "2025-07-28T13:40:40, 2025-07-28T14:10:21, 0:29:41" // <1>
   })
   void getReadableDuration(LocalDateTime from, LocalDateTime to, String expected) {
     String actual = Times.getReadableDuration(from, to);
