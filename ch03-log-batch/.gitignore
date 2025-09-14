@@ -38,3 +38,5 @@ out/
 
 .envrc
 db/
+user-access-summary.csv
+

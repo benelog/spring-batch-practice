@@ -6,7 +6,7 @@ import org.slf4j.ILoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class CheckDiskSpaceTask implements CommandLineRunner {
 
   private final Logger logger;

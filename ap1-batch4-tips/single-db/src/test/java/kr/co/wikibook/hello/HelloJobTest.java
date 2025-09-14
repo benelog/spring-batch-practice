@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.hello.job;
+package kr.co.wikibook.hello;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,10 +13,7 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(
-    properties = "spring.batch.job.enabled=false",
-    classes = BatchApplication.class
-)
+@SpringBootTest("spring.batch.job.enabled=false")
 class HelloJobTest {
   @Test
   void launchJob(

@@ -1,22 +1,22 @@
-package kr.co.wikibook.batch.hello.job;
+package kr.co.wikibook.hello;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import kr.co.wikibook.hello.BatchApplication;
-import org.junit.Ignore;
+import kr.co.wikibook.hello.supports.JobLaunchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = BatchApplication.class)
-@SpringBatchTest
-class HelloJobFailedTest {
-  // @Test 실패하는 테스트
-  void launchJob(@Autowired JobLauncherTestUtils testUtils) throws Exception {
+@SpringBootTest
+class HelloJob2Test {
+  @Test
+  void launchJob(@Autowired JobRepository jobRepository, @Autowired Job helloJob2) throws Exception {
+    JobLauncherTestUtils testUtils = JobLaunchers.createTestUtils(jobRepository, helloJob2);
     JobExecution execution = testUtils.launchJob();
     assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
   }

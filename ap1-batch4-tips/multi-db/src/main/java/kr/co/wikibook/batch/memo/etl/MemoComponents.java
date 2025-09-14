@@ -6,6 +6,7 @@ import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.item.file.mapping.PassThroughLineMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
 
@@ -14,7 +15,7 @@ public class MemoComponents {
   public static FlatFileItemReader<String> memoFileReader(Resource resource) {
     var reader = new FlatFileItemReaderBuilder<String>()
         .name("memoFileReader")
-        .lineMapper(((line, lineNumber) -> line))
+        .lineMapper(new PassThroughLineMapper())
         .resource(resource)
         .build();
     return afterPropertiesSet(reader);

@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.hello.supports;
+package kr.co.wikibook.hello.supports;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;

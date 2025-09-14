@@ -1,4 +1,4 @@
-package kr.co.wikibook.hello.job;
+package kr.co.wikibook.hello;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

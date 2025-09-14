@@ -1,4 +1,4 @@
-package kr.co.wikibook.hello.job;
+package kr.co.wikibook.hello;
 
 import kr.co.wikibook.hello.tasklet.HelloTasklet;
 import org.springframework.batch.core.Job;

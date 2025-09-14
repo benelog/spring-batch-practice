@@ -1,4 +1,4 @@
-package kr.co.wikibook.hello.job;
+package kr.co.wikibook.hello;
 
 import java.time.LocalDate;
 import kr.co.wikibook.hello.tasklet.HelloDateTasklet;

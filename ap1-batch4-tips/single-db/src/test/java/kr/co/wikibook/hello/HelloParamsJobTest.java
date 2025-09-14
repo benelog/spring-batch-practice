@@ -1,11 +1,10 @@
-package kr.co.wikibook.batch.hello.job;
+package kr.co.wikibook.hello;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
 import java.util.Date;
-import kr.co.wikibook.batch.hello.supports.JobLaunchers;
-import kr.co.wikibook.hello.BatchApplication;
+import kr.co.wikibook.hello.supports.JobLaunchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -16,7 +15,7 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = BatchApplication.class)
+@SpringBootTest
 class HelloParamsJobTest {
 
   @Test

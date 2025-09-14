@@ -13,9 +13,4 @@ public class LogBatchApplication {
     int exitCode = SpringApplication.exit(context);
     System.exit(exitCode);
   }
-
-  @Bean
-  public ExitCodeGenerator codeGenerator() {
-    return () -> 3;
-  }
 }
