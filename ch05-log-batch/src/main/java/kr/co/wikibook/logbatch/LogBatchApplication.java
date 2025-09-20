@@ -1,6 +1,5 @@
 package kr.co.wikibook.logbatch;
 
-import kr.co.wikibook.logbatch.ColorConverters.ColorToStringConverter;
 import org.springframework.batch.core.repository.ExecutionContextSerializer;
 import org.springframework.batch.core.repository.dao.Jackson2ExecutionContextStringSerializer;
 import org.springframework.boot.SpringApplication;
