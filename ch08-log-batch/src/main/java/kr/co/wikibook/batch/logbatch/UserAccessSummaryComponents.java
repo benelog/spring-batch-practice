@@ -1,22 +1,24 @@
 package kr.co.wikibook.batch.logbatch;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.batch.item.database.Order;
-import org.springframework.batch.item.database.PagingQueryProvider;
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
 import org.springframework.batch.item.database.builder.JdbcPagingItemReaderBuilder;
-import org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.core.io.WritableResource;
-import org.springframework.jdbc.core.DataClassRowMapper;
 
 public class UserAccessSummaryComponents {
+
   public static FlatFileItemWriter<UserAccessSummary> buildCsvWriter(WritableResource resource) {
-    var writer =  new FlatFileItemWriterBuilder<UserAccessSummary>()
+    var writer = new FlatFileItemWriterBuilder<UserAccessSummary>()
         .name("userAccessSummaryCsvWriter")
         .resource(resource)
         .formatted()
@@ -26,41 +28,42 @@ public class UserAccessSummaryComponents {
     return Configs.afterPropertiesSet(writer);
   }
 
-  public static JdbcCursorItemReader<UserAccessSummary> buildDbCursorReader(DataSource dataSource, boolean sharedConection) {
-    var reader =  new JdbcCursorItemReaderBuilder<UserAccessSummary>()
+  public static JdbcCursorItemReader<UserAccessSummary> buildDbCursorReader(
+      DataSource dataSource, LocalDate date, boolean sharedConnection
+  ) {
+    Instant from = date.atStartOfDay().toInstant(ZoneOffset.UTC);
+    Instant to = from.plus(1, ChronoUnit.DAYS);
+
+    var reader = new JdbcCursorItemReaderBuilder<UserAccessSummary>()
         .name("userAccessSummaryDbReader")
         .dataSource(dataSource)
+        .useSharedExtendedConnection(sharedConnection)
         .sql(AccessLogSql.COUNT_GROUP_BY_USERNAME)
-        .useSharedExtendedConnection(sharedConection)
-        .rowMapper(new DataClassRowMapper<>(UserAccessSummary.class))
+        .queryArguments(from, to)
+        .dataRowMapper(UserAccessSummary.class)
         .build();
     return Configs.afterPropertiesSet(reader);
   }
 
-  public static JdbcPagingItemReader<UserAccessSummary> buildDbPagingReader(DataSource dataSource, int pageSize) {
-    PagingQueryProvider queryProvider = buildPagingQueryProvider(dataSource);
+  public static JdbcPagingItemReader<UserAccessSummary> buildDbPagingReader(
+      DataSource dataSource, LocalDate date, int pageSize
+  ) {
+    Instant from = date.atStartOfDay().toInstant(ZoneOffset.UTC);
+    Instant to = from.plus(1, ChronoUnit.DAYS);
+    Map<String, Object> queryParams = Map.of("from", from, "to", to);
+
     var reader = new JdbcPagingItemReaderBuilder<UserAccessSummary>()
         .name("accessLogDbReader")
         .dataSource(dataSource)
-        .queryProvider(queryProvider)
-        .rowMapper(new DataClassRowMapper<>(UserAccessSummary.class))
+        .selectClause("username, COUNT(1) AS access_count")
+        .fromClause("access_log")
+        .whereClause("access_date_time BETWEEN :from AND :to")
+        .groupClause("username")
+        .sortKeys(Map.of("username", Order.ASCENDING))
+        .parameterValues(queryParams)
         .pageSize(pageSize)
+        .dataRowMapper(UserAccessSummary.class) // <1>
         .build();
     return Configs.afterPropertiesSet(reader);
   }
-
-  private static PagingQueryProvider buildPagingQueryProvider(DataSource dataSource) {
-    var factory = new SqlPagingQueryProviderFactoryBean();
-    factory.setDataSource(dataSource);
-    factory.setSelectClause("username, COUNT(1) AS access_count");
-    factory.setFromClause("access_log");
-    factory.setGroupClause("username");
-    factory.setSortKeys(Map.of("username", Order.ASCENDING));
-    try {
-      return factory.getObject();
-    } catch (Exception ex) {
-      throw new IllegalStateException(ex);
-    }
-  }
 }
-

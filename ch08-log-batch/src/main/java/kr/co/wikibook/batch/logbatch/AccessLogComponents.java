@@ -47,11 +47,10 @@ public class AccessLogComponents {
   }
 
   public static JdbcBatchItemWriter<AccessLog> buildAccessLogDbWriter(DataSource dataSource) {
-    var writer = new JdbcBatchItemWriterBuilder<AccessLog>()
-        .dataSource(dataSource)
-        .sql(AccessLogSql.INSERT)
-        .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-        .build();
+    var writer = new JdbcBatchItemWriter<AccessLog>();
+    writer.setDataSource(dataSource);
+    writer.setSql(AccessLogSql.INSERT);
+    writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
     return Configs.afterPropertiesSet(writer);
   }
 

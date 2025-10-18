@@ -2,6 +2,8 @@ package kr.co.wikibook.batch.logbatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
@@ -18,8 +20,10 @@ class UserAccessSummaryPagingDbReaderTest {
   @Sql("classpath:/access-log.sql")
   void readItems(@Autowired DataSource dataSource) throws Exception {
     // given
-    JdbcPagingItemReader<UserAccessSummary> reader =
-        UserAccessSummaryComponents.buildDbPagingReader(dataSource, 2);
+    var date = LocalDate.of(2025, 7, 28);
+    JdbcPagingItemReader<UserAccessSummary> reader = UserAccessSummaryComponents.buildDbPagingReader(
+        dataSource, date, 2
+    );
 
     // when
     UserAccessSummary item1 = reader.read();

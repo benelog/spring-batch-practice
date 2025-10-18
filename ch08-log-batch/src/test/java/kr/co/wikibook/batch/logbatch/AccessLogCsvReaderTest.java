@@ -2,7 +2,8 @@ package kr.co.wikibook.batch.logbatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
+import java.nio.file.Path;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,17 +11,16 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.core.io.ClassPathResource;
 
 class AccessLogCsvReaderTest {
+
   Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Test
-  void readLines() throws Exception {
+  void read() throws Exception {
     // given
-    var resource = new ClassPathResource("sample-access-log.csv");
-    var jobConfig = new AccessLogJobConfig(null, null);
-    FlatFileItemReader<AccessLog> reader = jobConfig.accessLogCsvReader(resource);
+    var jobConfig = new AccessLogJobConfig(null, null, Path.of("src/test/resources"));
+    FlatFileItemReader<AccessLog> reader = jobConfig.accessLogCsvReader(LocalDate.of(2025, 7, 28));
     reader.afterPropertiesSet();
 
     // when
@@ -39,7 +39,7 @@ class AccessLogCsvReaderTest {
 
   @Test
   void instanceOfItemStream() {
-    var config = new AccessLogJobConfig(null, null);
+    var config = new AccessLogJobConfig(null, null, Path.of("src/test/resources"));
     ItemReader<AccessLog> accessLogCsvReader = config.accessLogCsvReader(null);
     assertThat(accessLogCsvReader).isInstanceOf(ItemStream.class);
   }

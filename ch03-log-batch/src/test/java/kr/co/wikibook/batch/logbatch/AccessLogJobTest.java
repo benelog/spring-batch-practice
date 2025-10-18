@@ -11,10 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-@SpringBootTest("access-log=classpath:/sample-access-log.csv")
+@SpringBootTest({
+    "date=2025-07-28",
+    "base-path=src/test/resources/"
+})
 public class AccessLogJobTest {
-
-  static File output = new File("user-access-summary.csv");
+  static File output = new File("src/test/resources/2025-07-28_summary.csv");
 
   @BeforeAll
   static void deleteOutput() {

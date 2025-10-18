@@ -17,6 +17,8 @@ class BlogPostXmlWriterTest {
   void write(@TempDir Path tempPath) throws Exception {
     // given
     Path outputPath = tempPath.resolve("blogPosts.xml");
+    Thread.currentThread().setContextClassLoader(BlogPost.class.getClassLoader());
+
     var resource = new PathResource(outputPath);
     var post = new BlogPost(
         "백엔드 개발자를 꿈꾸는 학생개발자에게",

@@ -2,6 +2,7 @@ package kr.co.wikibook.logbatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
@@ -25,7 +26,7 @@ public class AccessLogJobTest {
   ) throws Exception {
     testUtils.setJob(job);
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addString("accessLog", "classpath:/sample-access-log.csv")
+        .addLocalDate("date", LocalDate.of(2025, 7, 28))
         .toJobParameters();
 
     JobExecution execution = testUtils.launchJob(params);

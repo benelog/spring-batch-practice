@@ -12,9 +12,9 @@ class AccessLogCsvReaderTest {
   Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Test
-  void readLines() throws IOException {
+  void read() throws IOException {
     // given
-    var resource = new ClassPathResource("sample-access-log.csv"); // <1>
+    var resource = new ClassPathResource("2025-07-28.csv");
     var reader = new AccessLogCsvReader(resource);
 
     // when

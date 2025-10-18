@@ -1,7 +1,10 @@
 package kr.co.wikibook.batch.logbatch;
 
+import java.nio.file.Path;
+import java.time.LocalDate;
 import javax.sql.DataSource;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
@@ -15,15 +18,12 @@ import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.jdbc.support.JdbcTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 public class AccessLogJobConfig {
@@ -32,38 +32,44 @@ public class AccessLogJobConfig {
 
   private final DataSource dataSource;
   private final JobRepository jobRepository;
+  private final Path basePath;
 
-  public AccessLogJobConfig(DataSource dataSource, JobRepository jobRepository) {
+  public AccessLogJobConfig(
+      DataSource dataSource, JobRepository jobRepository,
+      @Value("${base-path:./logs}") Path basePath) {
     this.dataSource = dataSource;
     this.jobRepository = jobRepository;
+    this.basePath = basePath;
   }
 
   @Bean
   public Job accessLogJob() {
     return new JobBuilder(JOB_NAME, this.jobRepository)
         .start(this.csvToDbStep(null))
-        .next(buildDbToCsvStep())
+        .next(this.dbToCsvStep(null))
         .build();
   }
 
   @Bean
   public TaskletStep csvToDbStep(
-      @Qualifier("mainTransactionManager") PlatformTransactionManager transactionManager
+      @Qualifier("mainTransactionManager") JdbcTransactionManager transactionManager
   ) {
-    ItemStreamReader<AccessLog> csvReader = this.accessLogCsvReader(null);
-    JdbcBatchItemWriter<AccessLog> dbWriter = AccessLogComponents.buildAccessLogDbWriter(this.dataSource);
+    ItemStreamReader<AccessLog> reader = this.accessLogCsvReader(null);
+    JdbcBatchItemWriter<AccessLog> writer = AccessLogComponents.buildAccessLogDbWriter(this.dataSource);
     return new StepBuilder("accessLogCsvToDb", this.jobRepository)
         .<AccessLog, AccessLog>chunk(300, transactionManager)
-        .reader(csvReader)
+        .reader(reader)
         .processor(new AccessLogProcessor())
-        .writer(dbWriter)
+        .writer(writer)
         .build();
   }
 
   @Bean
   @StepScope
   public FlatFileItemReader<AccessLog> accessLogCsvReader(
-      @Value("#{jobParameters['accessLog']}") Resource resource) {
+      @Value("#{jobParameters['date']}") LocalDate date
+  ) {
+    var resource = new PathResource(basePath.resolve(date + ".csv"));
 
     return new FlatFileItemReaderBuilder<AccessLog>()
         .name("accessLogCsvReader")
@@ -73,11 +79,14 @@ public class AccessLogJobConfig {
         .build();
   }
 
-
-  private TaskletStep buildDbToCsvStep() {
-    var userAccessOutput = new PathResource("user-access-summary.csv");
-    JdbcCursorItemReader<UserAccessSummary> reader = UserAccessSummaryComponents.buildDbCursorReader(dataSource, false);
-    FlatFileItemWriter<UserAccessSummary> writer = UserAccessSummaryComponents.buildCsvWriter(userAccessOutput);
+  @Bean
+  @JobScope
+  public TaskletStep dbToCsvStep(
+      @Value("#{jobParameters['date']}") LocalDate date
+  ) {
+    var resource = new PathResource(basePath.resolve(date + "_summary.csv"));
+    JdbcCursorItemReader<UserAccessSummary> reader = UserAccessSummaryComponents.buildDbCursorReader(dataSource, date, false);
+    FlatFileItemWriter<UserAccessSummary> writer = UserAccessSummaryComponents.buildCsvWriter(resource);
 
     return new StepBuilder("userAccessSummaryDbToCsv", jobRepository)
         .<UserAccessSummary, UserAccessSummary>chunk(300, new ResourcelessTransactionManager())

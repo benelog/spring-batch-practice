@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javax.sql.DataSource;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,13 +23,14 @@ class UserAccessSummaryDbReaderTest {
 
   @Test
   @Sql(statements = {
-      INSERT + "('2020-06-10 11:14', '175.242.91.54', 'benelog')",
-      INSERT + "('2020-06-10 11:14', '192.168.0.1', 'benelog')",
-      INSERT + "('2020-06-10 11:14', '192.168.0.3', 'jojoldu')"
+      INSERT + "('2025-07-28 11:14', '175.242.91.54', 'benelog')",
+      INSERT + "('2025-07-28 11:15', '192.168.0.1', 'benelog')",
+      INSERT + "('2025-07-28 11:16', '192.168.0.3', 'jojoldu')"
   }) // <3>
   void readItems(@Autowired DataSource dataSource) throws SQLException { // <4>
     // given
-    this.reader = new UserAccessSummaryDbReader(dataSource);
+    var date = LocalDate.of(2025, 7, 28);
+    this.reader = new UserAccessSummaryDbReader(dataSource, date);
 
     // when
     this.reader.open();

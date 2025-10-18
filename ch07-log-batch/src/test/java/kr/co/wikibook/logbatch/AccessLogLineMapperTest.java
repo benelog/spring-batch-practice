@@ -13,7 +13,6 @@ class AccessLogLineMapperTest {
   void mapLine() throws Exception {
     // given
     var line = "2025-07-28 12:14:16,175.242.91.54,benelog";
-    var jobConfig = new AccessLogJobConfig(null, null);
     LineMapper<AccessLog> lineMapper = buildAccessLogLineMapper();
 
     // when

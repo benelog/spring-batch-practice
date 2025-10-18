@@ -1,5 +1,7 @@
 package kr.co.wikibook.batch.logbatch;
 
+import java.nio.file.Path;
+import java.time.LocalDate;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -7,19 +9,29 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.PathResource;
 
 @Configuration
-@ConditionalOnProperty("access-log")
+@ConditionalOnProperty("date")
 public class AccessLogJobConfig {
+
+  private final LocalDate date;
+  private final DataSource dataSource;
+  private final Path basePath;
+
+  public AccessLogJobConfig(
+      @Value("${date}") LocalDate date,
+      DataSource dataSource,
+      @Value("${base-path:./logs}") Path basePath) {
+    this.date = date;
+    this.dataSource = dataSource;
+    this.basePath = basePath;
+  }
 
   @Bean
   @Order(1)
-  public CommandLineRunner accessLogCsvToDbTask(
-      @Value("${access-log}") Resource resource,
-      DataSource dataSource
-  ) {
+  public CommandLineRunner accessLogCsvToDbTask() {
+    var resource = new PathResource(basePath.resolve(date + ".csv"));
     var reader = new AccessLogCsvReader(resource);
     var writer = new AccessLogDbWriter(dataSource);
     return new AccessLogCsvToDbTask(reader, writer, 300);
@@ -27,9 +39,10 @@ public class AccessLogJobConfig {
 
   @Bean
   @Order(2)
-  public CommandLineRunner userAccessSummaryDbToCsvTask(DataSource dataSource) {
-    var reader = new UserAccessSummaryDbReader(dataSource);
-    var writer = new UserAccessSummaryCsvWriter(new FileSystemResource("user-access-summary.csv"));
+  public CommandLineRunner userAccessSummaryDbToCsvTask() {
+    var reader = new UserAccessSummaryDbReader(dataSource, date);
+    var resource = new PathResource(basePath.resolve(date + "_summary.csv"));
+    var writer = new UserAccessSummaryCsvWriter(resource);
     return new UserAccessSummaryDbToCsvTask(reader, writer, 300);
   }
 }

@@ -8,12 +8,13 @@ import org.springframework.core.io.WritableResource;
 
 public class UserAccessSummaryComponents {
   public static FlatFileItemWriter<UserAccessSummary> buildCsvWriter(WritableResource resource) {
-    var writer =  new FlatFileItemWriterBuilder<UserAccessSummary>()
+    FlatFileItemWriter<UserAccessSummary> writer =  new FlatFileItemWriterBuilder<UserAccessSummary>()
         .name("userAccessSummaryCsvWriter")
         .resource(resource)
         .delimited()
         .delimiter(",")
-        .fieldExtractor(new UserAccessSummaryFieldSetExtractor())
+        .sourceType(UserAccessSummary.class)
+        .names("username", "accessCount")
         .build();
     return Configs.afterPropertiesSet(writer);
   }

@@ -55,12 +55,11 @@ public class CollectBlogPostJobConfig {
       @Value("${blog.file}") WritableResource resource) {
     var marshaller = new Jaxb2Marshaller();
     marshaller.setClassesToBeBound(BlogPost.class);
-
     return new StaxEventItemWriterBuilder<BlogPost>()
         .name("blogPostWriter")
         .resource(resource)
         .marshaller(marshaller)
-        .rootTagName("blog") // <3>
+        .rootTagName("blog")
         .build();
   }
 }

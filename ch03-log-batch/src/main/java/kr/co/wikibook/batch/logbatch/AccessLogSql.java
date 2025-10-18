@@ -9,6 +9,7 @@ public class AccessLogSql {
   public static final String COUNT_GROUP_BY_USERNAME = """
       SELECT username, COUNT(1) AS access_count
       FROM access_log
+      WHERE access_date_time BETWEEN ? AND ?
       GROUP BY username
       """;
 }

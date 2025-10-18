@@ -1,7 +1,10 @@
 package kr.co.wikibook.logbatch;
 
+import java.nio.file.Path;
+import java.time.LocalDate;
 import javax.sql.DataSource;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
@@ -9,6 +12,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.item.ItemStreamReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
@@ -26,36 +30,42 @@ public class AccessLogJobConfig {
 
   private final DataSource dataSource;
   private final JobRepository jobRepository;
+  private final Path basePath;
 
-  public AccessLogJobConfig(DataSource dataSource, JobRepository jobRepository) {
+  public AccessLogJobConfig(
+      DataSource dataSource, JobRepository jobRepository,
+      @Value("${base-path:./logs}") Path basePath) {
     this.dataSource = dataSource;
     this.jobRepository = jobRepository;
+    this.basePath = basePath;
   }
 
   @Bean
   public Job accessLogJob() {
     return new JobBuilder(JOB_NAME, this.jobRepository)
         .start(this.csvToDbStep(null))
-        .next(buildDbToCsvStep())
+        .next(this.dbToCsvStep(null))
         .build();
   }
 
   @Bean
   public TaskletStep csvToDbStep(JdbcTransactionManager transactionManager) {
-    ItemStreamReader<AccessLog> csvReader = this.accessLogCsvReader(null);
+    ItemStreamReader<AccessLog> reader = this.accessLogCsvReader(null);
+    var writer = new AccessLogDbWriter(this.dataSource);
     return new StepBuilder("accessLogCsvToDb", this.jobRepository)
         .<AccessLog, AccessLog>chunk(300, transactionManager)
-        .reader(csvReader)
+        .reader(reader)
         .processor(new AccessLogProcessor())
-        .writer(new AccessLogDbWriter(this.dataSource))
+        .writer(writer)
         .build();
   }
 
   @Bean
   @StepScope
   public FlatFileItemReader<AccessLog> accessLogCsvReader(
-      @Value("#{jobParameters['accessLog']}") Resource resource) {
-
+      @Value("#{jobParameters['date']}") LocalDate date
+  ) {
+    var resource = new PathResource(basePath.resolve(date + ".csv"));
     return new FlatFileItemReaderBuilder<AccessLog>()
         .name("accessLogCsvReader")
         .resource(resource)
@@ -64,14 +74,18 @@ public class AccessLogJobConfig {
         .build();
   }
 
-
-  private TaskletStep buildDbToCsvStep() {
-    var userAccessOutput = new PathResource("user-access-summary.csv");
-
+  @Bean
+  @JobScope
+  public TaskletStep dbToCsvStep(
+      @Value("#{jobParameters['date']}") LocalDate date
+  ) {
+    var resource = new PathResource(basePath.resolve(date + "_summary.csv"));
+    var reader = new UserAccessSummaryDbReader(this.dataSource, date);
+    FlatFileItemWriter<UserAccessSummary> writer = UserAccessSummaryComponents.buildCsvWriter(resource);
     return new StepBuilder("userAccessSummaryDbToCsv", jobRepository)
         .<UserAccessSummary, UserAccessSummary>chunk(300, new ResourcelessTransactionManager())
-        .reader(new UserAccessSummaryDbReader(this.dataSource))
-        .writer(UserAccessSummaryComponents.buildCsvWriter(userAccessOutput)) // <1>
+        .reader(reader)
+        .writer(writer)
         .build();
   }
 }

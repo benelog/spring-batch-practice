@@ -1,5 +1,10 @@
 package kr.co.wikibook.logbatch;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
@@ -8,19 +13,12 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.DefaultConversionService;
 
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class AccessLogRecordFieldSetMapperTest {
 
   @Test
   void mapLine() throws Exception {
     // given
     var line = "2025-08-11 12:14:16,175.242.91.54,benelog";
-    var jobConfig = new AccessLogJobConfig(null, null);
     LineMapper<AccessLog> lineMapper = buildAccessLogLineMapper();
 
     // when

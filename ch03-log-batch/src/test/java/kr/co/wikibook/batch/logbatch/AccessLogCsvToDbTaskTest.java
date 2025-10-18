@@ -2,12 +2,12 @@ package kr.co.wikibook.batch.logbatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.nio.file.Path;
+import java.time.LocalDate;
 import javax.sql.DataSource;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.jdbc.JdbcTestUtils;
@@ -20,8 +20,11 @@ class AccessLogCsvToDbTaskTest {
   @Test
   public void runTask(@Autowired DataSource dataSource) throws Exception {
     // given
-    var resource = new ClassPathResource("sample-access-log.csv");
-    CommandLineRunner task = new AccessLogJobConfig().accessLogCsvToDbTask(resource, dataSource);
+    CommandLineRunner task = new AccessLogJobConfig(
+        LocalDate.of(2025, 7, 28),
+        dataSource,
+        Path.of("src/test/resources/")
+    ).accessLogCsvToDbTask();
 
     // when
     task.run();

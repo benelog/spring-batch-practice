@@ -2,6 +2,7 @@ package kr.co.wikibook.logbatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +18,9 @@ class AccessLogCsvReaderTest {
   Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Test
-  void readLines() throws IOException {
+  void read() throws IOException {
     // given
-    var resource = new ClassPathResource("sample-access-log.csv"); // <1>
+    var resource = new ClassPathResource("2025-07-28.csv"); // <1>
     var reader = new AccessLogCsvReader(resource);
 
     // when
@@ -38,7 +39,7 @@ class AccessLogCsvReaderTest {
 
   @Test
   void instanceOfItemStream() {
-    var config = new AccessLogJobConfig(null, null);
+    var config = new AccessLogJobConfig(null, null, Path.of("."));
     ItemReader<AccessLog> accessLogCsvReader = config.accessLogCsvReader(null);
     assertThat(accessLogCsvReader).isInstanceOf(ItemStream.class);
   }
