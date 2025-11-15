@@ -38,6 +38,8 @@ class CheckStatusJobTest {
     StepExecution stepExecution = jobExecution.getStepExecutions().iterator().next();
     long count = stepExecution.getExecutionContext().getLong("count");
     assertThat(count).isGreaterThanOrEqualTo(0L);
+    count = jobExecution.getExecutionContext().getLong("count");
+    assertThat(count).isGreaterThanOrEqualTo(0L);
   }
 
   @Test

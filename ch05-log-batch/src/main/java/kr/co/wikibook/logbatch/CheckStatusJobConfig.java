@@ -6,6 +6,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.listener.ExecutionContextPromotionListener;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
@@ -21,8 +22,12 @@ public class CheckStatusJobConfig {
   @Bean
   public Job checkStatusJob(JobRepository jobRepository, DataSource dataSource) {
     var transactionManager = new ResourcelessTransactionManager();
+
+    var promotionListener = new ExecutionContextPromotionListener();
+    promotionListener.setKeys(new String[]{"count"});
     Step countAccessLogStep = new StepBuilder("countAccessLogStep", jobRepository)
         .tasklet(new CountAccessLogTasklet(dataSource), transactionManager)
+        .listener(promotionListener)
         .build();
 
     Step checkDiskSpaceStep = new StepBuilder("checkDiskSpaceStep", jobRepository)
@@ -30,7 +35,7 @@ public class CheckStatusJobConfig {
         .build();
 
     var validator = new DefaultJobParametersValidator();
-    validator.setRequiredKeys(new String[] {"directory", "minUsablePercentage"}); // <1>
+    validator.setRequiredKeys(new String[]{"directory", "minUsablePercentage"}); // <1>
 
     Step logDiskSpaceTaskStep = new StepBuilder("logDiskSpaceStep", jobRepository)
         .tasklet(logDiskSpaceTasklet(0L), transactionManager)

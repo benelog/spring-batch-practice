@@ -8,6 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomJobParameterConverter extends DefaultJobParametersConverter {
   public CustomJobParameterConverter() {
-    super.conversionService.addConverter((Converter<String, Color>) source -> Color.decode(source));
+    var converter = new Converter<String, Color>() {
+      @Override
+      public Color convert(String source) {
+        return Color.decode(source);
+      }
+    };
+    super.conversionService.addConverter(converter);
   }
 }

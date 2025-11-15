@@ -33,6 +33,7 @@ public class HelloChunkJobConfig {
             .processor(item -> item + 10)
             .writer(System.out::println)
             .stream(new HelloItemStream())
+            .readerIsTransactionalQueue()
             .listener(completionPolicy)
             .build())
         .build();

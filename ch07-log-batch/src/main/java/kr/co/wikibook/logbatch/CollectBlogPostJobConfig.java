@@ -28,6 +28,7 @@ public class CollectBlogPostJobConfig {
 
     return new JobBuilder(JOB_NAME, jobRepository)
         .incrementer(new RunIdIncrementer())
+        .listener()
         .start(new StepBuilder("collectBlogPostStep", jobRepository)
             .<AtomEntry, BlogPost>chunk(10, new ResourcelessTransactionManager())
             .reader(atomEntryXmlReader(null))
