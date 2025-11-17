@@ -7,8 +7,7 @@ public class LogginngService implements NotificationService{
 	private final Logger logger = LoggerFactory.getLogger(LogginngService.class);
 
 	@Override
-	public boolean send(String message) {
+	public void send(String message) {
 		logger.info(message);
-		return true;
 	}
 }

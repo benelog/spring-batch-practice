@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class LogBatchApplication {
-  public static void main(String[] args) {
+  static void main(String[] args) {
     ApplicationContext context = SpringApplication.run(LogBatchApplication.class, args);
     int exitCode = SpringApplication.exit(context);
     System.exit(exitCode);

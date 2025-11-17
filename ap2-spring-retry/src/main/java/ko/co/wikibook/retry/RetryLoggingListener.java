@@ -1,34 +1,27 @@
 package ko.co.wikibook.retry;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.retry.RetryCallback;
-import org.springframework.retry.RetryContext;
-import org.springframework.retry.RetryListener;
+import org.springframework.core.retry.RetryListener;
+import org.springframework.core.retry.RetryPolicy;
+import org.springframework.core.retry.Retryable;
 
 public class RetryLoggingListener implements RetryListener {
 	private final Logger logger = LoggerFactory.getLogger(RetryLoggingListener.class);
 
-	@Override
-	public <T, E extends Throwable> boolean open(RetryContext context, RetryCallback<T, E> callback) {
-		logger.info("open : {}", context);
-		return true;
-	}
+  @Override
+  public void beforeRetry(RetryPolicy retryPolicy, Retryable<?> retryable) {
+    logger.info("beforeRetry {}", retryable.getName());
+  }
 
-	@Override
-	public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback,
-		Throwable throwable) {
-		logger.warn("onError: {}", context, throwable);
-	}
+  @Override
+  public void onRetrySuccess(RetryPolicy retryPolicy, Retryable<?> retryable, @Nullable Object result) {
+    logger.info("onRetrySuccess {}", retryable.getName());
+  }
 
-	@Override
-	public <T, E extends Throwable> void close(RetryContext context, RetryCallback<T, E> callback,
-		Throwable throwable) {
-		logger.info("close : {}", context);
-	}
-
-	@Override
-	public <T, E extends Throwable> void onSuccess(RetryContext context, RetryCallback<T, E> callback, T result) {
-		logger.info("onSuccess : {}", result);
-	}
+  @Override
+  public void onRetryFailure(RetryPolicy retryPolicy, Retryable<?> retryable, Throwable throwable) {
+    logger.info("onRetryFailure {}", retryable.getName());
+  }
 }
