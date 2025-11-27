@@ -3,7 +3,7 @@ package kr.co.wikibook.logbatch;
 import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 
 public class LogDiskSpaceTask implements Callable<RepeatStatus> {
   private final Logger log = LoggerFactory.getLogger(LogDiskSpaceTask.class);

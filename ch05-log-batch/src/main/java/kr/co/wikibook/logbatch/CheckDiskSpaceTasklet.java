@@ -2,12 +2,13 @@ package kr.co.wikibook.logbatch;
 
 import java.io.File;
 import java.util.Map;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.scope.context.ChunkContext;
+import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 
 public class CheckDiskSpaceTasklet implements Tasklet {
 

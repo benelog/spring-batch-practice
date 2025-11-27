@@ -1,17 +1,16 @@
 package kr.co.wikibook.logbatch;
 
 import javax.sql.DataSource;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.core.job.DefaultJobParametersValidator;
+import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.job.parameters.DefaultJobParametersValidator;
 import org.springframework.batch.core.listener.ExecutionContextPromotionListener;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,24 +20,22 @@ public class CheckStatusJobConfig {
 
   @Bean
   public Job checkStatusJob(JobRepository jobRepository, DataSource dataSource) {
-    var transactionManager = new ResourcelessTransactionManager();
-
     var promotionListener = new ExecutionContextPromotionListener();
     promotionListener.setKeys(new String[]{"count"});
     Step countAccessLogStep = new StepBuilder("countAccessLogStep", jobRepository)
-        .tasklet(new CountAccessLogTasklet(dataSource), transactionManager)
+        .tasklet(new CountAccessLogTasklet(dataSource))
         .listener(promotionListener)
         .build();
 
     Step checkDiskSpaceStep = new StepBuilder("checkDiskSpaceStep", jobRepository)
-        .tasklet(new CheckDiskSpaceTasklet(), transactionManager)
+        .tasklet(new CheckDiskSpaceTasklet())
         .build();
 
     var validator = new DefaultJobParametersValidator();
     validator.setRequiredKeys(new String[]{"directory", "minUsablePercentage"}); // <1>
 
     Step logDiskSpaceTaskStep = new StepBuilder("logDiskSpaceStep", jobRepository)
-        .tasklet(logDiskSpaceTasklet(0L), transactionManager)
+        .tasklet(logDiskSpaceTasklet(0L))
         .build();
 
     return new JobBuilder("checkStatusJob", jobRepository)

@@ -4,13 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.job.parameters.JobParameters;
+import org.springframework.batch.core.job.parameters.JobParametersBuilder;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
-import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.core.step.StepContribution;
+import org.springframework.batch.core.step.StepExecution;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 
 class CheckDiskSpaceTaskletTest {
@@ -22,7 +23,8 @@ class CheckDiskSpaceTaskletTest {
         .addString("directory", "/")
         .addLong("minUsablePercentage", 100L)
         .toJobParameters();
-    StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(jobParameters);
+    JobExecution jobExecution = MetaDataInstanceFactory.createJobExecution("testJob", 0L, 0L, jobParameters);
+    var stepExecution = new StepExecution(0L, "test", jobExecution);
     var stepContribution = new StepContribution(stepExecution);
     var chunkContext = new ChunkContext(new StepContext(stepExecution));
     var tasklet = new CheckDiskSpaceTasklet();
