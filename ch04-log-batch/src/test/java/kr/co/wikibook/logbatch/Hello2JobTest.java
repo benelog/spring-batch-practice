@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBatchTest
 class Hello2JobTest {
   @Test
-  void launchJob(
+  void startJob(
       @Autowired JobOperatorTestUtils testUtils,
       @Autowired @Qualifier("hello2Job") Job hello2Job
   ) throws Exception {

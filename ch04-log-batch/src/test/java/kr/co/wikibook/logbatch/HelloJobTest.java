@@ -18,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class HelloJobTest {
   @Test
-  void launchJob(
+  void startJob(
       @Autowired JobOperatorTestUtils testUtils,
       @Autowired @Qualifier("helloJob") Job helloJob) throws Exception {
     testUtils.setJob(helloJob);
