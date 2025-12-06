@@ -1,9 +1,9 @@
 package kr.co.wikibook.logbatch;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.item.ItemStreamReader;
-import org.springframework.batch.item.support.CompositeItemReader;
-import org.springframework.batch.item.support.IteratorItemReader;
+import org.springframework.batch.infrastructure.item.ItemStreamReader;
+import org.springframework.batch.infrastructure.item.support.CompositeItemReader;
+import org.springframework.batch.infrastructure.item.support.IteratorItemReader;
 
 import java.util.Iterator;
 import java.util.List;

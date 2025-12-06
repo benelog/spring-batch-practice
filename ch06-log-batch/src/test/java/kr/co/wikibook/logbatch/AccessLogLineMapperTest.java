@@ -3,9 +3,9 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.item.file.LineMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.infrastructure.item.file.LineMapper;
+import org.springframework.batch.infrastructure.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.infrastructure.item.file.transform.DelimitedLineTokenizer;
 
 class AccessLogLineMapperTest {
   @Test

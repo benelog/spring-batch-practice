@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Instant;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.item.Chunk;
+import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;

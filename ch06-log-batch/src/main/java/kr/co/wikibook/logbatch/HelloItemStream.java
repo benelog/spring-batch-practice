@@ -2,9 +2,9 @@ package kr.co.wikibook.logbatch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.item.ItemStream;
-import org.springframework.batch.item.ItemStreamException;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
+import org.springframework.batch.infrastructure.item.ItemStream;
+import org.springframework.batch.infrastructure.item.ItemStreamException;
 
 public class HelloItemStream implements ItemStream {
   private final Logger logger = LoggerFactory.getLogger(HelloItemStream.class);

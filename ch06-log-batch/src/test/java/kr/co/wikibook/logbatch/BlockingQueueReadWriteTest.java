@@ -1,9 +1,9 @@
 package kr.co.wikibook.logbatch;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.queue.BlockingQueueItemReader;
-import org.springframework.batch.item.queue.BlockingQueueItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.queue.BlockingQueueItemReader;
+import org.springframework.batch.infrastructure.item.queue.BlockingQueueItemWriter;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;

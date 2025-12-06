@@ -1,9 +1,9 @@
 package kr.co.wikibook.logbatch;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.item.function.PredicateFilteringItemProcessor;
-import org.springframework.batch.item.validator.ValidatingItemProcessor;
-import org.springframework.batch.item.validator.ValidationException;
+import org.springframework.batch.infrastructure.item.function.PredicateFilteringItemProcessor;
+import org.springframework.batch.infrastructure.item.validator.ValidatingItemProcessor;
+import org.springframework.batch.infrastructure.item.validator.ValidationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

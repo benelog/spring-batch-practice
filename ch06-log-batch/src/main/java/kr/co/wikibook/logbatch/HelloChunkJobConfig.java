@@ -2,16 +2,12 @@ package kr.co.wikibook.logbatch;
 
 import java.util.PrimitiveIterator;
 import java.util.stream.IntStream;
-import org.springframework.batch.core.Job;
+import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.resource.StepExecutionSimpleCompletionPolicy;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.support.IteratorItemReader;
-import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
+import org.springframework.batch.infrastructure.item.ItemReader;
+import org.springframework.batch.infrastructure.item.support.IteratorItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,19 +18,14 @@ public class HelloChunkJobConfig {
 
   @Bean
   public Job helloChunkJob(JobRepository jobRepository) {
-    var transactionManager = new ResourcelessTransactionManager();
-    var completionPolicy = new StepExecutionSimpleCompletionPolicy();
-    completionPolicy.setKeyName("chunkSize");
 
     return new JobBuilder(JOB_NAME, jobRepository)
         .start(new StepBuilder("printSequence", jobRepository)
-            .<Integer, Integer>chunk(completionPolicy, transactionManager)
+            .<Integer, Integer>chunk(5)
             .reader(sequenceReader(1, 10))
             .processor(item -> item + 10)
             .writer(System.out::println)
             .stream(new HelloItemStream())
-            .readerIsTransactionalQueue()
-            .listener(completionPolicy)
             .build())
         .build();
   }

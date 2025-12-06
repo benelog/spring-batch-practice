@@ -1,8 +1,8 @@
 package kr.co.wikibook.logbatch;
 
-import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.item.ItemStreamException;
-import org.springframework.batch.item.ItemStreamReader;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
+import org.springframework.batch.infrastructure.item.ItemStreamException;
+import org.springframework.batch.infrastructure.item.ItemStreamReader;
 import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
 

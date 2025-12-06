@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.support.ClassifierCompositeItemWriter;
-import org.springframework.batch.item.support.ListItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.support.ClassifierCompositeItemWriter;
+import org.springframework.batch.infrastructure.item.support.ListItemWriter;
 
 class ClassifierCompositeItemWriterTest {
 

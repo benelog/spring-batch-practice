@@ -3,8 +3,8 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.item.support.ClassifierCompositeItemProcessor;
-import org.springframework.batch.item.support.PassThroughItemProcessor;
+import org.springframework.batch.infrastructure.item.support.ClassifierCompositeItemProcessor;
+import org.springframework.batch.infrastructure.item.support.PassThroughItemProcessor;
 
 class ClassifierCompositeItemProcessorTest {
   @Test
