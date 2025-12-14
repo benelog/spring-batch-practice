@@ -1,7 +1,7 @@
 package kr.co.wikibook.logbatch;
 
 import java.io.IOException;
-import org.springframework.batch.item.file.ResourcesItemReader;
+import org.springframework.batch.infrastructure.item.file.ResourcesItemReader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 

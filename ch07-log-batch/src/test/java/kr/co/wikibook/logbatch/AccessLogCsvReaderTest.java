@@ -7,11 +7,10 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemStream;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
+import org.springframework.batch.infrastructure.item.ItemReader;
+import org.springframework.batch.infrastructure.item.ItemStream;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 
 class AccessLogCsvReaderTest {
 
@@ -22,7 +21,6 @@ class AccessLogCsvReaderTest {
     // given
     var jobConfig = new AccessLogJobConfig(null, null, Path.of("src/test/resources"));
     FlatFileItemReader<AccessLog> reader = jobConfig.accessLogCsvReader(LocalDate.of(2025, 7, 28));
-    reader.afterPropertiesSet();
 
     // when
     reader.open(new ExecutionContext());

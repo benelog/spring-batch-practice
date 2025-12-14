@@ -1,9 +1,9 @@
 package kr.co.wikibook.logbatch;
 
-import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
-import org.springframework.batch.item.file.transform.FieldExtractor;
-import org.springframework.batch.item.file.transform.RecordFieldExtractor;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
+import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemWriterBuilder;
+import org.springframework.batch.infrastructure.item.file.transform.FieldExtractor;
+import org.springframework.batch.infrastructure.item.file.transform.RecordFieldExtractor;
 import org.springframework.core.io.WritableResource;
 
 public class UserAccessSummaryComponents {

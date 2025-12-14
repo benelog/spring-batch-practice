@@ -1,21 +1,20 @@
 package kr.co.wikibook.logbatch;
 
 import java.util.stream.IntStream;
-import org.springframework.batch.core.Job;
+import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
-import org.springframework.batch.item.file.transform.PassThroughFieldExtractor;
-import org.springframework.batch.item.support.IteratorItemReader;
-import org.springframework.batch.item.support.builder.CompositeItemWriterBuilder;
-import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
+import org.springframework.batch.infrastructure.item.ItemReader;
+import org.springframework.batch.infrastructure.item.ItemWriter;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
+import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemWriterBuilder;
+import org.springframework.batch.infrastructure.item.file.transform.PassThroughFieldExtractor;
+import org.springframework.batch.infrastructure.item.support.IteratorItemReader;
+import org.springframework.batch.infrastructure.item.support.builder.CompositeItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.PathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.WritableResource;
 
 @Configuration
@@ -25,7 +24,7 @@ public class TransactionalFileJobConfig {
 
   @Bean
   public Job transactionalFileJob(JobRepository jobRepository) {
-    var numberOutput = new PathResource("numbers.txt");
+    var numberOutput = new FileSystemResource("numbers.txt");
 
     var writer = new CompositeItemWriterBuilder<Integer>()
         .delegates(
@@ -35,7 +34,7 @@ public class TransactionalFileJobConfig {
 
     return new JobBuilder(JOB_NAME, jobRepository)
         .start(new StepBuilder("generateSequenceFile", jobRepository) // <3>
-            .<Integer, Integer>chunk(10, new ResourcelessTransactionManager()) // <4>
+            .<Integer, Integer>chunk(10) // <4>
             .reader(this.buildSequenceReader(1, 30)) // <5>
             .writer(writer)
             .build())

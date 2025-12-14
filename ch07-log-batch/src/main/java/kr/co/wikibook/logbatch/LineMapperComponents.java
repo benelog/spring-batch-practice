@@ -1,9 +1,9 @@
 package kr.co.wikibook.logbatch;
 
-import org.springframework.batch.item.file.LineMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.FixedLengthTokenizer;
-import org.springframework.batch.item.file.transform.Range;
+import org.springframework.batch.infrastructure.item.file.LineMapper;
+import org.springframework.batch.infrastructure.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.infrastructure.item.file.transform.FixedLengthTokenizer;
+import org.springframework.batch.infrastructure.item.file.transform.Range;
 
 public class LineMapperComponents {
   public static LineMapper<AccessLog> buildAccessLogLineMapper() {

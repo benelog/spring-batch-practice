@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Instant;
 import kr.co.wikibook.logbatch.atom.AtomEntry;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.item.xml.StaxEventItemReader;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
+import org.springframework.batch.infrastructure.item.xml.StaxEventItemReader;
 import org.springframework.core.io.ClassPathResource;
 
 class AtomEntryXmlReaderTest {

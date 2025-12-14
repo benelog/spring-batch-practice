@@ -1,16 +1,15 @@
 package kr.co.wikibook.logbatch;
 
 import kr.co.wikibook.logbatch.atom.AtomEntry;
-import org.springframework.batch.core.Job;
+import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.xml.StaxEventItemReader;
-import org.springframework.batch.item.xml.StaxEventItemWriter;
-import org.springframework.batch.item.xml.builder.StaxEventItemReaderBuilder;
-import org.springframework.batch.item.xml.builder.StaxEventItemWriterBuilder;
-import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
+import org.springframework.batch.infrastructure.item.xml.StaxEventItemReader;
+import org.springframework.batch.infrastructure.item.xml.StaxEventItemWriter;
+import org.springframework.batch.infrastructure.item.xml.builder.StaxEventItemReaderBuilder;
+import org.springframework.batch.infrastructure.item.xml.builder.StaxEventItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,9 +27,8 @@ public class CollectBlogPostJobConfig {
 
     return new JobBuilder(JOB_NAME, jobRepository)
         .incrementer(new RunIdIncrementer())
-        .listener()
         .start(new StepBuilder("collectBlogPostStep", jobRepository)
-            .<AtomEntry, BlogPost>chunk(10, new ResourcelessTransactionManager())
+            .<AtomEntry, BlogPost>chunk(10)
             .reader(atomEntryXmlReader(null))
             .processor(new AtomEntryProcessor())
             .writer(blogPostXmlWriter(null))

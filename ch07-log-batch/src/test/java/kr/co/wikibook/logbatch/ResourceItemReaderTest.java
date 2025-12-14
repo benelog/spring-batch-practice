@@ -8,8 +8,8 @@ import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.item.file.ResourcesItemReader;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
+import org.springframework.batch.infrastructure.item.file.ResourcesItemReader;
 
 class ResourceItemReaderTest {
   @Test

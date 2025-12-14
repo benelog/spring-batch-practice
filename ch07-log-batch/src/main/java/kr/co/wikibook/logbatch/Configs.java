@@ -1,6 +1,5 @@
 package kr.co.wikibook.logbatch;
 
-import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.beans.factory.InitializingBean;
 
 public class Configs {
