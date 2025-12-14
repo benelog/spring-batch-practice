@@ -12,12 +12,12 @@ public class NotificationRetryDecorator implements NotificationService {
   private final NotificationService target;
   private final RetryOperations retryOperations;
 
-  public NotificationRetryDecorator(NotificationService target, int maxAttempts) {
+  public NotificationRetryDecorator(NotificationService target, int maxRetries) {
     this.target = target;
 
     var retryPolicy = RetryPolicy.builder()
         .includes(RuntimeException.class)
-        .maxAttempts(maxAttempts)
+        .maxRetries(maxRetries)
         .delay(Duration.ofMillis(100L))
         .multiplier(2.0d)
         .maxDelay(Duration.ofMillis(600L))
