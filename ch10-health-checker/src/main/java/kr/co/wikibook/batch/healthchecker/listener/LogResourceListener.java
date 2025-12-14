@@ -6,7 +6,7 @@ import java.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.annotation.BeforeJob;
-import org.springframework.core.io.PathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 public class LogResourceListener {
@@ -14,7 +14,7 @@ public class LogResourceListener {
   private final Logger logger = LoggerFactory.getLogger(LogResourceListener.class);
   private final Resource resource;
 
-  public LogResourceListener(PathResource resource) {
+  public LogResourceListener(FileSystemResource resource) {
     this.resource = resource;
   }
 

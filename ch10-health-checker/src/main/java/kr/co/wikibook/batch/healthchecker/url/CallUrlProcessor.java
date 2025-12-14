@@ -9,9 +9,9 @@ import java.time.Duration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ItemProcessListener;
+import org.springframework.batch.core.listener.ItemProcessListener;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 
 public class CallUrlProcessor implements
     ItemProcessor<String, ResponseStatus>,

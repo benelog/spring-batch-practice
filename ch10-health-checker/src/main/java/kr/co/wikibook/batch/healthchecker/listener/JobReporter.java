@@ -2,9 +2,9 @@ package kr.co.wikibook.batch.healthchecker.listener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobExecutionListener;
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.listener.JobExecutionListener;
+import org.springframework.batch.core.step.StepExecution;
 
 public class JobReporter implements JobExecutionListener {
 

@@ -1,7 +1,7 @@
 package kr.co.wikibook.batch.healthchecker.listener;
 
 import java.nio.file.Path;
-import org.springframework.batch.core.SkipListener;
+import org.springframework.batch.core.listener.SkipListener;
 
 public class SkipItemRecorder<T, S> extends FileRecorder implements SkipListener<T, S> {
 

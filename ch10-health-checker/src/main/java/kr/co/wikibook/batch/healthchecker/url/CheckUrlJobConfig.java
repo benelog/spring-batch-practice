@@ -11,25 +11,25 @@ import kr.co.wikibook.batch.healthchecker.listener.RetryLogListener;
 import kr.co.wikibook.batch.healthchecker.listener.SkipItemRecorder;
 import kr.co.wikibook.batch.healthchecker.listener.StepLogListener;
 import kr.co.wikibook.batch.healthchecker.util.Configs;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
-import org.springframework.batch.core.job.DefaultJobParametersValidator;
+import org.springframework.batch.core.job.parameters.DefaultJobParametersValidator;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
-import org.springframework.batch.item.file.mapping.PassThroughLineMapper;
-import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
+import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemWriterBuilder;
+import org.springframework.batch.infrastructure.item.file.mapping.PassThroughLineMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.PathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.retry.RetryPolicy;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.TimeoutRetryPolicy;
@@ -42,8 +42,6 @@ public class CheckUrlJobConfig {
   static final String OUTPUT_FILE_PATH = "./status.csv";
   private static final String INPUT_FILE_PARAM_EXP =
       "#{jobParameters['" + INPUT_FILE_PARAM + "']}"; // <1>
-
-  private final PlatformTransactionManager transactionManager = new ResourcelessTransactionManager(); // <2>
 
   private final JobRepository jobRepository;
 
@@ -69,7 +67,7 @@ public class CheckUrlJobConfig {
   @Bean
   @JobScope
   public LogResourceListener logResourceListener(
-      @Value(INPUT_FILE_PARAM_EXP) PathResource urlListFile) {
+      @Value(INPUT_FILE_PARAM_EXP) FileSystemResource urlListFile) {
     return new LogResourceListener(urlListFile);
   }
 
@@ -78,16 +76,19 @@ public class CheckUrlJobConfig {
     return new StepBuilder("logResourceMetaStep", jobRepository)
         .allowStartIfComplete(true)
         .startLimit(5)
-        .tasklet(logResourceMetaTaslket(null), transactionManager)
+        .tasklet(logResourceMetaTaslket(null))
         .build();
   }
 
   @Bean
   public Step checkUrlStep() {
-    var retryPolicy = new TimeoutRetryPolicy();
-    retryPolicy.setTimeout(1000L);
-    var backOffPolicy = new FixedBackOffPolicy();
-    backOffPolicy.setBackOffPeriod(200L);
+    var retryPolicy = RetryPolicy.builder()
+        .maxRetries(3)
+        .includes(HttpConnectTimeoutException.class)
+        .delay(Duration.ofMillis(100L))
+        .multiplier(2.0d)
+        .maxDelay(Duration.ofMillis(600L))
+        .build();
 
     var skipItemRecorder =
         new SkipItemRecorder<>(Path.of("skipped-url.txt"));
@@ -97,7 +98,7 @@ public class CheckUrlJobConfig {
 
     return new StepBuilder("checkUrlStep", jobRepository)
         .listener(new StepLogListener<>())
-        .<String, ResponseStatus>chunk(10, transactionManager)
+        .<String, ResponseStatus>chunk(10)
         .stream(skipItemRecorder)
         .stream(retryItemRecorder)
         .reader(urlFileReader(null))
@@ -106,11 +107,7 @@ public class CheckUrlJobConfig {
         .faultTolerant()
         .skip(IllegalArgumentException.class)
         .skipLimit(2)
-        .retry(HttpConnectTimeoutException.class)
-        .retryLimit(3)
         .retryPolicy(retryPolicy)
-        .noRollback(IllegalArgumentException.class)
-        .backOffPolicy(backOffPolicy)
         .listener(skipItemRecorder)
         .listener(new RetryLogListener())
         .listener(retryItemRecorder)
@@ -119,16 +116,15 @@ public class CheckUrlJobConfig {
 
   @Bean
   @JobScope
-  public Tasklet logResourceMetaTaslket(@Value(INPUT_FILE_PARAM_EXP) PathResource urlListFile) {
-    var tasklet = new CallableTaskletAdapter();
-    tasklet.setCallable(new LogResourceMetaTask(urlListFile));
-    return tasklet;
+  public Tasklet logResourceMetaTaslket(@Value(INPUT_FILE_PARAM_EXP) FileSystemResource urlListFile) {
+    var task = new LogResourceMetaTask(urlListFile);
+    return new CallableTaskletAdapter(task);
   }
 
   @Bean
   @JobScope
   public FlatFileItemReader<String> urlFileReader(
-      @Value(INPUT_FILE_PARAM_EXP) PathResource urlListFile) {
+      @Value(INPUT_FILE_PARAM_EXP) FileSystemResource urlListFile) {
     return new FlatFileItemReaderBuilder<String>()
         .name("urlFileReader")
         .resource(urlListFile)
@@ -142,7 +138,7 @@ public class CheckUrlJobConfig {
   }
 
   private FlatFileItemWriter<ResponseStatus> buildResponseStatusFileWriter() { // <6>
-    var outputFile = new PathResource("status.csv");
+    var outputFile = new FileSystemResource("status.csv");
     var writer = new FlatFileItemWriterBuilder<ResponseStatus>()
         .name("responseStatusFileWriter")
         .resource(outputFile)

@@ -7,8 +7,8 @@ import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.core.io.PathResource;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 public class LogResourceMetaTask implements Callable<RepeatStatus> {
@@ -16,7 +16,7 @@ public class LogResourceMetaTask implements Callable<RepeatStatus> {
   private final Logger logger = LoggerFactory.getLogger(LogResourceMetaTask.class);
   private final Resource resource;
 
-  public LogResourceMetaTask(PathResource resource) {
+  public LogResourceMetaTask(FileSystemResource resource) {
     this.resource = resource;
   }
 

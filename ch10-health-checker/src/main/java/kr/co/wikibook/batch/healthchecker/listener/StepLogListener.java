@@ -3,10 +3,10 @@ package kr.co.wikibook.batch.healthchecker.listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.listener.StepListenerSupport;
 import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.item.Chunk;
+import org.springframework.batch.infrastructure.item.Chunk;
 
 public class StepLogListener<T, S> extends StepListenerSupport<T, S> { // <1>
 
