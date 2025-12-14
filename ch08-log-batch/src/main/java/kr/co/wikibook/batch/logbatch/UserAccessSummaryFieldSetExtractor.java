@@ -1,6 +1,6 @@
 package kr.co.wikibook.batch.logbatch;
 
-import org.springframework.batch.item.file.transform.FieldExtractor;
+import org.springframework.batch.infrastructure.item.file.transform.FieldExtractor;
 
 public class UserAccessSummaryFieldSetExtractor implements FieldExtractor<UserAccessSummary> {
   public Object[] extract(UserAccessSummary summary) {

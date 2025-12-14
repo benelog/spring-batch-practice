@@ -1,7 +1,7 @@
 package kr.co.wikibook.batch.logbatch;
 
 import javax.sql.DataSource;
-import org.springframework.batch.item.database.ExtendedConnectionDataSourceProxy;
+import org.springframework.batch.infrastructure.item.database.ExtendedConnectionDataSourceProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;

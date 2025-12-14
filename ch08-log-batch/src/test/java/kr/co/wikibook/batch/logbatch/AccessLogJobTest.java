@@ -7,11 +7,11 @@ import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.test.JobLauncherTestUtils;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.job.parameters.JobParameters;
+import org.springframework.batch.core.step.StepExecution;
+import org.springframework.batch.test.JobOperatorTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,8 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBatchTest
 public class AccessLogJobTest {
   @Test
-  void launchJob(
-      @Autowired JobLauncherTestUtils testUtils,
+  void startJob(
+      @Autowired JobOperatorTestUtils testUtils,
       @Autowired @Qualifier(AccessLogJobConfig.JOB_NAME) Job job
   ) throws Exception {
     testUtils.setJob(job);
@@ -30,7 +30,7 @@ public class AccessLogJobTest {
         .addLocalDate("date", LocalDate.of(2025, 7, 28))
         .toJobParameters();
 
-    JobExecution execution = testUtils.launchJob(params);
+    JobExecution execution = testUtils.startJob(params);
 
     assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
     Collection<StepExecution> stepExecutions = execution.getStepExecutions();

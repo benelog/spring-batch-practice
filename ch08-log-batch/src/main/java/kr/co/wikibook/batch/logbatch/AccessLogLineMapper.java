@@ -3,8 +3,7 @@ package kr.co.wikibook.batch.logbatch;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.regex.Pattern;
-import org.springframework.batch.item.file.LineMapper;
+import org.springframework.batch.infrastructure.item.file.LineMapper;
 
 public class AccessLogLineMapper implements LineMapper<AccessLog> {
   private static final DateTimeFormatter FORMATTER =

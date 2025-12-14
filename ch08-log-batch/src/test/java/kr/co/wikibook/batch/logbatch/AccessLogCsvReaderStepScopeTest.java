@@ -6,11 +6,12 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.job.parameters.JobParameters;
+import org.springframework.batch.core.job.parameters.JobParametersBuilder;
+import org.springframework.batch.core.step.StepExecution;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,11 @@ class AccessLogCsvReaderStepScopeTest {
 
   @Test
   void read(@Autowired FlatFileItemReader<AccessLog> reader) throws Exception {
-    JobParameters params = new JobParametersBuilder()
+    JobParameters jobParameters = new JobParametersBuilder()
         .addLocalDate("date", LocalDate.of(2025, 7, 28))
         .toJobParameters();
-    StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(params);
+    JobExecution jobExecution = MetaDataInstanceFactory.createJobExecution("testJob", 0L, 0L, jobParameters);
+    StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(jobExecution, "testStep", 0L);
 
     StepScopeTestUtils.doInStepScope(stepExecution, () -> {
       reader.open(new ExecutionContext());

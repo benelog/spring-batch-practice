@@ -1,23 +1,26 @@
 package kr.co.wikibook.batch.logbatch;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.annotation.EnableJdbcJobRepository;
 import org.springframework.batch.core.repository.ExecutionContextSerializer;
-import org.springframework.batch.core.repository.dao.Jackson2ExecutionContextStringSerializer;
+import org.springframework.batch.core.repository.dao.JacksonExecutionContextStringSerializer;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.Isolation;
 
 @SpringBootApplication
-@EnableBatchProcessing(
-    dataSourceRef = "jobDataSource",
-    transactionManagerRef = "jobDbTransactionManager",
-    isolationLevelForCreate = "ISOLATION_REPEATABLE_READ",
-    executionContextSerializerRef = "jacksonSerializer"
+@EnableBatchProcessing
+@EnableJdbcJobRepository(
+    dataSourceRef = "batchDataSource",
+    transactionManagerRef = "batchTransactionManager",
+    executionContextSerializerRef ="jacksonSerializer",
+    isolationLevelForCreate = Isolation.REPEATABLE_READ
 )
 public class LogBatchApplication {
-  public static void main(String[] args) {
+  static void main(String[] args) {
     ApplicationContext context = SpringApplication.run(LogBatchApplication.class, args);
     int exitCode = SpringApplication.exit(context);
     System.exit(exitCode);
@@ -30,6 +33,6 @@ public class LogBatchApplication {
 
   @Bean
   public ExecutionContextSerializer jacksonSerializer() {
-    return new Jackson2ExecutionContextStringSerializer();
+    return new JacksonExecutionContextStringSerializer();
   }
 }

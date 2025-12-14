@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.item.database.JdbcPagingItemReader;
+import org.springframework.batch.infrastructure.item.database.JdbcPagingItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;

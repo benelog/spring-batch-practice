@@ -1,18 +1,18 @@
 package kr.co.wikibook.batch.logbatch;
 
 import javax.sql.DataSource;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.MultiResourceItemReader;
-import org.springframework.batch.item.file.MultiResourceItemWriter;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
-import org.springframework.batch.item.file.builder.MultiResourceItemReaderBuilder;
-import org.springframework.batch.item.file.builder.MultiResourceItemWriterBuilder;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.infrastructure.item.database.BeanPropertyItemSqlParameterSourceProvider;
+import org.springframework.batch.infrastructure.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.infrastructure.item.database.builder.JdbcBatchItemWriterBuilder;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
+import org.springframework.batch.infrastructure.item.file.MultiResourceItemReader;
+import org.springframework.batch.infrastructure.item.file.MultiResourceItemWriter;
+import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemWriterBuilder;
+import org.springframework.batch.infrastructure.item.file.builder.MultiResourceItemReaderBuilder;
+import org.springframework.batch.infrastructure.item.file.builder.MultiResourceItemWriterBuilder;
+import org.springframework.batch.infrastructure.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -23,7 +23,6 @@ public class AccessLogComponents {
     var resourcePatternResolver = new PathMatchingResourcePatternResolver();
     Resource[] resources = resourcePatternResolver.getResources(locationPattern);
     FlatFileItemReader<AccessLog> delegator = buildDelegatorToRead();
-    delegator.afterPropertiesSet();
 
     return new MultiResourceItemReaderBuilder<AccessLog>()
         .name("accessLogMultiFileReader")

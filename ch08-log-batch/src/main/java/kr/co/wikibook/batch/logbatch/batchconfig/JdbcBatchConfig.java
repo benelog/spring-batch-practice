@@ -2,11 +2,14 @@ package kr.co.wikibook.batch.logbatch.batchconfig;
 
 import javax.sql.DataSource;
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;
+import org.springframework.batch.core.configuration.support.JdbcDefaultBatchConfiguration;
 import org.springframework.batch.core.repository.ExecutionContextSerializer;
-import org.springframework.batch.core.repository.dao.Jackson2ExecutionContextStringSerializer;
+import org.springframework.batch.core.repository.dao.JacksonExecutionContextStringSerializer;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.batch.BatchDataSourceScriptDatabaseInitializer;
-import org.springframework.boot.autoconfigure.batch.BatchProperties;
+
+import org.springframework.boot.batch.jdbc.autoconfigure.BatchDataSourceScriptDatabaseInitializer;
+import org.springframework.boot.batch.jdbc.autoconfigure.BatchJdbcProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.init.DataSourceScriptDatabaseInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +17,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Isolation;
 
 @Configuration
-public class JdbcBatchConfig extends DefaultBatchConfiguration {
-  private final BatchProperties properties;
+@EnableConfigurationProperties(BatchJdbcProperties.class)
+public class JdbcBatchConfig extends JdbcDefaultBatchConfiguration{
+  private final BatchJdbcProperties properties;
   private final PlatformTransactionManager transactionManager;
 
   private final DataSource dataSource;
 
+
   public JdbcBatchConfig(
-      BatchProperties properties,
+      BatchJdbcProperties properties,
       @Qualifier("jobDbTransactionManager") PlatformTransactionManager transactionManager,
       @Qualifier("jobDataSource") DataSource dataSource) {
     this.properties = properties;
@@ -41,23 +46,23 @@ public class JdbcBatchConfig extends DefaultBatchConfiguration {
 
   @Override
   protected String getTablePrefix() {
-    String tablePrefix = this.properties.getJdbc().getTablePrefix();
+    String tablePrefix = this.properties.getTablePrefix();
     return (tablePrefix != null) ? tablePrefix : super.getTablePrefix();
   }
 
   @Override
   protected Isolation getIsolationLevelForCreate() {
-    Isolation isolation = this.properties.getJdbc().getIsolationLevelForCreate();
+    Isolation isolation = this.properties.getIsolationLevelForCreate();
     return (isolation != null) ? isolation : super.getIsolationLevelForCreate();
   }
 
   @Override
   protected ExecutionContextSerializer getExecutionContextSerializer() {
-    return new Jackson2ExecutionContextStringSerializer();
+    return new JacksonExecutionContextStringSerializer();
   }
 
   @Bean
   public DataSourceScriptDatabaseInitializer metaDbInit() {
-    return new BatchDataSourceScriptDatabaseInitializer(dataSource, properties.getJdbc());
+    return new BatchDataSourceScriptDatabaseInitializer(dataSource, properties);
   }
 }

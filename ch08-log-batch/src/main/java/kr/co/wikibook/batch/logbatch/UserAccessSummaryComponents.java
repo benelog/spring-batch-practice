@@ -6,13 +6,13 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import javax.sql.DataSource;
-import org.springframework.batch.item.database.JdbcCursorItemReader;
-import org.springframework.batch.item.database.JdbcPagingItemReader;
-import org.springframework.batch.item.database.Order;
-import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
-import org.springframework.batch.item.database.builder.JdbcPagingItemReaderBuilder;
-import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
+import org.springframework.batch.infrastructure.item.database.JdbcCursorItemReader;
+import org.springframework.batch.infrastructure.item.database.JdbcPagingItemReader;
+import org.springframework.batch.infrastructure.item.database.Order;
+import org.springframework.batch.infrastructure.item.database.builder.JdbcCursorItemReaderBuilder;
+import org.springframework.batch.infrastructure.item.database.builder.JdbcPagingItemReaderBuilder;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
+import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.core.io.WritableResource;
 
 public class UserAccessSummaryComponents {
@@ -34,7 +34,7 @@ public class UserAccessSummaryComponents {
     Instant from = date.atStartOfDay().toInstant(ZoneOffset.UTC);
     Instant to = from.plus(1, ChronoUnit.DAYS);
 
-    var reader = new JdbcCursorItemReaderBuilder<UserAccessSummary>()
+    return new JdbcCursorItemReaderBuilder<UserAccessSummary>()
         .name("userAccessSummaryDbReader")
         .dataSource(dataSource)
         .useSharedExtendedConnection(sharedConnection)
@@ -42,7 +42,6 @@ public class UserAccessSummaryComponents {
         .queryArguments(from, to)
         .dataRowMapper(UserAccessSummary.class)
         .build();
-    return Configs.afterPropertiesSet(reader);
   }
 
   public static JdbcPagingItemReader<UserAccessSummary> buildDbPagingReader(
@@ -52,18 +51,21 @@ public class UserAccessSummaryComponents {
     Instant to = from.plus(1, ChronoUnit.DAYS);
     Map<String, Object> queryParams = Map.of("from", from, "to", to);
 
-    var reader = new JdbcPagingItemReaderBuilder<UserAccessSummary>()
-        .name("accessLogDbReader")
-        .dataSource(dataSource)
-        .selectClause("username, COUNT(1) AS access_count")
-        .fromClause("access_log")
-        .whereClause("access_date_time BETWEEN :from AND :to")
-        .groupClause("username")
-        .sortKeys(Map.of("username", Order.ASCENDING))
-        .parameterValues(queryParams)
-        .pageSize(pageSize)
-        .dataRowMapper(UserAccessSummary.class) // <1>
-        .build();
-    return Configs.afterPropertiesSet(reader);
+    try {
+      return new JdbcPagingItemReaderBuilder<UserAccessSummary>()
+          .name("accessLogDbReader")
+          .dataSource(dataSource)
+          .selectClause("username, COUNT(1) AS access_count")
+          .fromClause("access_log")
+          .whereClause("access_date_time BETWEEN :from AND :to")
+          .groupClause("username")
+          .sortKeys(Map.of("username", Order.ASCENDING))
+          .parameterValues(queryParams)
+          .pageSize(pageSize)
+          .dataRowMapper(UserAccessSummary.class) // <1>
+          .build();
+    } catch (Exception ex) {
+      throw new RuntimeException(ex);
+    }
   }
 }
