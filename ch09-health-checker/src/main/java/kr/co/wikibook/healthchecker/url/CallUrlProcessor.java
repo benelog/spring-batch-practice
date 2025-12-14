@@ -9,7 +9,7 @@ import java.time.Duration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 
 public class CallUrlProcessor implements ItemProcessor<String, ResponseStatus> {
   private final Logger logger = LoggerFactory.getLogger(CallUrlProcessor.class);
