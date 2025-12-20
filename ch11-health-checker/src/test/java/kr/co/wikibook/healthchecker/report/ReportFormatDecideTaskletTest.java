@@ -8,24 +8,25 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.job.parameters.JobParametersBuilder;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
+import org.springframework.batch.core.step.StepContribution;
+import org.springframework.batch.core.step.StepExecution;
+import org.springframework.batch.test.MetaDataInstanceFactory;
 
 class ReportFormatDecideTaskletTest {
   @ParameterizedTest
   @MethodSource("provideDateAndReportFormat")
   void execute(LocalDate reportDate, ReportFormat format) {
     // given
-    var jobParameter = new JobParametersBuilder()
+    var jobParameters = new JobParametersBuilder()
         .addLocalDate("reportDate", reportDate)
         .toJobParameters();
-    var stepExecution = new StepExecution("formatDecideStep", new JobExecution(1L, jobParameter));
-    var stepContribution = new StepContribution(stepExecution);
+    var stepExecution = MetaDataInstanceFactory.createStepExecution(jobParameters);
     var chunkContext = new ChunkContext(new StepContext(stepExecution));
+    var stepContribution = new StepContribution(stepExecution);
     ReportFormatDecideTasklet tasklet = new ReportFormatDecideTasklet();
 
     // when

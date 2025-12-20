@@ -2,40 +2,35 @@ package kr.co.wikibook.healthchecker.backup;
 
 import java.time.Clock;
 import java.util.concurrent.Callable;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
-import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.transaction.PlatformTransactionManager;
 
+@ConditionalOnProperty(name = "spring.batch.job.name", havingValue = "backupDailyJob")
 @Configuration
 @Import(BackupRoute.class)
 public class BackupDailyJobConfig {
 
   private final JobRepository jobRepository;
-  private final PlatformTransactionManager transactionManager =
-      new ResourcelessTransactionManager();
 
   public BackupDailyJobConfig(JobRepository jobRepository) {
     this.jobRepository = jobRepository;
   }
-
 
   @Bean
   public Job backupDailyJob() {
     BackupFlowDecider decider = new BackupFlowDecider();
 
     return new JobBuilder("backupDailyJob", jobRepository)
-        .incrementer(new RunIdIncrementer())
         .start(checkDiskSpaceStep(null))
         .next(decider)
         .on("COMPLETED")
@@ -58,7 +53,7 @@ public class BackupDailyJobConfig {
   public Step checkDiskSpaceStep(BackupRoute route) {
     var tasklet = new CheckDiskSpaceTasklet(route);
     return new StepBuilder("checkDiskSpaceStep", jobRepository)
-        .tasklet(tasklet, transactionManager)
+        .tasklet(tasklet)
         .build();
   }
 
@@ -82,7 +77,7 @@ public class BackupDailyJobConfig {
   private Step buildStep(String stepName, Callable<RepeatStatus> task) {
     var tasklet = new CallableTaskletAdapter(task);
     return new StepBuilder(stepName, jobRepository)
-        .tasklet(tasklet, transactionManager)
+        .tasklet(tasklet)
         .build();
   }
 }

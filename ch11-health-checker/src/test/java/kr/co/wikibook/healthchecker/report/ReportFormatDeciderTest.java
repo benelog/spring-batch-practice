@@ -7,21 +7,21 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.job.parameters.JobParametersBuilder;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
+import org.springframework.batch.test.MetaDataInstanceFactory;
 
 class ReportFormatDeciderTest {
   @ParameterizedTest
   @MethodSource("provideDateAndReportFormat")
   void decide(LocalDate reportDate, ReportFormat format) {
-    var jobParameter = new JobParametersBuilder()
+    var jobParameters = new JobParametersBuilder()
         .addLocalDate("reportDate", reportDate)
         .toJobParameters();
-    var jobExecution = new JobExecution(1L, jobParameter);
-    var stepExecution = new StepExecution("formatDecideStep", jobExecution);
-
+    JobExecution jobExecution = MetaDataInstanceFactory.createJobExecution("testJob", 0L, 0L, jobParameters);
+    StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(jobExecution, "testStep", 0L);
     FlowExecutionStatus executionStatus = new ReportFormatDecider().decide(jobExecution, stepExecution);
 
     assertThat(executionStatus.getName()).isEqualTo(format.name());

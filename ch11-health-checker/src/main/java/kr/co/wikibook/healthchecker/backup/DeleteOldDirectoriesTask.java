@@ -8,7 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 import org.springframework.util.FileSystemUtils;
 
 public class DeleteOldDirectoriesTask implements Callable<RepeatStatus> {
