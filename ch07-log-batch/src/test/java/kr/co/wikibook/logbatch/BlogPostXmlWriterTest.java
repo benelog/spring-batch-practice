@@ -10,7 +10,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.xml.StaxEventItemWriter;
-import org.springframework.core.io.PathResource;
+import org.springframework.core.io.FileSystemResource;
 
 class BlogPostXmlWriterTest {
   @Test
@@ -19,7 +19,7 @@ class BlogPostXmlWriterTest {
     Path outputPath = tempPath.resolve("blogPosts.xml");
     Thread.currentThread().setContextClassLoader(BlogPost.class.getClassLoader());
 
-    var resource = new PathResource(outputPath);
+    var resource = new FileSystemResource(outputPath);
     var post = new BlogPost(
         "백엔드 개발자를 꿈꾸는 학생개발자에게",
         "https://d2.naver.com/news/3435170",

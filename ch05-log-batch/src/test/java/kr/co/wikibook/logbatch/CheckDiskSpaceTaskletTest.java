@@ -23,8 +23,7 @@ class CheckDiskSpaceTaskletTest {
         .addString("directory", "/")
         .addLong("minUsablePercentage", 100L)
         .toJobParameters();
-    JobExecution jobExecution = MetaDataInstanceFactory.createJobExecution("testJob", 0L, 0L, jobParameters);
-    var stepExecution = new StepExecution(0L, "test", jobExecution);
+    StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(jobParameters);
     var stepContribution = new StepContribution(stepExecution);
     var chunkContext = new ChunkContext(new StepContext(stepExecution));
     var tasklet = new CheckDiskSpaceTasklet();

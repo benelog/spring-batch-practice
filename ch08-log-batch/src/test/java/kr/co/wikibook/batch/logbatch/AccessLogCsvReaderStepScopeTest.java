@@ -27,8 +27,7 @@ class AccessLogCsvReaderStepScopeTest {
     JobParameters jobParameters = new JobParametersBuilder()
         .addLocalDate("date", LocalDate.of(2025, 7, 28))
         .toJobParameters();
-    JobExecution jobExecution = MetaDataInstanceFactory.createJobExecution("testJob", 0L, 0L, jobParameters);
-    StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(jobExecution, "testStep", 0L);
+    StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(jobParameters);
 
     StepScopeTestUtils.doInStepScope(stepExecution, () -> {
       reader.open(new ExecutionContext());

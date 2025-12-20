@@ -3,9 +3,8 @@ package kr.co.wikibook.batch.healthchecker.listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.listener.StepListenerSupport;
-import org.springframework.batch.core.scope.context.ChunkContext;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.infrastructure.item.Chunk;
 
 public class StepLogListener<T, S> extends StepListenerSupport<T, S> { // <1>
@@ -18,8 +17,8 @@ public class StepLogListener<T, S> extends StepListenerSupport<T, S> { // <1>
   }
 
   @Override
-  public void beforeChunk(ChunkContext context) {
-    logger.info("beforeChunk: {}", context);
+  public void beforeChunk(Chunk chunk) {
+    logger.info("beforeChunk: {}", chunk);
   }
 
   @Override
@@ -43,17 +42,17 @@ public class StepLogListener<T, S> extends StepListenerSupport<T, S> { // <1>
   }
 
   @Override
-  public void beforeWrite(Chunk<? extends S> items) {
-    logger.info("beforeWrite. items={}", items);
+  public void beforeWrite(Chunk<? extends S> chunk) {
+    logger.info("beforeWrite. chunk={}", chunk);
   }
 
   @Override
-  public void afterWrite(Chunk<? extends S> items) {
-    logger.info("afterWrite. items={}", items);
+  public void afterWrite(Chunk<? extends S> chunk) {
+    logger.info("afterWrite. chunk={}", chunk);
   }
 
   @Override
-  public void afterChunk(ChunkContext context) {
+  public void afterChunk(Chunk chunk) {
     logger.info("afterChunk");
   }
 

@@ -10,14 +10,14 @@ import org.junit.jupiter.api.io.TempDir;
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
-import org.springframework.core.io.PathResource;
+import org.springframework.core.io.FileSystemResource;
 
 class UserAccessSummaryCsvWriterTest {
   @Test
   void write(@TempDir Path tempPath) throws Exception {
     // given
     Path outputPath = tempPath.resolve("user-access-summary.csv");
-    var resource = new PathResource(outputPath);
+    var resource = new FileSystemResource(outputPath);
     FlatFileItemWriter<UserAccessSummary> writer = UserAccessSummaryComponents.buildCsvWriter(resource);
     var items = List.of(
         new UserAccessSummary("benelog", 32),

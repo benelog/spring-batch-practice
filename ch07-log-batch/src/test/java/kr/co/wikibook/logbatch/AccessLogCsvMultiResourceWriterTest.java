@@ -9,14 +9,14 @@ import org.junit.jupiter.api.io.TempDir;
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.file.MultiResourceItemWriter;
-import org.springframework.core.io.PathResource;
+import org.springframework.core.io.FileSystemResource;
 
 public class AccessLogCsvMultiResourceWriterTest {
   @Test
   void writeMulti(@TempDir Path tempPath) throws Exception {
     // given
     Path outputPath = tempPath.resolve("access-log.txt");
-    var resource = new PathResource(outputPath);
+    var resource = new FileSystemResource(outputPath);
     MultiResourceItemWriter<AccessLog> writer = AccessLogComponents.buildMultiResourceItemWriter(resource, 1);
     var item = new AccessLog(Instant.parse("2025-07-28T11:14:16Z"), "127.0.0.1", "benelog");
 
