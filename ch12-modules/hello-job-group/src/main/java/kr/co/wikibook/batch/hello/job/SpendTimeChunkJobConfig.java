@@ -7,16 +7,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.Job;
 import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.core.step.tasklet.TaskletStep;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.support.ListItemReader;
-import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
+import org.springframework.batch.infrastructure.item.ItemReader;
+import org.springframework.batch.infrastructure.item.ItemWriter;
+import org.springframework.batch.infrastructure.item.support.ListItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,9 +31,9 @@ public class SpendTimeChunkJobConfig {
   }
 
   @Bean
-  public TaskletStep sleepMilliSecondsStep(JobRepository jobRepository) {
+  public Step sleepMilliSecondsStep(JobRepository jobRepository) {
     return new StepBuilder("sleepMilliSecondsStep", jobRepository)
-        .<Integer, Integer>chunk(10, new ResourcelessTransactionManager())
+        .<Integer, Integer>chunk(10)
         .reader(millSecondsReader())
         .writer(milliSecondsSleeper())
         .build();

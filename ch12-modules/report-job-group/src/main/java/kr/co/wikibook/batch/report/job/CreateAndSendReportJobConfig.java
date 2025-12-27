@@ -1,10 +1,10 @@
 package kr.co.wikibook.batch.report.job;
 
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.TaskExecutorJobLauncher;
+import org.springframework.batch.core.launch.support.TaskExecutorJobOperator;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.job.DefaultJobParametersExtractor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,13 +20,13 @@ public class CreateAndSendReportJobConfig {
       @Qualifier("createReportJob") Job createReportJob,
       @Qualifier("sendReportJob") Job sendReportJob
   ) {
-    var launcher = new TaskExecutorJobLauncher();
-    launcher.setJobRepository(jobRepository);
-    launcher.setTaskExecutor(new SimpleAsyncTaskExecutor());
+    var operator = new TaskExecutorJobOperator();
+    operator.setJobRepository(jobRepository);
+    operator.setTaskExecutor(new SimpleAsyncTaskExecutor());
 
     Step createReportStep = new StepBuilder("createReportStep", jobRepository)
         .job(createReportJob)
-        .launcher(launcher)
+        .operator(operator)
         .build();
 
     var extractor = new DefaultJobParametersExtractor();

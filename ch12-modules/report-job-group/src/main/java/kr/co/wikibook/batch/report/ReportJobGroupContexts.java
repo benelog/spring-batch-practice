@@ -5,27 +5,17 @@ import kr.co.wikibook.batch.report.job.CreateReportJobConfig;
 import kr.co.wikibook.batch.report.job.DeleteReportJobConfig;
 import kr.co.wikibook.batch.report.job.SendReportJobConfig;
 import kr.co.wikibook.batch.report.job.UserRankingJobConfig;
-import org.springframework.batch.core.configuration.support.ApplicationContextFactory;
-import org.springframework.batch.core.configuration.support.GenericApplicationContextFactory;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
+@Configuration
+@Import({
+    UserRankingJobConfig.class,
+    DeleteReportJobConfig.class,
+    CreateReportJobConfig.class,
+    SendReportJobConfig.class,
+    CreateAndSendReportJobConfig.class
+})
 public class ReportJobGroupContexts {
-  @Bean
-  public ApplicationContextFactory userRankingJobContext() {
-    return new GenericApplicationContextFactory(UserRankingJobConfig.class);
-  }
 
-  @Bean
-  public ApplicationContextFactory deleteReportJobJobContext() {
-    return new GenericApplicationContextFactory(DeleteReportJobConfig.class);
-  }
-
-  @Bean
-  public ApplicationContextFactory createAndSendJobReportContext() {
-    return new GenericApplicationContextFactory(
-        CreateReportJobConfig.class,
-        SendReportJobConfig.class,
-        CreateAndSendReportJobConfig.class
-    );
-  }
 }

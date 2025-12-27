@@ -1,39 +1,30 @@
 package kr.co.wikibook.batch.support;
 
 import java.util.Properties;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobExecutionException;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.configuration.JobLocator;
+import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.converter.DefaultJobParametersConverter;
 import org.springframework.batch.core.converter.JobParametersConverter;
-import org.springframework.batch.core.explore.JobExplorer;
-import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.job.JobExecutionException;
+import org.springframework.batch.core.job.parameters.JobParameters;
+import org.springframework.batch.core.launch.JobOperator;
 
 public class JobService {
-  private final JobLocator locator;
-  private final JobLauncher launcher;
-  private final JobExplorer explorer;
+  private final JobRegistry registry;
+  private final JobOperator operator;
   private JobParametersConverter converter = new DefaultJobParametersConverter();
 
-  public JobService(JobLocator locator, JobLauncher jobLauncher, JobExplorer jobExplorer) {
-    this.locator = locator;
-    this.launcher = jobLauncher;
-    this.explorer = jobExplorer;
+  public JobService(JobRegistry registry, JobOperator operator) {
+    this.registry = registry;
+    this.operator = operator;
   }
 
   public long start(String jobName, Properties parameters) {
     try {
-      Job job = locator.getJob(jobName);
+      Job job = registry.getJob(jobName);
       JobParameters jobParameters = converter.getJobParameters(parameters);
-      if (job.getJobParametersIncrementer() != null) {
-        jobParameters = new JobParametersBuilder(jobParameters, explorer)
-            .getNextJobParameters(job)
-            .toJobParameters();
-      }
-      JobExecution execution = launcher.run(job, jobParameters);
+      JobExecution execution = operator.start(job, jobParameters);
       return execution.getId();
     } catch (JobExecutionException ex) {
       throw new IllegalArgumentException(ex);

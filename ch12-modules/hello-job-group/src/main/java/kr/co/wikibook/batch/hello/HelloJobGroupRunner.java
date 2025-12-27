@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 @Import({BatchConfig.class, HelloJobGroupContexts.class})
 @PropertySource("classpath:/job-db.properties")
 public class HelloJobGroupRunner {
-  public static void main(String[] args) {
+  static void main(String[] args) {
     String jobName = System.getProperty("jobName");
     Properties params = StringUtils.splitArrayElementsIntoProperties(args, "=");
     ApplicationContext context = new AnnotationConfigApplicationContext(HelloJobGroupRunner.class);

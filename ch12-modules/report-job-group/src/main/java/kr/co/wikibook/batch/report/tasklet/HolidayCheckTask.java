@@ -3,7 +3,7 @@ package kr.co.wikibook.batch.report.tasklet;
 import java.time.LocalDate;
 import java.util.concurrent.Callable;
 import kr.co.wikibook.batch.report.util.Dates;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 
 public class HolidayCheckTask implements Callable<RepeatStatus> {
 

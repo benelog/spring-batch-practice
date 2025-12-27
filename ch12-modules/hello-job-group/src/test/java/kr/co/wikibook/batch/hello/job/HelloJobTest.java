@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import kr.co.wikibook.batch.hello.HelloJobGroupRunner;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.configuration.JobLocator;
-import org.springframework.batch.test.JobLauncherTestUtils;
+import org.springframework.batch.core.configuration.JobRegistry;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.test.JobOperatorTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -18,12 +18,12 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 class HelloJobTest {
   @Test
   void launchJob(
-      @Autowired JobLocator jobLocator,
-      @Autowired JobLauncherTestUtils testUtils
+      @Autowired JobRegistry registry,
+      @Autowired JobOperatorTestUtils testUtils
   ) throws Exception {
-    Job job = jobLocator.getJob("helloJob");
+    Job job = registry.getJob("helloJob");
     testUtils.setJob(job);
-    JobExecution execution = testUtils.launchJob();
+    JobExecution execution = testUtils.startJob();
     assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
   }
 }

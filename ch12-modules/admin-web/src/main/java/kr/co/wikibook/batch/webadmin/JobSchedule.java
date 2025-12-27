@@ -16,7 +16,6 @@ public class JobSchedule {
 
   @Scheduled(cron = "0 0,10 0 * * 0", zone = "Asia/Seoul")
   public void startHelloJob() {
-    System.out.println("wju1!!!");
     var jobParameters = new Properties();
     long timestamp = Instant.now().toEpochMilli();
     jobParameters.put("timestamp", timestamp + ",java.lang.Long,true");
@@ -25,7 +24,6 @@ public class JobSchedule {
 
   @Scheduled(cron = "0 * * * * ?", zone = "Asia/Seoul")
   public void startSpendTimeChunkJob() {
-    System.out.println("dju1!!111!");
     var jobParameters = new Properties();
     long timestamp = Instant.now().toEpochMilli();
     jobParameters.put("timestamp", timestamp + ",java.lang.Long,true");

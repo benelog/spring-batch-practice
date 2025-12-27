@@ -5,8 +5,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 group = 'com.wikibook'
@@ -23,6 +23,7 @@ dependencyManagement {
 }
 
 dependencies {
+    implementation 'org.springframework.batch:spring-batch-core'
     testImplementation 'org.springframework.batch:spring-batch-test'
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.assertj:assertj-core'

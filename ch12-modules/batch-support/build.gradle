@@ -5,7 +5,6 @@ plugins {
 dependencies {
     api 'org.slf4j:slf4j-api'
     implementation 'ch.qos.logback:logback-classic'
-    api 'org.springframework.batch:spring-batch-core'
     implementation 'com.zaxxer:HikariCP'
     runtimeOnly 'com.h2database:h2'
 }
