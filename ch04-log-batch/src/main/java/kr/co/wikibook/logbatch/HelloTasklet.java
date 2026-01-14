@@ -11,10 +11,11 @@ public class HelloTasklet implements Tasklet {
   private final Logger log = LoggerFactory.getLogger(HelloTasklet.class);
 
   @Override
-  public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
+  public RepeatStatus execute(StepContribution contribution, ChunkContext context) {
     contribution.incrementReadCount();
     contribution.incrementWriteCount(1);
-    log.info("Hello Batch : {}", chunkContext);
+    log.info("contribution : {}", contribution);
+    log.info("context : {}", context);
     return RepeatStatus.FINISHED;
   }
 }

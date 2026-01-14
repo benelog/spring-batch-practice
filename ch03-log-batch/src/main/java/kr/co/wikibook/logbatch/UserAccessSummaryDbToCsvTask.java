@@ -28,7 +28,7 @@ public class UserAccessSummaryDbToCsvTask  implements CommandLineRunner {
     int totalItems = 0;
     this.reader.open();
     this.writer.open();
-    List<UserAccessSummary> chunk = new LinkedList<>();
+    var chunk = new LinkedList<UserAccessSummary>();
 
     while (true) {
       UserAccessSummary item = this.reader.read();

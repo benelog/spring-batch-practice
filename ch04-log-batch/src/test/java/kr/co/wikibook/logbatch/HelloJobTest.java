@@ -9,18 +9,15 @@ import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.test.JobOperatorTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
+@SpringBootTest("spring.batch.job.enabled=false")
 @SpringBatchTest
-@ActiveProfiles("test")
 class HelloJobTest {
   @Test
   void startJob(
       @Autowired JobOperatorTestUtils testUtils,
-      @Autowired @Qualifier("helloJob") Job helloJob) throws Exception {
+      @Autowired Job helloJob) throws Exception {
     testUtils.setJob(helloJob);
     JobExecution execution = testUtils.startJob();
     assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);

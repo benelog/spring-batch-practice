@@ -22,7 +22,7 @@ public class AccessLogCsvToDbTask implements CommandLineRunner {
   public void run(String... args) throws Exception {
     int totalItems = 0;
     this.reader.open();
-    List<AccessLog> chunk = new LinkedList<>();
+    var chunk = new LinkedList<AccessLog>();
 
     while (true) {
       AccessLog item = this.reader.read();

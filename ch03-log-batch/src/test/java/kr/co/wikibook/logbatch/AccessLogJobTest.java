@@ -24,7 +24,7 @@ public class AccessLogJobTest {
   }
 
   @Test
-  void launchJob(@Autowired DataSource dataSource) {
+  void startJob(@Autowired DataSource dataSource) {
     int count = JdbcTestUtils.countRowsInTable(new JdbcTemplate(dataSource), "access_log");
     assertThat(count).isGreaterThan(0);
     assertThat(output.exists()).isTrue();

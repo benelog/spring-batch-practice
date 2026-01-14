@@ -21,7 +21,7 @@ class Hello2JobTest {
   @Test
   void startJob(
       @Autowired JobOperatorTestUtils testUtils,
-      @Autowired @Qualifier("hello2Job") Job hello2Job
+      @Autowired Job hello2Job
   ) throws Exception {
     testUtils.setJob(hello2Job);
     JobExecution execution = testUtils.startJob();
