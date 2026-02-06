@@ -1,7 +1,11 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '4.0.0'
+    id 'org.springframework.boot' version '4.0.2'
     id 'io.spring.dependency-management' version '1.1.7'
+}
+
+bootJar {
+    enabled = false
 }
 
 group = 'kr.co.wikibook'
@@ -20,7 +24,6 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic'
     implementation 'org.springframework:spring-core'
     implementation 'org.springframework:spring-context'
-    implementation 'org.springframework:spring-aspects'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

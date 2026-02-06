@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.resilience.annotation.EnableResilientMethods;
 
 @Configuration
-@EnableResilientMethods(proxyTargetClass = true)
+@EnableResilientMethods
 public class TestServiceConfig {
 	@Bean
-	public UnstableNotificationService fail3Service() {
+	public RetryableNotificationService fail3Service() {
 		return new UnstableNotificationService(3);
 	}
 }

@@ -7,7 +7,6 @@ import org.springframework.core.retry.RetryPolicy;
 import org.springframework.core.retry.RetryTemplate;
 import org.springframework.core.retry.Retryable;
 
-
 public class NotificationRetryDecorator implements NotificationService {
   private final NotificationService target;
   private final RetryOperations retryOperations;
@@ -20,7 +19,7 @@ public class NotificationRetryDecorator implements NotificationService {
         .maxRetries(maxRetries)
         .delay(Duration.ofMillis(100L))
         .multiplier(2.0d)
-        .maxDelay(Duration.ofMillis(600L))
+        .maxDelay(Duration.ofSeconds(5L))
         .build();
 
     var retryTemplate = new RetryTemplate(retryPolicy);

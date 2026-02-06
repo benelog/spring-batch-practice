@@ -32,7 +32,7 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-tasks.register('h2', JavaExec) {
+task h2JobDb(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'org.h2.tools.Console'
 

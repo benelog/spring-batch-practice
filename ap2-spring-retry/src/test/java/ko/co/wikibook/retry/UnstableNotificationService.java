@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.resilience.annotation.Retryable;
 
-public class UnstableNotificationService implements NotificationService {
+public class UnstableNotificationService implements RetryableNotificationService {
 
   private final Logger logger = LoggerFactory.getLogger(UnstableNotificationService.class);
   private final int failures;
@@ -16,7 +16,7 @@ public class UnstableNotificationService implements NotificationService {
 
   @Retryable(
       includes = RuntimeException.class,
-      maxAttempts = 4,
+      maxRetries = 4,
       delay = 200L, multiplier = 2d, maxDelay = 600L
   )
   @Override
@@ -28,6 +28,7 @@ public class UnstableNotificationService implements NotificationService {
     logger.info("성공 : {}, {}", this.tryCount, message);
   }
 
+  @Override
   public int getTryCount() {
     return this.tryCount;
   }

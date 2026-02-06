@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
 import java.util.Collection;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.JobParameters;
@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBatchTest
 public class AccessLogJobTest {
   @Test
-  void startJob(
+  void launchJob(
       @Autowired JobOperatorTestUtils testUtils,
       @Autowired @Qualifier(AccessLogJobConfig.JOB_NAME) Job job
   ) throws Exception {
@@ -31,7 +31,7 @@ public class AccessLogJobTest {
 
     JobExecution execution = testUtils.startJob(params);
 
-    assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
+    assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
     Collection<StepExecution> stepExecutions = execution.getStepExecutions();
     StepExecution firstStep = stepExecutions.iterator().next();
     assertThat(firstStep.getWriteCount()).isEqualTo(3);

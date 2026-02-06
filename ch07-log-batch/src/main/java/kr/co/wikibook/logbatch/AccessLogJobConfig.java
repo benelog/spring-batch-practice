@@ -11,10 +11,6 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.ItemStreamReader;
-import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
-import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
-import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.infrastructure.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,31 +56,26 @@ public class AccessLogJobConfig {
   }
 
   @Bean
-  @StepScope
-  public FlatFileItemReader<AccessLog> accessLogCsvReader(
-      @Value("#{jobParameters['date']}") LocalDate date
-  ) {
-    var resource = new FileSystemResource(basePath.resolve(date + ".csv"));
-    return new FlatFileItemReaderBuilder<AccessLog>()
-        .name("accessLogCsvReader")
-        .resource(resource)
-        .lineTokenizer(new DelimitedLineTokenizer())
-        .fieldSetMapper(new AccessLogFieldSetMapper())
-        .build();
-  }
-
-  @Bean
   @JobScope
   public Step dbToCsvStep(
       @Value("#{jobParameters['date']}") LocalDate date
   ) {
     var resource = new FileSystemResource(basePath.resolve(date + "_summary.csv"));
     var reader = new UserAccessSummaryDbReader(this.dataSource, date);
-    FlatFileItemWriter<UserAccessSummary> writer = UserAccessSummaryComponents.buildCsvWriter(resource);
+    var writer = new UserAccessSummaryCsvWriter(resource);
     return new StepBuilder("userAccessSummaryDbToCsv", jobRepository)
         .<UserAccessSummary, UserAccessSummary>chunk(300)
         .reader(reader)
         .writer(writer)
         .build();
+  }
+
+  @Bean
+  @StepScope
+  public AccessLogCsvReader accessLogCsvReader(
+      @Value("#{jobParameters['date']}") LocalDate date
+  ) {
+    var resource = new FileSystemResource(basePath.resolve(date + ".csv"));
+    return new AccessLogCsvReader(resource);
   }
 }

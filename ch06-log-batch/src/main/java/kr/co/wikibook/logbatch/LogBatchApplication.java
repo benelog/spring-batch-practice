@@ -2,9 +2,9 @@ package kr.co.wikibook.logbatch;
 
 import org.springframework.batch.core.repository.ExecutionContextSerializer;
 import org.springframework.batch.core.repository.dao.JacksonExecutionContextStringSerializer;
-import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.batch.autoconfigure.BatchConversionServiceCustomizer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
@@ -17,12 +17,14 @@ public class LogBatchApplication {
   }
 
   @Bean
-  public ExitCodeGenerator codeGenerator() {
-    return () -> 3;
+  public ExecutionContextSerializer executionContextSerializer() {
+    return new JacksonExecutionContextStringSerializer();
   }
 
   @Bean
-  public ExecutionContextSerializer executionContextSerializer() {
-    return new JacksonExecutionContextStringSerializer();
+  public BatchConversionServiceCustomizer conversionServiceCustomizer() {
+    return configurableConversionService -> {
+      configurableConversionService.addConverter(new ColorToStringConverter());
+    };
   }
 }
