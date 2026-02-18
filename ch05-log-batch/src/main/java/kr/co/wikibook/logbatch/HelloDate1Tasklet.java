@@ -2,6 +2,7 @@ package kr.co.wikibook.logbatch;
 
 import java.time.LocalDate;
 import java.util.Map;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -13,7 +14,7 @@ public class HelloDate1Tasklet implements Tasklet {
   private final Logger log = LoggerFactory.getLogger(HelloDate1Tasklet.class);
 
   @Override
-  public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
+  public RepeatStatus execute(@NonNull StepContribution contribution, ChunkContext chunkContext) {
     Map<String, Object> jobParameters = chunkContext.getStepContext().getJobParameters();
     LocalDate helloDate = (LocalDate) jobParameters.get("helloDate");
     log.info("Hello {} ", helloDate);

@@ -1,4 +1,4 @@
-package ko.co.wikibook.retry;
+package kr.co.wikibook.retry;
 
 interface NotificationService {
 

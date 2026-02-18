@@ -3,7 +3,7 @@ package kr.co.wikibook.logbatch;
 import java.awt.Color;
 import org.springframework.core.convert.converter.Converter;
 
-public class ColorToStringConverter implements Converter<Color, String> {
+public class  ColorToStringConverter implements Converter<Color, String> {
   @Override
   public String convert(Color color) {
     return String.format(

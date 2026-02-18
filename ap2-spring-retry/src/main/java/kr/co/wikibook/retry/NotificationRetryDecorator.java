@@ -1,4 +1,4 @@
-package ko.co.wikibook.retry;
+package kr.co.wikibook.retry;
 
 import java.time.Duration;
 import org.springframework.core.retry.RetryException;

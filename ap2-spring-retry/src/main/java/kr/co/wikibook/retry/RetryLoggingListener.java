@@ -1,5 +1,6 @@
-package ko.co.wikibook.retry;
+package kr.co.wikibook.retry;
 
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,17 +12,17 @@ public class RetryLoggingListener implements RetryListener {
 	private final Logger logger = LoggerFactory.getLogger(RetryLoggingListener.class);
 
   @Override
-  public void beforeRetry(RetryPolicy retryPolicy, Retryable<?> retryable) {
+  public void beforeRetry(@NonNull RetryPolicy retryPolicy, Retryable<?> retryable) {
     logger.info("beforeRetry {}", retryable.getName());
   }
 
   @Override
-  public void onRetrySuccess(RetryPolicy retryPolicy, Retryable<?> retryable, @Nullable Object result) {
+  public void onRetrySuccess(@NonNull RetryPolicy retryPolicy, Retryable<?> retryable, @Nullable Object result) {
     logger.info("onRetrySuccess {}", retryable.getName());
   }
 
   @Override
-  public void onRetryFailure(RetryPolicy retryPolicy, Retryable<?> retryable, Throwable throwable) {
+  public void onRetryFailure(@NonNull RetryPolicy retryPolicy, Retryable<?> retryable, Throwable throwable) {
     logger.info("onRetryFailure {}", retryable.getName());
   }
 }

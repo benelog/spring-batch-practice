@@ -24,6 +24,7 @@ public class LogBatchApplication {
   @Bean
   public BatchConversionServiceCustomizer conversionServiceCustomizer() {
     return configurableConversionService -> {
+      configurableConversionService.addConverter(new StringToColorConverter());
       configurableConversionService.addConverter(new ColorToStringConverter());
     };
   }

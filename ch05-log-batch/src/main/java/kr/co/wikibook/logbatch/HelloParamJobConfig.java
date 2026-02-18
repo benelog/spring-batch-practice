@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class HelloParamJobConfig {
+  public static final LocalDate INJECTED = null;
+
   @Bean
   public Job helloParamJob(JobRepository jobRepository) {
     Step helloDate1Step = new StepBuilder("helloDate1Step", jobRepository)
@@ -22,9 +24,8 @@ public class HelloParamJobConfig {
         .build();
 
     Step helloDate2Step = new StepBuilder("helloDate2Step", jobRepository)
-        .tasklet(helloDate2Tasklet(null))
+        .tasklet(helloDate2Tasklet(INJECTED))
         .build();
-
     var validator = new DefaultJobParametersValidator();
     validator.setRequiredKeys(new String[]{"helloDate"});
 
