@@ -22,6 +22,7 @@ public class CheckStatusJobConfig {
   public Job checkStatusJob(JobRepository jobRepository, DataSource dataSource) {
     var promotionListener = new ExecutionContextPromotionListener();
     promotionListener.setKeys(new String[]{"count"});
+
     Step countAccessLogStep = new StepBuilder("countAccessLogStep", jobRepository)
         .tasklet(new CountAccessLogTasklet(dataSource))
         .listener(promotionListener)

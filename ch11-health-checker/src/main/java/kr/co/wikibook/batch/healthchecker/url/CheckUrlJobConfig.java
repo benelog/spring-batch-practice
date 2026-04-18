@@ -31,9 +31,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.retry.RetryPolicy;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.retry.backoff.FixedBackOffPolicy;
-import org.springframework.retry.policy.TimeoutRetryPolicy;
-import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 public class CheckUrlJobConfig {

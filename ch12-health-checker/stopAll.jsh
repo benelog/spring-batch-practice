@@ -40,7 +40,7 @@ void run(int pid, String beanName, String operation) {
 int pid = getPid("health-checker-0.0.1-SNAPSHOT.jar"); // ps -ef | grep 으로 해당 프로세스를 잡을 수 있는 키워드를 넣는다.
 System.out.println("PID : " + pid);
 
-String beanName = "kr.co.wikibook.batch.healthchecker:type=JobService,name=jobService";
+String beanName = "kr.co.wikibook.healthchecker:type=JobService,name=jobService";
 String operation = "stopAllExecutions";
 run(pid, beanName, operation);
 System.out.println(operation + " operation executed");

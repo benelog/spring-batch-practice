@@ -6,10 +6,8 @@ import org.springframework.batch.infrastructure.item.json.JsonFileItemWriter;
 import org.springframework.batch.infrastructure.item.json.JsonItemReader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
-import tools.jackson.databind.json.JsonMapper;
 
 public class JsonComponents {
-
 
   public static JsonItemReader<AccessLog> buildJsonItemReader(Resource resource) {
     var objectReader = new JacksonJsonObjectReader<>(AccessLog.class);

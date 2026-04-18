@@ -44,7 +44,7 @@ String jobName = System.getProperty("jobName");
 int pid = getPid("health-checker-0.0.1-SNAPSHOT.jar");
 System.out.println("PID : " + pid);
 
-String beanName = "kr.co.wikibook.batch.healthchecker:type=JobService,name=jobService";
+String beanName = "kr.co.wikibook.healthchecker:type=JobService,name=jobService";
 String operation = "stopExecutions";
 Object[] params = new Object[] {jobName};
 String[] signature = new String[] {"java.lang.String"};

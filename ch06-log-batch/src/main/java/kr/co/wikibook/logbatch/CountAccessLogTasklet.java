@@ -7,12 +7,13 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.repeat.RepeatStatus;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CountAccessLogTasklet implements Tasklet {
-  private final JdbcTemplate jdbc;
+  private final JdbcOperations jdbc;
 
   public CountAccessLogTasklet(DataSource dataSource) {
     this.jdbc = new JdbcTemplate(dataSource);

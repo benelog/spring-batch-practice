@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.JobParameters;
@@ -25,12 +24,12 @@ class CheckStatusJobTest {
   JobOperatorTestUtils testUtils;
 
   @BeforeEach
-  void prepareTestUtils(@Autowired @Qualifier("checkStatusJob") Job checkStatusJob) {
+  void prepareTestUtils(@Autowired Job checkStatusJob) {
     testUtils.setJob(checkStatusJob);
   }
 
   @Test
-  void launchCountAccessLogStep() {
+  void startCountAccessLogStep() {
     JobExecution jobExecution = testUtils.startStep("countAccessLogStep");
 
     assertThat(jobExecution.getStatus()).isSameAs(BatchStatus.COMPLETED);
@@ -52,7 +51,7 @@ class CheckStatusJobTest {
     JobExecution execution = testUtils.startStep(
         "checkDiskSpaceStep", jobParameters, jobExecutionContext
     );
-    assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+    assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
   }
 
   @Test
@@ -67,6 +66,6 @@ class CheckStatusJobTest {
     JobExecution execution = testUtils.startStep(
         "logDiskSpaceStep", jobParameters, jobExecutionContext
     );
-    assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+    assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
   }
 }

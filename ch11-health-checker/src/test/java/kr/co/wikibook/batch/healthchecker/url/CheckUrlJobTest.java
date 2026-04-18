@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.JobParameters;
@@ -30,7 +30,7 @@ class CheckUrlJobTest {
         .toJobParameters();
 
     JobExecution execution = testUtils.startJob(params);
-    assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+    assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
     Path outputFile = Path.of(CheckUrlJobConfig.OUTPUT_FILE_PATH);
     assertThat(outputFile).isNotEmptyFile();
   }

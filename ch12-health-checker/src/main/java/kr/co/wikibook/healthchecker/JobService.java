@@ -16,10 +16,12 @@ import org.springframework.stereotype.Component;
 public class JobService {
   private final JobOperator operator;
   private final JobRepository repository;
+  private final JobRegistry registry;
 
-  public JobService(JobOperator operator, JobRepository repository) {
+  public JobService(JobOperator operator, JobRepository repository, JobRegistry registry) {
     this.operator = operator;
     this.repository = repository;
+    this.registry = registry;
   }
 
   @ManagedOperation(description = "Job 이름으로 JobExecution을 중지")
@@ -27,6 +29,17 @@ public class JobService {
     Set<JobExecution> runningExecutions = repository.findRunningJobExecutions(jobName);
     for (JobExecution execution : runningExecutions) {
       operator.stop(execution);
+    }
+  }
+
+  @ManagedOperation(description = "실행 중인 모든 JobExecution을 중지")
+  public void stopAllExecutions() throws JobExecutionException {
+    Collection<String> jobNames = registry.getJobNames();
+    for (String jobName : jobNames) {
+      Set<JobExecution> runningExecutions = repository.findRunningJobExecutions(jobName);
+      for (JobExecution execution : runningExecutions) {
+        operator.stop(execution);
+      }
     }
   }
 }

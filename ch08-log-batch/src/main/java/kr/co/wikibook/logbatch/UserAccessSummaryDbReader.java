@@ -14,8 +14,8 @@ import org.springframework.batch.infrastructure.item.ItemStreamReader;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.jspecify.annotations.Nullable;
 import org.springframework.jdbc.support.JdbcUtils;
-import org.springframework.lang.Nullable;
 
 public class UserAccessSummaryDbReader implements ItemStreamReader<UserAccessSummary> {
 

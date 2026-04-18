@@ -1,9 +1,9 @@
 package kr.co.wikibook.batch.hello.tasklet;
 
 import java.time.LocalDate;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -14,8 +14,8 @@ public class HelloDate1Tasklet implements Tasklet {
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    Map<String, Object> jobParameters = chunkContext.getStepContext().getJobParameters();
-    LocalDate helloDate = (LocalDate) jobParameters.get("helloDate");
+    JobParameters jobParameters = contribution.getStepExecution().getJobParameters();
+    LocalDate helloDate = jobParameters.getLocalDate("helloDate");
     log.info("Hello {} ", helloDate);
     return RepeatStatus.FINISHED;
   }

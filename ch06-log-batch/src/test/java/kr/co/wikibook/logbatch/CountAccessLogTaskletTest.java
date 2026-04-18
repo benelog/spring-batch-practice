@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 @SpringJUnitConfig(TestDbConfig.class)
-class CountAccessLogTaskTest {
+class CountAccessLogTaskletTest {
 
   @Test
   void countAccessLog(@Autowired DataSource dataSource) throws Exception {

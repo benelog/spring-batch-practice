@@ -1,4 +1,4 @@
-FROM openjdk:21
+FROM eclipse-temurin:25-jdk-alpine
 WORKDIR app
 COPY build/dist/dependencies/ ./
 COPY build/dist/spring-boot-loader/ ./
