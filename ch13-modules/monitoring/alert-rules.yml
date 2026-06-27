@@ -1,0 +1,9 @@
+groups:
+  - name: batch-job-alerts
+    rules:
+      - alert: BatchJobFailed
+        expr: increase(spring_batch_job_seconds_count{spring_batch_job_status="FAILED"}[10m]) > 0
+        labels:
+          severity: critical
+        annotations:
+          summary: "배치 잡 실패 감지"

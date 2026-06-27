@@ -1,6 +1,7 @@
 package kr.co.wikibook.logbatch;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemStreamReader;
 import org.springframework.batch.infrastructure.item.support.CompositeItemReader;
 import org.springframework.batch.infrastructure.item.support.IteratorItemReader;
@@ -16,6 +17,7 @@ class CompositeItemReaderTest {
         ItemStreamReader<String> reader1 = stringReader("a", "b");
         ItemStreamReader<String> reader2 = stringReader("c");
         var compositeReader = new CompositeItemReader<String>(List.of(reader1, reader2));
+        compositeReader.open(new ExecutionContext());
 
         assertThat(compositeReader.read()).isEqualTo("a");
         assertThat(compositeReader.read()).isEqualTo("b");

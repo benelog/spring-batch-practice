@@ -7,6 +7,11 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alert-rules.yml:/etc/prometheus/alert-rules.yml
+  pushgateway:
+    image: prom/pushgateway:latest
+    network_mode: "host"
+    container_name: pushgateway
   grafana:
     image: grafana/grafana:latest
     network_mode: "host"

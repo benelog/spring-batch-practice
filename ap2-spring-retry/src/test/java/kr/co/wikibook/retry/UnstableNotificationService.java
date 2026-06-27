@@ -2,7 +2,6 @@ package kr.co.wikibook.retry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.resilience.annotation.Retryable;
 
 public class UnstableNotificationService implements RetryableNotificationService {
 
@@ -14,11 +13,6 @@ public class UnstableNotificationService implements RetryableNotificationService
     this.failures = failures;
   }
 
-  @Retryable(
-      includes = RuntimeException.class,
-      maxRetries = 4,
-      delay = 200L, multiplier = 2d, maxDelay = 600L
-  )
   @Override
   public void send(String message) {
     this.tryCount++;
