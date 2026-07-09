@@ -3,6 +3,8 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -24,9 +26,10 @@ public class AccessLogJobTest {
   }
 
   @Test
-  void startJob(@Autowired DataSource dataSource) {
+  void startJob(@Autowired DataSource dataSource) throws IOException {
     int count = JdbcTestUtils.countRowsInTable(new JdbcTemplate(dataSource), "access_log");
     assertThat(count).isGreaterThan(0);
     assertThat(output.exists()).isTrue();
+    assertThat(Files.readAllLines(output.toPath())).isNotEmpty();
   }
 }

@@ -30,25 +30,28 @@ public class UserAccessSummaryDbToCsvTask  implements CommandLineRunner {
     this.writer.open();
     var chunk = new LinkedList<UserAccessSummary>();
 
-    while (true) {
-      UserAccessSummary item = this.reader.read();
+    try {
+      while (true) {
+        UserAccessSummary item = this.reader.read();
 
-      if (item == null) {
-        if (chunk.size() > 0) {
-          this.writer.write(chunk);
+        if (item == null) {
+          if (!chunk.isEmpty()) {
+            this.writer.write(chunk);
+          }
+          break;
         }
-        break;
-      }
 
-      totalItems++;
-      chunk.add(item);
-      if (chunk.size() == this.chunkSize) {
-        this.writer.write(chunk);
-        chunk.clear();
+        totalItems++;
+        chunk.add(item);
+        if (chunk.size() == this.chunkSize) {
+          this.writer.write(chunk);
+          chunk.clear();
+        }
       }
+    } finally {
+      close();
     }
 
-    this.reader.close();
     log.info("{}개의 항목을 DB -> CSV", totalItems);
   }
 
