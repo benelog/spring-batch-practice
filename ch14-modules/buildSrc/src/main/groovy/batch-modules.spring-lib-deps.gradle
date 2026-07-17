@@ -9,6 +9,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_25
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << '-parameters'
+}
+
 group = 'com.wikibook'
 version = '1.0'
 
