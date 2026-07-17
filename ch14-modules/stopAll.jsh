@@ -1,7 +1,4 @@
-//usr/bin/env jshell --add-exports jdk.jconsole/sun.tools.jconsole "$0" -R -DjobName="$@"; exit $?
-
-// 실행 방법 : ./stop.jsh [jobName]
-// 예시 : ./stop.jsh slowJob
+//usr/bin/env jshell --add-exports jdk.jconsole/sun.tools.jconsole "$0" "$@"; exit $?
 
 import java.io.IOException;
 import java.util.Map;
@@ -31,23 +28,20 @@ JMXConnector connect(int pid) throws IOException {
     return JMXConnectorFactory.connect(jmxUrl);
 }
 
-void run(int pid, String beanName, String operation, Object[] params, String[] signature) {
+void run(int pid, String beanName, String operation) {
     try (JMXConnector connector = connect(pid)) {
         MBeanServerConnection connection = connector.getMBeanServerConnection();
-        connection.invoke(new ObjectName(beanName), operation, params, signature);
+        connection.invoke(new ObjectName(beanName), operation, new Object[0], new String[0]);
     } catch (Exception ex) {
         throw new RuntimeException("fail to execute " + operation, ex);
     }
 }
 
-String jobName = System.getProperty("jobName");
-int pid = getPid("health-checker-0.0.1-SNAPSHOT.jar");
+int pid = getPid("CommandLineJobOperator"); // ps -ef | grep 으로 해당 프로세스를 잡을 수 있는 키워드를 넣는다.
 System.out.println("PID : " + pid);
 
-String beanName = "kr.co.wikibook.healthchecker:type=JobService,name=jobService";
-String operation = "stopExecutions";
-Object[] params = new Object[] {jobName};
-String[] signature = new String[] {"java.lang.String"};
-run(pid, beanName, operation, params, signature);
+String beanName = "kr.co.wikibook.batch.support:type=JobService,name=jobService";
+String operation = "stopAllExecutions";
+run(pid, beanName, operation);
 System.out.println(operation + " operation executed");
 /exit

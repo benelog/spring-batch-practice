@@ -5,10 +5,12 @@ import kr.co.wikibook.batch.support.BatchConfig;
 import kr.co.wikibook.batch.support.JobService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.StringUtils;
 
+@EnableMBeanExport
 @Import({BatchConfig.class, HelloJobGroupContexts.class})
 @PropertySource("classpath:/job-db.properties")
 public class HelloJobGroupRunner {
