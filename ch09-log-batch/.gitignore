@@ -38,3 +38,9 @@ out/
 
 .envrc
 db/
+
+numbers.txt
+blogPosts.xml
+posts.xml
+user-access-summary.csv
+

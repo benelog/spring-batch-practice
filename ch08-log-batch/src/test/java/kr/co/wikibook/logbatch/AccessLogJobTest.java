@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBatchTest
 public class AccessLogJobTest {
   @Test
-  void startJob(
+  void launchJob(
       @Autowired JobOperatorTestUtils testUtils,
       @Autowired @Qualifier(AccessLogJobConfig.JOB_NAME) Job job
   ) throws Exception {

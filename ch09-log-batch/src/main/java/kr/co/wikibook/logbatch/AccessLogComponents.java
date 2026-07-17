@@ -1,9 +1,5 @@
 package kr.co.wikibook.logbatch;
 
-import javax.sql.DataSource;
-import org.springframework.batch.infrastructure.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.infrastructure.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.infrastructure.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
 import org.springframework.batch.infrastructure.item.file.MultiResourceItemReader;
@@ -23,7 +19,6 @@ public class AccessLogComponents {
     var resourcePatternResolver = new PathMatchingResourcePatternResolver();
     Resource[] resources = resourcePatternResolver.getResources(locationPattern);
     FlatFileItemReader<AccessLog> delegator = buildDelegatorToRead();
-
     return new MultiResourceItemReaderBuilder<AccessLog>()
         .name("accessLogMultiFileReader")
         .resources(resources)
@@ -43,14 +38,6 @@ public class AccessLogComponents {
         .delegate(delegate) // <2>
         .itemCountLimitPerResource(itemsPerResource) // <3>
         .build();
-  }
-
-  public static JdbcBatchItemWriter<AccessLog> buildAccessLogDbWriter(DataSource dataSource) {
-    var writer = new JdbcBatchItemWriter<AccessLog>();
-    writer.setDataSource(dataSource);
-    writer.setSql(AccessLogSql.INSERT);
-    writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
-    return Configs.afterPropertiesSet(writer);
   }
 
   private static FlatFileItemReader<AccessLog> buildDelegatorToRead() {

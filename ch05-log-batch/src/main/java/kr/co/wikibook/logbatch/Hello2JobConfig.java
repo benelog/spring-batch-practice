@@ -19,6 +19,7 @@ public class Hello2JobConfig {
   @Bean
   public Job hello2Job(JobRepository jobRepository) {
     var tasklet = new HelloTasklet();
+
     Step helloStep = new StepBuilder("hello2Step", jobRepository)
         .tasklet(tasklet)
         .build();

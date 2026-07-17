@@ -11,19 +11,15 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.ItemStreamReader;
-import org.springframework.batch.infrastructure.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.infrastructure.item.database.JdbcCursorItemReader;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
 import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.infrastructure.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.support.JdbcTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 public class AccessLogJobConfig {
@@ -51,11 +47,9 @@ public class AccessLogJobConfig {
   }
 
   @Bean
-  public Step csvToDbStep(
-      @Qualifier("mainTransactionManager") PlatformTransactionManager transactionManager
-  ) {
+  public Step csvToDbStep(JdbcTransactionManager transactionManager) {
     ItemStreamReader<AccessLog> reader = this.accessLogCsvReader(null);
-    JdbcBatchItemWriter<AccessLog> writer = AccessLogComponents.buildAccessLogDbWriter(this.dataSource);
+    var writer = new AccessLogDbWriter(this.dataSource);
     return new StepBuilder("accessLogCsvToDb", this.jobRepository)
         .<AccessLog, AccessLog>chunk(300)
         .transactionManager(transactionManager)
@@ -71,7 +65,6 @@ public class AccessLogJobConfig {
       @Value("#{jobParameters['date']}") LocalDate date
   ) {
     var resource = new FileSystemResource(basePath.resolve(date + ".csv"));
-
     return new FlatFileItemReaderBuilder<AccessLog>()
         .name("accessLogCsvReader")
         .resource(resource)
@@ -86,9 +79,8 @@ public class AccessLogJobConfig {
       @Value("#{jobParameters['date']}") LocalDate date
   ) {
     var resource = new FileSystemResource(basePath.resolve(date + "_summary.csv"));
-    JdbcCursorItemReader<UserAccessSummary> reader = UserAccessSummaryComponents.buildDbCursorReader(dataSource, date, false);
+    var reader = new UserAccessSummaryDbReader(this.dataSource, date);
     FlatFileItemWriter<UserAccessSummary> writer = UserAccessSummaryComponents.buildCsvWriter(resource);
-
     return new StepBuilder("userAccessSummaryDbToCsv", jobRepository)
         .<UserAccessSummary, UserAccessSummary>chunk(300)
         .reader(reader)

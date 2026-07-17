@@ -16,9 +16,9 @@ class UserAccessSummaryCsvWriterTest {
   @Test
   void write(@TempDir Path tempPath) throws Exception {
     // given
-    Path outputPath = tempPath.resolve("user-access-summary.csv");
+    String outputPath = tempPath.toString() + "/user-access-summary.csv";
     var resource = new FileSystemResource(outputPath);
-    FlatFileItemWriter<UserAccessSummary> writer = UserAccessSummaryComponents.buildCsvWriter(resource);
+    var writer = new UserAccessSummaryCsvWriter(resource);
     var chunk = Chunk.of(
         new UserAccessSummary("benelog", 32),
         new UserAccessSummary("jojoldu", 42)
@@ -30,7 +30,7 @@ class UserAccessSummaryCsvWriterTest {
     writer.close();
 
     // then
-    List<String> written = Files.readAllLines(outputPath);
+    List<String> written = Files.readAllLines(Path.of(outputPath));
     assertThat(written).isEqualTo(List.of("benelog,32", "jojoldu,42"));
   }
 }

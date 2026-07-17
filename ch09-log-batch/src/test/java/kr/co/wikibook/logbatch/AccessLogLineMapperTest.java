@@ -1,13 +1,14 @@
 package kr.co.wikibook.logbatch;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.file.LineMapper;
 import org.springframework.batch.infrastructure.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.infrastructure.item.file.transform.DelimitedLineTokenizer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class AccessLogLineMapperTest {
+
   @Test
   void mapLine() throws Exception {
     // given
@@ -22,7 +23,6 @@ class AccessLogLineMapperTest {
     assertThat(log.ip()).isEqualTo("175.242.91.54");
     assertThat(log.username()).isEqualTo("benelog");
   }
-
 
   LineMapper<AccessLog> buildAccessLogLineMapper() {
     var lineMapper = new DefaultLineMapper<AccessLog>();

@@ -3,24 +3,24 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Path;
-import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemReader;
 import org.springframework.batch.infrastructure.item.ItemStream;
-import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
+import org.springframework.core.io.ClassPathResource;
+
+import java.io.IOException;
 
 class AccessLogCsvReaderTest {
-
   Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Test
-  void read() throws Exception {
+  void read() throws IOException {
     // given
-    var jobConfig = new AccessLogJobConfig(null, null, Path.of("src/test/resources"));
-    FlatFileItemReader<AccessLog> reader = jobConfig.accessLogCsvReader(LocalDate.of(2025, 7, 28));
+    var resource = new ClassPathResource("2025-07-28.csv"); // <1>
+    var reader = new AccessLogCsvReader(resource);
 
     // when
     reader.open(new ExecutionContext());
@@ -28,7 +28,7 @@ class AccessLogCsvReaderTest {
     AccessLog item;
     while ((item = reader.read()) != null) {
       itemCount++;
-      logger.debug("{}", item);
+      logger.info("{}", item);
     }
     reader.close();
 
@@ -38,7 +38,7 @@ class AccessLogCsvReaderTest {
 
   @Test
   void instanceOfItemStream() {
-    var config = new AccessLogJobConfig(null, null, Path.of("src/test/resources"));
+    var config = new AccessLogJobConfig(null, null, Path.of("."));
     ItemReader<AccessLog> accessLogCsvReader = config.accessLogCsvReader(null);
     assertThat(accessLogCsvReader).isInstanceOf(ItemStream.class);
   }

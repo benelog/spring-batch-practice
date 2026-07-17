@@ -20,4 +20,12 @@ public class LogBatchApplication {
   public ExecutionContextSerializer executionContextSerializer() {
     return new JacksonExecutionContextStringSerializer();
   }
+
+  @Bean
+  public BatchConversionServiceCustomizer conversionServiceCustomizer() {
+    return configurableConversionService -> {
+      configurableConversionService.addConverter(new StringToColorConverter());
+      configurableConversionService.addConverter(new ColorToStringConverter());
+    };
+  }
 }

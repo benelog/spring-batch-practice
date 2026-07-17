@@ -24,16 +24,16 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     implementation 'org.springframework:spring-oxm'
     implementation 'org.glassfish.jaxb:jaxb-runtime'
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.batch:spring-batch-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
 
-tasks.register('h2MainDb', JavaExec) {
+tasks.register('h2', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'org.h2.tools.Console'
 
@@ -42,21 +42,7 @@ tasks.register('h2MainDb', JavaExec) {
 
     args(
             '-driver', props.get('spring.datasource.driver-class-name'),
-            '-url', props.get('spring.datasource.jdbc-url'),
+            '-url', props.get('spring.datasource.url'),
             '-user', props.get('spring.datasource.username')
-    )
-}
-
-tasks.register('h2JobDb', JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'org.h2.tools.Console'
-
-    def props = new Properties()
-    file("src/main/resources/application.properties").withInputStream { props.load(it) }
-
-    args(
-            '-driver', props.get('job-db.driver-class-name'),
-            '-url', props.get('job-db.jdbc-url'),
-            '-user', props.get('job-db.username')
     )
 }
