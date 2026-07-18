@@ -28,12 +28,12 @@
 ### 스프링 배치 관련 테스트
 
 - 애플리케이션 컨텍스트를 로딩하는 테스트에서는 `spring.batch.job.enabled=false`로 잡 자동 실행을 막는다.
-- 테스트에서 잡 파라미터를 직접 지정할 때는 `getUniqueJobParametersBuilder()`로 시작해서 파라미터 조합이 중복되지 않게 한다.
-- SpEL로 값을 주입받는 스텝에는 `startStep()`으로 실제 실행하는 테스트를 함께 작성한다. 다만 실행 시간이 10초를 넘는 테스트는 한 번만 실행해서 확인하고 `@Disabled`를 붙여 반복 실행에서 제외한다.
+- 테스트에서 잡 파라미터를 직접 지정할 때는 `JobOperatorTestUtils`의 `getUniqueJobParametersBuilder()`로 시작해서 파라미터 조합이 중복되지 않게 한다.
+- SpEL로 값을 주입받는 스텝에는 `JobOperatorTestUtils.startStep()`으로 실제 실행하는 테스트를 함께 작성한다. 다만 실행 시간이 10초를 넘는 테스트는 한 번만 실행해서 확인하고 `@Disabled`를 붙여 반복 실행에서 제외한다.
 
 ### 파일 입출력 테스트
 
-- 리더와 라이터를 생성하는 메서드는 애플리케이션 컨텍스트를 올리지 않는 테스트로 먼저 검증한다. 이때 `afterPropertiesSet()`을 직접 호출한다.
+- 리더와 라이터를 생성하는 메서드는 애플리케이션 컨텍스트를 올리지 않는 테스트로 먼저 검증한다. 이때 생성한 리더·라이터의 `afterPropertiesSet()`을 직접 호출한다.
 - 읽기 테스트의 샘플 파일에 정상 형식의 줄만 넣지 않는다. 형식이 잘못된 줄을 넣은 파일로 실패 동작도 검증한다.
 
 ### DB 입출력 테스트
@@ -52,7 +52,7 @@
 
 - 파일이나 DB에서 읽은 전체 데이터를 `java.util.List` 등으로 메모리에 모으지 않는다. 최대 크기가 고정된 운반 단위인 청크를 저장하기 위해서는 `List`를 사용할 수 있다.
 - 파일과 DB에 데이터를 쓸 때도 청크 단위로 묶어서 실행한다.
-- DB 입력은 `batchUpdate()`를 활용한다.
+- DB 입력은 `JdbcTemplate`의 `batchUpdate()`를 활용한다.
 
 ### 잡 구성
 
@@ -74,7 +74,7 @@
 - 반복해서 읽고 가공하고 쓰는 작업은 Tasklet 하나로 구현하지 말고, ItemReader, ItemProcessor, ItemWriter를 나눈 청크 기반 스텝으로 만든다.
 - 직접 구현하기 전에 스프링 배치가 제공하는 ItemReader, ItemProcessor, ItemWriter 구현체가 있는지 먼저 확인하고, 있으면 그것을 쓴다.
 - 타입 변환, 필터링, 검증은 reader나 writer에 섞지 말고 ItemProcessor에 두고, 그 클래스만 따로 테스트한다.
-- DB에 쓰는 스텝에는 `transactionManager(...)`로 `JdbcTransactionManager` 같은 실제 트랜잭션 관리자를 지정한다.
+- DB에 쓰는 스텝에는 `StepBuilder`의 `transactionManager(...)`로 `JdbcTransactionManager` 같은 실제 트랜잭션 관리자를 지정한다.
 - `@JobScope` / `@StepScope`가 붙은 `@Bean` 메서드의 반환형은 인터페이스가 아니라 구체적인 클래스로 선언한다.
 - 청크 크기는 임의로 정하지 말고, 지시에 없으면 사람에게 묻는다.
 
@@ -98,13 +98,13 @@
 - 스킵할 예외와 `skipLimit` 값이 지정되지 않았으면 추측으로 채우지 말고 사람에게 먼저 묻는다.
 - 스킵을 허용한 스텝은 건너뛴 아이템을 확인할 수 있게 기록을 남긴다.
 - 재시도는 일시적이라고 확인된 실패에만 걸고, 멱등하지 않은 API를 호출하는 구간에는 걸지 않는다. HTTP GET 요청은 멱등하다고 가정하고, 그 외는 사람에게 확인한다.
-- 실행 사이에 읽는 데이터가 달라지거나 롤백할 수 없는 부작용이 있는 잡은 중간부터 재시작하기에 적합하지 않다. `preventRestart()`로 재시작을 막거나 `saveState(false)`로 중간 상태를 기록하지 않는다.
+- 실행 사이에 읽는 데이터가 달라지거나 롤백할 수 없는 부작용이 있는 잡은 중간부터 재시작하기에 적합하지 않다. `JobBuilder`의 `preventRestart()`로 재시작을 막거나 리더·라이터 빌더의 `saveState(false)`로 중간 상태를 기록하지 않는다.
 
 ### 이벤트 리스너
 
 - 콜백 메서드에서 `JobExecution`, `StepExecution` 객체가 필요하면 애너테이션 방식 대신 리스너 인터페이스를 구현한다.
 - `@JobScope`, `@StepScope`가 붙은 `@Bean` 메서드는 인터페이스가 아니라 구현 클래스 타입을 반환한다.
-- `RetryListener`는 `listener()`가 아니라 전용 메서드인 `retryListener()`로 등록한다. `listener()`에 넘기면 조용히 무시된다.
+- `RetryListener`는 스텝 구성에서 `listener()`가 아니라 전용 메서드인 `retryListener()`로 등록한다. `listener()`에 넘기면 조용히 무시된다.
 - `SkipListener`와 `RetryListener`의 콜백은 `faultTolerant()`와 스킵·재시도 정책이 선언된 스텝에서만 호출된다.
 - 파일처럼 열고 닫아야 하는 자원을 쓰는 리스너는 `ItemStream`도 구현하고 `stream()`으로 함께 등록한다.
 - `afterWrite()`와 에러 콜백은 청크 트랜잭션 안에서 호출된다. 롤백되면 안 되는 DB 변경은 이 콜백 안에서 하지 않거나 `PROPAGATION_REQUIRES_NEW`로 트랜잭션을 분리한다.

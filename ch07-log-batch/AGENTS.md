@@ -28,8 +28,8 @@
 ### 스프링 배치 관련 테스트
 
 - 애플리케이션 컨텍스트를 로딩하는 테스트에서는 `spring.batch.job.enabled=false`로 잡 자동 실행을 막는다.
-- 테스트에서 잡 파라미터를 직접 지정할 때는 `getUniqueJobParametersBuilder()`로 시작해서 파라미터 조합이 중복되지 않게 한다.
-- SpEL로 값을 주입받는 스텝에는 `startStep()`으로 실제 실행하는 테스트를 함께 작성한다. 다만 실행 시간이 10초를 넘는 테스트는 한 번만 실행해서 확인하고 `@Disabled`를 붙여 반복 실행에서 제외한다.
+- 테스트에서 잡 파라미터를 직접 지정할 때는 `JobOperatorTestUtils`의 `getUniqueJobParametersBuilder()`로 시작해서 파라미터 조합이 중복되지 않게 한다.
+- SpEL로 값을 주입받는 스텝에는 `JobOperatorTestUtils.startStep()`으로 실제 실행하는 테스트를 함께 작성한다. 다만 실행 시간이 10초를 넘는 테스트는 한 번만 실행해서 확인하고 `@Disabled`를 붙여 반복 실행에서 제외한다.
 
 ### DB 입출력 테스트
 
@@ -43,7 +43,7 @@
 
 - 파일이나 DB에서 읽은 전체 데이터를 `java.util.List` 등으로 메모리에 모으지 않는다. 최대 크기가 고정된 운반 단위인 청크를 저장하기 위해서는 `List`를 사용할 수 있다.
 - 파일과 DB에 데이터를 쓸 때도 청크 단위로 묶어서 실행한다.
-- DB 입력은 `batchUpdate()`를 활용한다.
+- DB 입력은 `JdbcTemplate`의 `batchUpdate()`를 활용한다.
 
 ### 잡 구성
 
