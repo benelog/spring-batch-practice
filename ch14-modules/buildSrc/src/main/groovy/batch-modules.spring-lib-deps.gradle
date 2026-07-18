@@ -11,6 +11,7 @@ java {
 
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << '-parameters'
+    options.compilerArgs += ['-Xlint:deprecation', '-Werror']
 }
 
 group = 'com.wikibook'

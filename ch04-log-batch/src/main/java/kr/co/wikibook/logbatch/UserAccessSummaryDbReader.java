@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class UserAccessSummaryDbReader {
 

@@ -13,6 +13,10 @@ java {
     }
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ['-Xlint:deprecation', '-Werror']
+}
+
 repositories {
     mavenCentral()
 }

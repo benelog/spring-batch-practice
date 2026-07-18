@@ -4,7 +4,7 @@ import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemStreamException;
 import org.springframework.batch.infrastructure.item.ItemStreamReader;
 import org.springframework.core.io.Resource;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;

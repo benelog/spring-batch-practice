@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import org.springframework.core.io.Resource;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class AccessLogCsvReader {
 
