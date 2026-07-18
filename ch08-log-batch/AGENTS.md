@@ -16,49 +16,51 @@
 ## Test
 
 - JUnit 5와 AssertJ로 작성한다.
-- 가능하면 애플리케이션 컨텍스트를 띄우지 않고 객체를 직접 생성해 단위 테스트한다.
 - 프로젝트에서 직접 정의한 인터페이스에 대한 mocking이 필요한 경우, 목(mock) 라이브러리 대신 인터페이스를 구현한 가짜 객체를 만들어 검증한다.
 - 정상 경로만 확인하지 말고, 예외가 발생해야 하는 경우와 경계값도 함께 검증한다.
 - 테스트 메서드의 의도는 `@DisplayName`으로 표기한다.
 
-## 대용량 데이터 처리
+### 스프링 부트 관련 테스트
+
+- `@SpringBootTest`로 전체 ApplicationContext를 올리는 것보다는 최소한의 컨텍스트에 의존하는 테스트를 선호한다.
+- 가능하면 애플리케이션 컨텍스트를 올리지 않고 객체를 직접 생성해 단위 테스트한다.
+
+### 스프링 배치 관련 테스트
+
+- 애플리케이션 컨텍스트를 로딩하는 테스트에서는 `spring.batch.job.enabled=false`로 잡 자동 실행을 막는다.
+- 테스트에서 잡 파라미터를 직접 지정할 때는 `getUniqueJobParametersBuilder()`로 시작해서 파라미터 조합이 중복되지 않게 한다.
+- SpEL로 값을 주입받는 스텝에는 `startStep()`으로 실제 실행하는 테스트를 함께 작성한다. 다만 실행 시간이 10초를 넘는 테스트는 한 번만 실행해서 확인하고 `@Disabled`를 붙여 반복 실행에서 제외한다.
+
+### DB 입출력 테스트
+
+- DB 연결 테스트도 같은 ApplicationContext 구성을 재사용해서 ApplicationContext 캐싱을 활용한다.
+- 잡의 종단간 테스트에 `@Transactional`을 붙이지 않는다. `spring.batch.jdbc.validate-transaction-state` 속성은 기본값(true)에서 수정하지 않는다.
+- 잡의 종단간 테스트가 아니라면 100건 이하의 데이터를 변경하는 테스트는 `@Transactional`을 붙여서 테스트 종료 후 롤백되게 한다.
+
+## 배치 처리 구조
+
+### 대용량 데이터 처리
 
 - 파일이나 DB에서 읽은 전체 데이터를 `java.util.List` 등으로 메모리에 모으지 않는다. 최대 크기가 고정된 운반 단위인 청크를 저장하기 위해서는 `List`를 사용할 수 있다.
 - 파일과 DB에 데이터를 쓸 때도 청크 단위로 묶어서 실행한다.
 - DB 입력은 `batchUpdate()`를 활용한다.
 
-## DB 연동 테스트
-
-- `@SpringBootTest`로 전체 ApplicationContext를 올리는 것보다는 최소한의 컨텍스트에 의존하는 테스트를 선호한다.
-- ApplicationContext 캐싱을 활용할 수 있도록 DB 연결 테스트를 위한 ApplicationContext는 재활용한다.
-- 100건 이하의 데이터를 변경하는 테스트는 `@Transactional`을 붙여서 테스트 종료 후 롤백되게 한다.
-
-## 스프링 배치 잡 구성
+### 잡 구성
 
 - 스프링 배치 6 기준으로 작성한다. `JobBuilderFactory` 같은 제거된 API를 쓰지 않는다.
 - 잡마다 별도의 `@Configuration` 클래스를 만들고, 잡 이름은 그 클래스에 상수로 선언한다.
 
-## 배치 잡 테스트
-
-- 애플리케이션 컨텍스트를 로딩하는 테스트에서는 `spring.batch.job.enabled=false`로 잡 자동 실행을 막는다.
-
-## 잡 파라미터와 메타데이터
+### 잡 파라미터와 메타데이터
 
 - 실행할 때마다 달라지는 값만 잡 파라미터로 전달한다. 환경별로만 달라지는 값은 application.properties 등 스프링의 속성 관리 체계로 참조한다.
 - `JobInstanceAlreadyCompleteException`이 나면 파라미터를 바꾸거나 메타데이터를 지워서 우회하지 말고 사람에게 보고한다. 재실행 허용 여부는 사람이 결정한다.
 - 메타데이터 테이블의 데이터를 임의로 DELETE, UPDATE 하지 않는다.
-- 잡의 종단간 테스트에 `@Transactional`을 붙이지 않는다. `spring.batch.jdbc.validate-transaction-state` 속성은 기본값(true)에서 수정하지 않는다.
-
-## 잡 파라미터와 ExecutionContext
-
 - 잡 파라미터는 `@JobScope`나 `@StepScope`를 붙인 빈에 `@Value`와 SpEL 선언으로 주입받는 방식을 기본으로 한다.
 - 모든 잡에 `DefaultJobParametersValidator`를 지정한다. 잡 파라미터를 추가하면 필수 키 목록도 함께 갱신한다.
 - 잡 파라미터용 `Converter`는 클래스나 익명 클래스로 구현한다. 람다 표현식으로 바꾸지 않는다.
 - ExecutionContext에는 건수나 시각처럼 직렬화할 수 있는 작은 값만 담는다. 처리 대상 데이터 자체를 담지 않는다.
-- 테스트에서 잡 파라미터를 직접 지정할 때는 `getUniqueJobParametersBuilder()`로 시작해서 파라미터 조합이 중복되지 않게 한다.
-- SpEL로 값을 주입받는 스텝에는 `startStep()`으로 실제 실행하는 테스트를 함께 작성한다. 다만 테스트 실행시간이 10초를 넘어가는 경우에는 1회성으로만 테스트를 하고 `@Disabled`로 지정하며 반복적으로는 테스트하지 않는다.
 
-## 청크 기반 스텝
+### 청크 기반 스텝
 
 - 반복해서 읽고 가공하고 쓰는 작업은 Tasklet 하나로 구현하지 말고, ItemReader, ItemProcessor, ItemWriter를 나눈 청크 기반 스텝으로 만든다.
 - 직접 구현하기 전에 스프링 배치가 제공하는 ItemReader, ItemProcessor, ItemWriter 구현체가 있는지 먼저 확인하고, 있으면 그것을 쓴다.
