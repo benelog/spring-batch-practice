@@ -69,7 +69,7 @@ public class CheckUrlJobConfig {
         .build();
 
     return new StepBuilder("checkUrlStep", jobRepository)
-        .<String, ResponseStatus>chunk(10)
+        .<String, ResponseStatus>chunk(2)
         .reader(urlFileReader(null))
         .processor(callUrlProcessor(null))
         .writer(buildResponseStatusFileWriter())

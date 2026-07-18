@@ -95,7 +95,7 @@ public class CheckUrlJobConfig {
 
     return new StepBuilder("checkUrlStep", jobRepository)
         .listener(new StepLogListener<>())
-        .<String, ResponseStatus>chunk(10)
+        .<String, ResponseStatus>chunk(2)
         .stream(skipItemRecorder)
         .stream(retryItemRecorder)
         .reader(urlFileReader(null))
