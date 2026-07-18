@@ -19,8 +19,9 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./grafana-data:/var/lib/grafana
+      - grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
 
-#       - ./prometheus-data:/prometheus
+volumes:
+  grafana-data:
