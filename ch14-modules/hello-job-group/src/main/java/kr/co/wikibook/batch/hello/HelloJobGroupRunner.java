@@ -8,9 +8,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.util.StringUtils;
 
-@EnableMBeanExport
+@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 @Import({BatchConfig.class, HelloJobGroupContexts.class})
 @PropertySource("classpath:/job-db.properties")
 public class HelloJobGroupRunner {
