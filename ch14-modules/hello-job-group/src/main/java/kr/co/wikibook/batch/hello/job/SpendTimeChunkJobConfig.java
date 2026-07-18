@@ -16,6 +16,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.ItemReader;
 import org.springframework.batch.infrastructure.item.ItemWriter;
 import org.springframework.batch.infrastructure.item.support.ListItemReader;
+import kr.co.wikibook.batch.support.MdcJobListener;
 import kr.co.wikibook.batch.support.MetricsStepListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class SpendTimeChunkJobConfig {
   public Job spendTimeChunkJob(JobRepository jobRepository) {
     return new JobBuilder("spendTimeChunkJob", jobRepository)
         .start(sleepMilliSecondsStep(jobRepository))
+        .listener(new MdcJobListener())
         .build();
   }
 
