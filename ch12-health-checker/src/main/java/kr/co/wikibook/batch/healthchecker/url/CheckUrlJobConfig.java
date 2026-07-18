@@ -106,8 +106,8 @@ public class CheckUrlJobConfig {
         .skipLimit(2)
         .retryPolicy(retryPolicy)
         .listener(skipItemRecorder)
-        .listener(new RetryLogListener())
-        .listener(retryItemRecorder)
+        .retryListener(new RetryLogListener())
+        .retryListener(retryItemRecorder)
         .build();
   }
 

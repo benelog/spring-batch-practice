@@ -1,25 +1,24 @@
 package kr.co.wikibook.batch.healthchecker.listener;
 
 import java.nio.file.Path;
-import org.springframework.retry.RetryCallback;
-import org.springframework.retry.RetryContext;
-import org.springframework.retry.RetryListener;
+import org.jspecify.annotations.Nullable;
+import org.springframework.core.retry.RetryListener;
+import org.springframework.core.retry.RetryPolicy;
+import org.springframework.core.retry.Retryable;
 
 public class RetryItemRecorder extends FileRecorder implements RetryListener {
   public RetryItemRecorder(Path recordPath) {
     super(recordPath);
   }
 
-  public <T, E extends Throwable> void onSuccess(
-      RetryContext context, RetryCallback<T, E> callback,
-      T result
+  @Override
+  public void onRetrySuccess(
+      RetryPolicy retryPolicy, Retryable<?> retryable,
+      @Nullable Object result
   ) {
     if (result == null) {
       return;
     }
-
-    if (context.getRetryCount() > 1) {
-      writeLine(result.toString());
-    }
+    writeLine(result.toString());
   }
 }

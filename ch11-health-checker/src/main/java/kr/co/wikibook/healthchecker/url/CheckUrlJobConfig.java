@@ -1,5 +1,6 @@
 package kr.co.wikibook.healthchecker.url;
 
+import java.net.http.HttpConnectTimeoutException;
 import java.time.Duration;
 import kr.co.wikibook.healthchecker.util.Configs;
 import org.springframework.batch.core.configuration.annotation.JobScope;
@@ -61,7 +62,7 @@ public class CheckUrlJobConfig {
 
     var retryPolicy = RetryPolicy.builder()
         .maxRetries(3)
-        .includes(RuntimeException.class)
+        .includes(HttpConnectTimeoutException.class)
         .delay(Duration.ofMillis(100L))
         .multiplier(2.0d)
         .maxDelay(Duration.ofMillis(600L))
