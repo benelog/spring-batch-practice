@@ -31,6 +31,14 @@ public class ObservationDiagnostics implements ApplicationListener<ContextClosed
       boolean launchCountPresent = batchMeters.stream()
           .anyMatch(name -> name.startsWith("spring.batch.job.launch"));
       System.out.println("[DIAG] spring.batch.job.launch.count present = " + launchCountPresent);
+      meterRegistry.getMeters().stream()
+          .filter(meter -> meter.getId().getName().equals("spring.batch.job"))
+          .forEach(meter -> {
+            if (meter instanceof io.micrometer.core.instrument.Timer timer) {
+              System.out.println("[DIAG] spring.batch.job timer count = " + timer.count()
+                  + " (the job ran once; a count of 2 means duplicated handlers)");
+            }
+          });
 
       Object operator = context.getBean("jobOperator");
       System.out.println("[DIAG] jobOperator bean class = " + operator.getClass().getName());

@@ -24,12 +24,23 @@ A single tasklet job runs and the app prints diagnostics on shutdown.
 [DIAG] jobOperator target class = org.springframework.batch.core.launch.support.TaskExecutorJobOperator, observationRegistry = ObservationRegistry.NOOP
 ```
 
-Declaring an `ObservationRegistry` bean (the enablement step suggested by the
-reference documentation) does not change the outcome:
+Declaring an `ObservationRegistry` bean with the exact snippet from the reference
+documentation does not change the outcome, and it introduces a second problem:
 
 ```bash
 ./gradlew bootRun --args='--spring.profiles.active=custom-registry'
 ```
+
+```text
+[DIAG] spring.batch.job.launch.count present = false
+[DIAG] spring.batch.job timer count = 2 (the job ran once; a count of 2 means duplicated handlers)
+```
+
+The manually registered `DefaultMeterObservationHandler` and the handler that Spring
+Boot's `ObservationRegistryPostProcessor` attaches to every `ObservationRegistry` bean
+both record meters, so every `spring.batch.*` metric is counted twice in a Boot
+application. A bare `ObservationRegistry.create()` bean avoids the duplication in Boot
+(handlers are attached by Boot), but neither variant reaches the `JobOperator`.
 
 ## Analysis
 
