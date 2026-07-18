@@ -99,7 +99,8 @@
 
 - 콜백 메서드에서 `JobExecution`, `StepExecution` 객체가 필요하면 애너테이션 방식 대신 리스너 인터페이스를 구현한다.
 - `@JobScope`, `@StepScope`가 붙은 `@Bean` 메서드는 인터페이스가 아니라 구현 클래스 타입을 반환한다.
-- `SkipListener`와 `RetryListener`는 `faultTolerant()` 호출 뒤에 등록한다.
+- `RetryListener`는 `listener()`가 아니라 전용 메서드인 `retryListener()`로 등록한다. `listener()`에 넘기면 조용히 무시된다.
+- `SkipListener`와 `RetryListener`의 콜백은 `faultTolerant()`와 스킵·재시도 정책이 선언된 스텝에서만 호출된다.
 - 파일처럼 열고 닫아야 하는 자원을 쓰는 리스너는 `ItemStream`도 구현하고 `stream()`으로 함께 등록한다.
 - `afterWrite()`와 에러 콜백은 청크 트랜잭션 안에서 호출된다. 롤백되면 안 되는 DB 변경은 이 콜백 안에서 하지 않거나 `PROPAGATION_REQUIRES_NEW`로 트랜잭션을 분리한다.
 - 에러 콜백을 구현하면 실패를 유도하는 테스트로 그 콜백이 호출되는지 검증한다.
