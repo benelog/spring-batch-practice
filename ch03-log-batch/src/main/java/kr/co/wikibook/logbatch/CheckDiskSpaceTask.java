@@ -1,6 +1,7 @@
 package kr.co.wikibook.logbatch;
 
 import java.io.File;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -8,18 +9,21 @@ import org.springframework.stereotype.Component;
 public class CheckDiskSpaceTask implements CommandLineRunner {
 
   private final NotificationService notificationService;
+  private final int minUsablePercentage;
 
-  public CheckDiskSpaceTask(NotificationService notificationService) {
+  public CheckDiskSpaceTask(
+      NotificationService notificationService,
+      @Value("${disk.min-usable-percentage:10}") int minUsablePercentage) {
     this.notificationService = notificationService;
+    this.minUsablePercentage = minUsablePercentage;
   }
 
   @Override
   public void run(String... args) {
-    if (args.length < 2) {
+    if (args.length < 1) {
       return;
     }
     String directory = args[0];
-    int minUsablePercentage = Integer.parseInt(args[1]);
     var file = new File(directory);
     int actualUsablePercentage = (int) (file.getUsableSpace() * 100 / file.getTotalSpace());
     this.notificationService.send("남은 용량 " + actualUsablePercentage + "%");
