@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.batch:spring-batch-core:6.0.4'
+    implementation 'org.springframework:spring-jdbc:7.0.3'
+    implementation 'io.micrometer:micrometer-core:1.16.4'
+    runtimeOnly 'com.h2database:h2:2.4.240'
+}
+
+application {
+    mainClass = 'com.example.plainbatch.PlainObservabilityOrderApplication'
+}
