@@ -4,12 +4,7 @@ import java.io.File;
 
 public class CheckDiskSpaceTask {
 
-  public void run(String... args) {
-    if (args.length < 2) {
-      return;
-    }
-    String directory = args[0];
-    int minUsablePercentage = Integer.parseInt(args[1]);
+  public void run(String directory, int minUsablePercentage) {
     var file = new File(directory);
     int actualUsablePercentage = (int) (file.getUsableSpace() * 100 / file.getTotalSpace());
     System.out.println("남은 용량 " + actualUsablePercentage + "%");
