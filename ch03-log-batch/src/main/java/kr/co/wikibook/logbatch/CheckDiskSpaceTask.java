@@ -1,6 +1,5 @@
 package kr.co.wikibook.logbatch;
 
-import java.io.File;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CheckDiskSpaceTask implements CommandLineRunner {
 
+  private final SpaceChecker spaceChecker = new SpaceChecker();
   private final NotificationService notificationService;
   private final int minUsablePercentage;
 
@@ -24,11 +24,7 @@ public class CheckDiskSpaceTask implements CommandLineRunner {
       return;
     }
     String directory = args[0];
-    var file = new File(directory);
-    int actualUsablePercentage = (int) (file.getUsableSpace() * 100 / file.getTotalSpace());
-    this.notificationService.send("남은 용량 " + actualUsablePercentage + "%");
-    if (actualUsablePercentage < minUsablePercentage) {
-      throw new IllegalStateException("디스크 용량이 기대치보다 작습니다 : " + actualUsablePercentage + "% 사용 가능");
-    }
+    int usablePercentage = spaceChecker.run(directory, minUsablePercentage);
+    this.notificationService.send("남은 용량 " + usablePercentage + "%");
   }
 }

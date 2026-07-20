@@ -2,14 +2,14 @@ package kr.co.wikibook.diskcheck;
 
 import java.io.File;
 
-public class CheckDiskSpaceTask {
+public class SpaceChecker {
 
-  public void run(String directory, int minUsablePercentage) {
+  public int run(String directory, int minUsablePercentage) {
     var file = new File(directory);
     int actualUsablePercentage = (int) (file.getUsableSpace() * 100 / file.getTotalSpace());
-    System.out.println("남은 용량 " + actualUsablePercentage + "%");
     if (actualUsablePercentage < minUsablePercentage) {
       throw new IllegalStateException("디스크 용량이 기대치보다 작습니다 : " + actualUsablePercentage + "% 사용 가능");
     }
+    return actualUsablePercentage;
   }
 }

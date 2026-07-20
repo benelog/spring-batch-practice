@@ -11,7 +11,7 @@ class CheckDiskSpaceTaskTest {
   MockNotificationService notificationService = new MockNotificationService();
   CheckDiskSpaceTask task = new CheckDiskSpaceTask(notificationService, 1);
 
-  @DisplayName("지정된 디렉토리가 없으면 아무것도 하지 않는다.")
+  @DisplayName("인자가 없으면 아무것도 하지 않는다.")
   @Test
   void doNothingWhenEmptyArgument() {
     task.run();

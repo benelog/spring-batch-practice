@@ -6,6 +6,7 @@ public class Main {
       System.out.println("검사할 디렉터리와 남은 용량의 기대치(%)를 차례로 입력해야 합니다.");
       return;
     }
-    new CheckDiskSpaceTask().run(args[0], Integer.parseInt(args[1]));
+    int usablePercentage = new SpaceChecker().run(args[0], Integer.parseInt(args[1]));
+    System.out.println("남은 용량 " + usablePercentage + "%");
   }
 }

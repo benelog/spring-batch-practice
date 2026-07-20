@@ -1,6 +1,5 @@
 package kr.co.wikibook.logbatch;
 
-import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.ILoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -8,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 //@Component
 public class CheckDiskSpaceTask implements CommandLineRunner {
 
+  private final SpaceChecker spaceChecker = new SpaceChecker();
   private final Logger logger;
 
   public CheckDiskSpaceTask(ILoggerFactory loggerFactory) {
@@ -19,13 +19,7 @@ public class CheckDiskSpaceTask implements CommandLineRunner {
     if (args.length < 2) {
       return;
     }
-    String directory = args[0];
-    int minUsablePercentage = Integer.parseInt(args[1]);
-    var file = new File(directory);
-    int actualUsablePercentage = (int) (file.getUsableSpace() * 100 / file.getTotalSpace());
-    logger.info("남은 용량 {}%", actualUsablePercentage);
-    if (actualUsablePercentage < minUsablePercentage) {
-      throw new IllegalStateException("디스크 용량이 기대치보다 작습니다 : " + actualUsablePercentage + "% 사용 가능");
-    }
+    int usablePercentage = spaceChecker.run(args[0], Integer.parseInt(args[1]));
+    logger.info("남은 용량 {}%", usablePercentage);
   }
 }
