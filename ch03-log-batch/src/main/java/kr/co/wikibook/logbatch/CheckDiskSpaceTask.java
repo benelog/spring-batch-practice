@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CheckDiskSpaceTask implements CommandLineRunner {
 
-  private final SpaceChecker spaceChecker = new SpaceChecker();
+  private final DiskSpaceMeter diskSpaceMeter = new DiskSpaceMeter();
   private final NotificationService notificationService;
   private final int minUsablePercentage;
 
@@ -24,7 +24,10 @@ public class CheckDiskSpaceTask implements CommandLineRunner {
       return;
     }
     String directory = args[0];
-    int usablePercentage = spaceChecker.run(directory, minUsablePercentage);
+    int usablePercentage = diskSpaceMeter.getUsablePercentage(directory);
     this.notificationService.send("남은 용량 " + usablePercentage + "%");
+    if (usablePercentage < minUsablePercentage) {
+      throw new IllegalStateException("디스크 용량이 기대치보다 작습니다 : " + usablePercentage + "% 사용 가능");
+    }
   }
 }

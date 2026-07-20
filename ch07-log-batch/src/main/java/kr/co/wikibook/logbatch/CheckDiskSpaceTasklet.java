@@ -10,7 +10,7 @@ import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 
 public class CheckDiskSpaceTasklet implements Tasklet {
 
-  private final SpaceChecker spaceChecker = new SpaceChecker();
+  private final DiskSpaceMeter diskSpaceMeter = new DiskSpaceMeter();
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
@@ -18,12 +18,15 @@ public class CheckDiskSpaceTasklet implements Tasklet {
     String directory = (String) jobParameters.get("directory");
     long minUsablePercentage = (long) jobParameters.get("minUsablePercentage");
 
-    int usablePercentage = spaceChecker.run(directory, (int) minUsablePercentage);
+    int usablePercentage = diskSpaceMeter.getUsablePercentage(directory);
 
     JobExecution jobExecution = contribution.getStepExecution().getJobExecution();
     ExecutionContext jobExecutionContext = jobExecution.getExecutionContext();
     jobExecutionContext.putLong("usablePercentage", usablePercentage);
 
+    if (usablePercentage < minUsablePercentage) {
+      throw new IllegalStateException("디스크 용량이 기대치보다 작습니다 : " + usablePercentage + "% 사용 가능");
+    }
     return RepeatStatus.FINISHED;
   }
 }
