@@ -20,7 +20,7 @@ class AccessLogJsonWriterTest {
     Path outputPath = tempPath.resolve("access-log.json");
     WritableResource resource = new FileSystemResource(outputPath);
     JsonFileItemWriter<AccessLog> writer = JsonComponents.buildJsonItemWriter(resource);
-    var item = new AccessLog(Instant.parse("2025-07-28T11:14:16Z"), "127.0.0.1", "benelog");
+    var item = new AccessLog(Instant.parse("2026-07-28T11:14:16Z"), "127.0.0.1", "benelog");
 
     // when
     writer.open(new ExecutionContext());
@@ -30,7 +30,7 @@ class AccessLogJsonWriterTest {
     // then
     String jsonOutput = Files.readString(outputPath);
     assertThat(jsonOutput).contains("""
-        {"accessDateTime":"2025-07-28T11:14:16Z","ip":"127.0.0.1","username":"benelog"}
+        {"accessDateTime":"2026-07-28T11:14:16Z","ip":"127.0.0.1","username":"benelog"}
         """);
   }
 }

@@ -31,7 +31,7 @@ class HelloParamJobTest {
   @Test
   void startJobWithValidParameter() throws Exception {
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addLocalDate("helloDate", LocalDate.of(2025, 7, 28))
+        .addLocalDate("helloDate", LocalDate.of(2026, 7, 28))
         .toJobParameters();
     JobExecution execution = testUtils.startJob(params);
     assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
@@ -40,7 +40,7 @@ class HelloParamJobTest {
   @Test
   void startJobWithInvalidParameter() {
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addLocalDate("goodDate", LocalDate.of(2025, 7, 28))
+        .addLocalDate("goodDate", LocalDate.of(2026, 7, 28))
         .toJobParameters();
     assertThatExceptionOfType(InvalidJobParametersException.class)
         .isThrownBy(() -> testUtils.startJob(params))

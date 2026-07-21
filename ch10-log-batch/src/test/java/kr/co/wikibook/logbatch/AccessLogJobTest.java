@@ -27,7 +27,7 @@ public class AccessLogJobTest {
   ) throws Exception {
     testUtils.setJob(job);
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addLocalDate("date", LocalDate.of(2025, 7, 28))
+        .addLocalDate("date", LocalDate.of(2026, 7, 28))
         .toJobParameters();
 
     JobExecution execution = testUtils.startJob(params);

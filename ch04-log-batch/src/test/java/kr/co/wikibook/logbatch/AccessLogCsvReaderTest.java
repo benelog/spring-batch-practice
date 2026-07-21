@@ -14,7 +14,7 @@ class AccessLogCsvReaderTest {
   @Test
   void read() throws IOException {
     // given
-    var resource = new ClassPathResource("2025-07-28.csv");
+    var resource = new ClassPathResource("2026-07-28.csv");
     var reader = new AccessLogCsvReader(resource);
 
     // when

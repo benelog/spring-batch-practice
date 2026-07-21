@@ -18,7 +18,7 @@ public class AccessLogCsvMultiResourceWriterTest {
     Path outputPath = tempPath.resolve("access-log.txt");
     var resource = new FileSystemResource(outputPath);
     MultiResourceItemWriter<AccessLog> writer = AccessLogComponents.buildMultiResourceItemWriter(resource, 1);
-    var item = new AccessLog(Instant.parse("2025-07-28T11:14:16Z"), "127.0.0.1", "benelog");
+    var item = new AccessLog(Instant.parse("2026-07-28T11:14:16Z"), "127.0.0.1", "benelog");
 
     // when
     writer.open(new ExecutionContext());

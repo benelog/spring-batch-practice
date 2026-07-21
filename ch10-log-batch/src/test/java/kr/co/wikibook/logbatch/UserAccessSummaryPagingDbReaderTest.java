@@ -20,7 +20,7 @@ class UserAccessSummaryPagingDbReaderTest {
   @Sql("classpath:/access-log.sql")
   void readItems(@Autowired DataSource dataSource) throws Exception {
     // given
-    var date = LocalDate.of(2025, 7, 28);
+    var date = LocalDate.of(2026, 7, 28);
     JdbcPagingItemReader<UserAccessSummary> reader = UserAccessSummaryComponents.buildDbPagingReader(
         dataSource, date, 2
     );

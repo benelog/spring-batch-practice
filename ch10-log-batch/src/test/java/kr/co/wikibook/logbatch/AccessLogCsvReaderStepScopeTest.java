@@ -25,7 +25,7 @@ class AccessLogCsvReaderStepScopeTest {
   @Test
   void read(@Autowired FlatFileItemReader<AccessLog> reader) throws Exception {
     JobParameters jobParameters = new JobParametersBuilder()
-        .addLocalDate("date", LocalDate.of(2025, 7, 28))
+        .addLocalDate("date", LocalDate.of(2026, 7, 28))
         .toJobParameters();
     StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(jobParameters);
 

@@ -21,7 +21,7 @@ class AccessLogCsvToDbTaskTest {
   public void runTask(@Autowired DataSource dataSource) throws Exception {
     // given
     CommandLineRunner task = new AccessLogJobConfig(
-        LocalDate.of(2025, 7, 28),
+        LocalDate.of(2026, 7, 28),
         dataSource,
         Path.of("src/test/resources/")
     ).accessLogCsvToDbTask();

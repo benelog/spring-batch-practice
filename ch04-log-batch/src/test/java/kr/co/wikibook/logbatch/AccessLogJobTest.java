@@ -14,11 +14,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 @SpringBootTest({
-    "date=2025-07-28",
+    "date=2026-07-28",
     "base-path=src/test/resources/"
 })
 public class AccessLogJobTest {
-  static File output = new File("src/test/resources/2025-07-28_summary.csv");
+  static File output = new File("src/test/resources/2026-07-28_summary.csv");
 
   @BeforeAll
   static void deleteOutput() {

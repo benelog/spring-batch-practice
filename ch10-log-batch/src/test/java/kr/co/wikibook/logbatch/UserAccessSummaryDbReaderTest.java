@@ -20,14 +20,14 @@ class UserAccessSummaryDbReaderTest {
 
   @Test
   @Sql(statements = {
-      INSERT + "('2025-07-28 11:14', '175.242.91.54', 'benelog')",
-      INSERT + "('2025-07-28 11:15', '192.168.0.1', 'benelog')",
-      INSERT + "('2025-07-28 11:16', '192.168.0.3', 'jojoldu')"
+      INSERT + "('2026-07-28 11:14', '175.242.91.54', 'benelog')",
+      INSERT + "('2026-07-28 11:15', '192.168.0.1', 'benelog')",
+      INSERT + "('2026-07-28 11:16', '192.168.0.3', 'jojoldu')"
   })
     // <3>
   void read(@Autowired DataSource dataSource) throws Exception {
     // given
-    var date = LocalDate.of(2025, 7, 28);
+    var date = LocalDate.of(2026, 7, 28);
     JdbcCursorItemReader<UserAccessSummary> reader = UserAccessSummaryComponents.buildDbCursorReader(
         dataSource, date, true
     );
