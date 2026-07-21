@@ -12,7 +12,7 @@ public class ConsoleOutputCommandRunner implements CommandRunner {
       throws IOException {
     ProcessBuilder builder = new ProcessBuilder(command)
         .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-        .redirectError((ProcessBuilder.Redirect.INHERIT))
+        .redirectError(ProcessBuilder.Redirect.INHERIT)
         .directory(directory);
 
     if (environmentParams != null) {
