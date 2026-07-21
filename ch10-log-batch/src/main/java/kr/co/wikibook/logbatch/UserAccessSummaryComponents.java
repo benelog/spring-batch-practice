@@ -6,6 +6,7 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import javax.sql.DataSource;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.batch.infrastructure.item.database.JdbcCursorItemReader;
 import org.springframework.batch.infrastructure.item.database.JdbcPagingItemReader;
 import org.springframework.batch.infrastructure.item.database.Order;
@@ -14,6 +15,7 @@ import org.springframework.batch.infrastructure.item.database.builder.JdbcPaging
 import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
 import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.core.io.WritableResource;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class UserAccessSummaryComponents {
 
@@ -67,5 +69,32 @@ public class UserAccessSummaryComponents {
     } catch (Exception ex) {
       throw new RuntimeException(ex);
     }
+  }
+
+  public static JdbcCursorItemReader<String> buildUsernameReader(
+      DataSource dataSource, LocalDate date
+  ) {
+    Instant from = date.atStartOfDay().toInstant(ZoneOffset.UTC);
+    Instant to = from.plus(1, ChronoUnit.DAYS);
+    return new JdbcCursorItemReaderBuilder<String>()
+        .name("usernameReader")
+        .dataSource(dataSource)
+        .sql(AccessLogSql.SELECT_DISTINCT_USERNAME)
+        .queryArguments(from, to)
+        .rowMapper((rs, rowNum) -> rs.getString("username")) // <1>
+        .build();
+  }
+
+  public static ItemProcessor<String, UserAccessSummary> buildAccessCountProcessor(
+      DataSource dataSource, LocalDate date
+  ) {
+    Instant from = date.atStartOfDay().toInstant(ZoneOffset.UTC);
+    Instant to = from.plus(1, ChronoUnit.DAYS);
+    var jdbcTemplate = new JdbcTemplate(dataSource);
+    return username -> {
+      int accessCount = jdbcTemplate.queryForObject(
+          AccessLogSql.COUNT_BY_USERNAME, Integer.class, from, to, username); // <2>
+      return new UserAccessSummary(username, accessCount);
+    };
   }
 }

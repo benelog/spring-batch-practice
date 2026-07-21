@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Isolation;
 @SpringBootApplication
 @EnableBatchProcessing
 @EnableJdbcJobRepository(
-    dataSourceRef = "batchDataSource",
-    transactionManagerRef = "batchTransactionManager",
-    executionContextSerializerRef ="jacksonSerializer",
+    dataSourceRef = "jobDataSource",
+    transactionManagerRef = "jobDbTransactionManager",
+    executionContextSerializerRef = "jacksonSerializer",
     isolationLevelForCreate = Isolation.REPEATABLE_READ
 )
 public class LogBatchApplication {

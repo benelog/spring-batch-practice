@@ -1,6 +1,5 @@
 package kr.co.wikibook.logbatch;
 
-import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.batch.jdbc.autoconfigure.BatchDataSource;
@@ -26,9 +25,6 @@ public class DbConfig {
     return new JdbcTransactionManager(mainDataSource);
   }
 
-  public HikariDataSource dataSource() {
-    return DataSourceBuilder.create().type(HikariDataSource.class).build();
-  }
   @Bean
   @BatchDataSource
   @ConfigurationProperties(prefix = "job-db")

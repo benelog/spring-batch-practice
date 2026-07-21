@@ -1,12 +1,10 @@
 package kr.co.wikibook.logbatch.batchconfig;
 
 import javax.sql.DataSource;
-import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;
 import org.springframework.batch.core.configuration.support.JdbcDefaultBatchConfiguration;
 import org.springframework.batch.core.repository.ExecutionContextSerializer;
 import org.springframework.batch.core.repository.dao.JacksonExecutionContextStringSerializer;
 import org.springframework.beans.factory.annotation.Qualifier;
-
 import org.springframework.boot.batch.jdbc.autoconfigure.BatchDataSourceScriptDatabaseInitializer;
 import org.springframework.boot.batch.jdbc.autoconfigure.BatchJdbcProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,12 +16,11 @@ import org.springframework.transaction.annotation.Isolation;
 
 @Configuration
 @EnableConfigurationProperties(BatchJdbcProperties.class)
-public class JdbcBatchConfig extends JdbcDefaultBatchConfiguration{
+public class JdbcBatchConfig extends JdbcDefaultBatchConfiguration {
   private final BatchJdbcProperties properties;
   private final PlatformTransactionManager transactionManager;
 
   private final DataSource dataSource;
-
 
   public JdbcBatchConfig(
       BatchJdbcProperties properties,
