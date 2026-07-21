@@ -20,6 +20,6 @@ public class CountAccessLogTask implements CommandLineRunner {
   @Override
   public void run(String... args) {
     Long count = jdbc.queryForObject("SELECT COUNT(1) FROM access_log", Long.class);
-    notificationService.send("access_log 테이블의 건 수 : " + count);
+    notificationService.send("access_log 테이블의 건수 : " + count);
   }
 }

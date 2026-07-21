@@ -21,7 +21,7 @@ class CountAccessLogTaskTest {
 
     // then
     String message = notificationService.getLastMessage();
-    assertThat(message).isEqualTo("access_log 테이블의 건 수 : 0");
+    assertThat(message).isEqualTo("access_log 테이블의 건수 : 0");
   }
 
   private DataSource buildDataSource() {
