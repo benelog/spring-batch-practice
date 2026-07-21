@@ -33,7 +33,7 @@
 
 ### 파일 입출력 테스트
 
-- 리더와 라이터를 생성하는 메서드는 애플리케이션 컨텍스트를 올리지 않는 테스트로 먼저 검증한다. 이때 생성한 리더·라이터의 `afterPropertiesSet()`을 직접 호출한다.
+- ItemReader와 ItemWriter를 생성하는 메서드는 애플리케이션 컨텍스트를 올리지 않는 테스트로 먼저 검증한다. 이때 생성한 리더·라이터의 `afterPropertiesSet()`을 직접 호출한다.
 - 읽기 테스트의 샘플 파일에 정상 형식의 줄만 넣지 않는다. 형식이 잘못된 줄을 넣은 파일로 실패 동작도 검증한다.
 
 ### DB 입출력 테스트
@@ -69,14 +69,14 @@
 
 - 반복해서 읽고 가공하고 쓰는 작업은 Tasklet 하나로 구현하지 말고, ItemReader, ItemProcessor, ItemWriter를 나눈 청크 기반 스텝으로 만든다.
 - 직접 구현하기 전에 스프링 배치가 제공하는 ItemReader, ItemProcessor, ItemWriter 구현체가 있는지 먼저 확인하고, 있으면 그것을 쓴다.
-- 타입 변환, 필터링, 검증은 reader나 writer에 섞지 말고 ItemProcessor에 두고, 그 클래스만 따로 테스트한다.
+- 타입 변환, 필터링, 검증은 ItemReader나 ItemWriter에 섞지 말고 ItemProcessor에 두고, 그 클래스만 따로 테스트한다.
 - DB에 쓰는 스텝을 `StepBuilder`로 구성할 때는 `transactionManager(...)`로 `JdbcTransactionManager` 같은 실제 트랜잭션 관리자를 지정한다.
 - `@JobScope` / `@StepScope`가 붙은 `@Bean` 메서드의 반환형은 인터페이스가 아니라 구체적인 클래스로 선언한다.
 - 청크 크기는 임의로 정하지 말고, 지시에 없으면 사람에게 묻는다.
 
 ### 파일 입출력
 
-- 다수 건의 데이터를 파일로 읽고 쓰는 요구사항에는 스프링 배치가 제공하는 구현체(`FlatFileItemReader`, `JsonItemReader`, `StaxEventItemReader`와 대응하는 Writer)를 먼저 검토한다.
+- 다수 건의 데이터를 파일로 읽고 쓰는 요구사항에는 스프링 배치가 제공하는 구현체(`FlatFileItemReader`, `JsonItemReader`, `StaxEventItemReader`와 대응하는 ItemWriter)를 먼저 검토한다.
 - 파일의 인코딩, 구분자가 지정되지 않았다면 사람에게 묻는다.
 - 여러 파일을 다룰 때는 파일 하나를 처리하는 리더·라이터를 먼저 만들고 `MultiResourceItemReader`, `MultiResourceItemWriter`와 조합한다.
 

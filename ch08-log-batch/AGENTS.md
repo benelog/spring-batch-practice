@@ -64,7 +64,7 @@
 
 - 반복해서 읽고 가공하고 쓰는 작업은 Tasklet 하나로 구현하지 말고, ItemReader, ItemProcessor, ItemWriter를 나눈 청크 기반 스텝으로 만든다.
 - 직접 구현하기 전에 스프링 배치가 제공하는 ItemReader, ItemProcessor, ItemWriter 구현체가 있는지 먼저 확인하고, 있으면 그것을 쓴다.
-- 타입 변환, 필터링, 검증은 reader나 writer에 섞지 말고 ItemProcessor에 두고, 그 클래스만 따로 테스트한다.
+- 타입 변환, 필터링, 검증은 ItemReader나 ItemWriter에 섞지 말고 ItemProcessor에 두고, 그 클래스만 따로 테스트한다.
 - DB에 쓰는 스텝을 `StepBuilder`로 구성할 때는 `transactionManager(...)`로 `JdbcTransactionManager` 같은 실제 트랜잭션 관리자를 지정한다.
 - `@JobScope` / `@StepScope`가 붙은 `@Bean` 메서드의 반환형은 인터페이스가 아니라 구체적인 클래스로 선언한다.
 - 청크 크기는 임의로 정하지 말고, 지시에 없으면 사람에게 묻는다.
