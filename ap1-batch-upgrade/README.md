@@ -14,7 +14,10 @@
 | `memo-batch5` | 5.2 | 3.5.6 | 21 | 9.1.0 |
 | `memo-batch6` | 6.0.4 | 4.1.0 | 25 | 9.1.0 |
 
-`memo-batch4`는 그레이들 7.6.1이 JDK 20 이상에서 동작하지 않으므로 JDK 17로 실행한다.
+`memo-batch4`는 JDK 17로 실행한다.
+그레이들 7.6.1이 실행을 공식 지원하는 JDK는 19까지이고([호환성 표](https://docs.gradle.org/current/userguide/compatibility.html)),
+스프링 부트 2.7.18이 지원하는 JDK는 21까지다.
+더 높은 JDK로 띄워도 이 예제의 테스트는 통과하지만(JDK 21과 25에서 확인) 지원 범위 밖이라 보장되지 않는다.
 
 ```bash
 cd memo-batch4 && JAVA_HOME=~/.sdkman/candidates/java/17.0.16-tem ./gradlew test
