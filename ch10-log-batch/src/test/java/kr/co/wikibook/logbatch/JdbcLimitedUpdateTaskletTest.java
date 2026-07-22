@@ -25,7 +25,7 @@ class JdbcLimitedUpdateTaskletTest {
       INSERT + "('2024-02-10 07:14', '192.168.0.1', 'benelog')",
       INSERT + "('2024-02-10 07:14', '192.168.0.3', 'benelog')"
   })
-  public void execute(@Autowired DataSource dataSource) throws Exception {
+  void execute(@Autowired DataSource dataSource) throws Exception {
     // given
     var tasklet = new JdbcLimitedUpdateTasklet(
         dataSource,

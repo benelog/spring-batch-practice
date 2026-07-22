@@ -1,7 +1,7 @@
 package kr.co.wikibook.logbatch;
 
 public class AccessLogSql {
-  public final static String INSERT = """
+  public static final String INSERT = """
       INSERT INTO access_log(access_date_time, ip, username)
       VALUES (:accessDateTime, :ip, :username)
       """;
