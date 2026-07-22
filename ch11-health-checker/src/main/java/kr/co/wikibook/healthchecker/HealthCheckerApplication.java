@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class HealthCheckerApplication {
-  public static void main(String[] args) {
+  static void main(String[] args) {
     SpringApplication.run(HealthCheckerApplication.class, args);
   }
 

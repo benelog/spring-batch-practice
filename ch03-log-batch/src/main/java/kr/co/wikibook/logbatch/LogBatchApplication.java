@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
 public class LogBatchApplication {
-  public static void main(String[] args) {
+  static void main(String[] args) {
     SpringApplication.run(LogBatchApplication.class, args);
   }
 

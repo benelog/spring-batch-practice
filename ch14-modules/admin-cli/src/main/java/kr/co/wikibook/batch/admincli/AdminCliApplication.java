@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 @SpringBootApplication
 @Import({BatchConfig.class, HelloJobGroupContexts.class, ReportJobGroupContexts.class})
 public class AdminCliApplication {
-  public static void main(String[] args) {
+  static void main(String[] args) {
     ApplicationContext context = SpringApplication.run(AdminCliApplication.class, args);
     int exitCode = SpringApplication.exit(context);
     System.exit(exitCode);
