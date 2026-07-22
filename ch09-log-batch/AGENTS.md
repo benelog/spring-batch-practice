@@ -33,7 +33,7 @@
 
 ### 파일 입출력 테스트
 
-- ItemReader와 ItemWriter를 생성하는 메서드는 애플리케이션 컨텍스트를 올리지 않는 테스트로 먼저 검증한다. 이때 생성한 리더·라이터의 `afterPropertiesSet()`을 직접 호출한다.
+- ItemReader와 ItemWriter를 생성하는 메서드는 애플리케이션 컨텍스트를 올리지 않는 테스트로 먼저 검증한다. 이때 `InitializingBean`을 구현한 리더·라이터라면 `afterPropertiesSet()`을 직접 호출한다.
 - 읽기 테스트의 샘플 파일에 정상 형식의 줄만 넣지 않는다. 형식이 잘못된 줄을 넣은 파일로 실패 동작도 검증한다.
 
 ### DB 입출력 테스트
