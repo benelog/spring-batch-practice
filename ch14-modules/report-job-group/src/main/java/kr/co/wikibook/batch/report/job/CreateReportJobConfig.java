@@ -39,7 +39,7 @@ public class CreateReportJobConfig {
 
         .from(formatDecider)
         .on("*")
-        .fail() // <4>
+        .fail()
         .end()
         .build();
   }

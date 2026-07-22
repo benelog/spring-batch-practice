@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @Import({BatchConfig.class, HelloJobGroupContexts.class, ReportJobGroupContexts.class})
 public class AdminWebApplication {
-  static void main(String[] args) {
+  public static void main(String[] args) {
     SpringApplication.run(AdminWebApplication.class, args);
   }
 }
