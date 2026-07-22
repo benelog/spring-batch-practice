@@ -28,8 +28,8 @@ class DeleteOldAccessLogTaskletTest {
 
   @Test
   void invalidPeriod() { // <1>
-    var startDay = LocalDate.of(2024, 4, 3);
-    var endDay = LocalDate.of(2024, 4, 2);
+    var startDay = LocalDate.of(2025, 4, 3);
+    var endDay = LocalDate.of(2025, 4, 2);
 
     assertThatIllegalArgumentException().isThrownBy(() ->
         new DeleteOldAccessLogTasklet(this.dataSource, startDay, endDay)
@@ -40,16 +40,16 @@ class DeleteOldAccessLogTaskletTest {
   void deleteAccessLogs() {
     // given
     var jdbc = new NamedParameterJdbcTemplate(this.dataSource);
-    var log1 = new AccessLog(Instant.parse("2024-04-01T11:14:16Z"), "192.168.0.1", "benelog");
+    var log1 = new AccessLog(Instant.parse("2025-04-01T11:14:16Z"), "192.168.0.1", "benelog");
     jdbc.update(AccessLogSql.INSERT, new BeanPropertySqlParameterSource(log1));
-    var log2 = new AccessLog(Instant.parse("2024-04-02T11:14:16Z"), "192.168.0.1", "benelog");
+    var log2 = new AccessLog(Instant.parse("2025-04-02T11:14:16Z"), "192.168.0.1", "benelog");
     jdbc.update(AccessLogSql.INSERT, new BeanPropertySqlParameterSource(log2));
 
     StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution();
     var stepContribution = new StepContribution(stepExecution);
     var chunkContext = new ChunkContext(new StepContext(stepExecution));
-    var startDay = LocalDate.of(2024, 4, 1);
-    var endDay = LocalDate.of(2024, 4, 2);
+    var startDay = LocalDate.of(2025, 4, 1);
+    var endDay = LocalDate.of(2025, 4, 2);
 
     // when
     var task = new DeleteOldAccessLogTasklet(this.dataSource, startDay, endDay);
