@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemReader;
-import org.springframework.batch.infrastructure.item.ItemStream;
+import org.springframework.batch.infrastructure.item.ItemStreamReader;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -40,6 +40,6 @@ class AccessLogCsvReaderTest {
   void instanceOfItemStream() {
     var config = new AccessLogJobConfig(null, null, Path.of("."));
     ItemReader<AccessLog> accessLogCsvReader = config.accessLogCsvReader(null);
-    assertThat(accessLogCsvReader).isInstanceOf(ItemStream.class);
+    assertThat(accessLogCsvReader).isInstanceOf(ItemStreamReader.class);
   }
 }
