@@ -52,3 +52,11 @@ cd memo-batch6 && ./gradlew test
 
 `db/job-repo`에 메타 DB, `db/memo-repo`에 `memo` 테이블이 생긴다.
 H2 콘솔로 들여다보려면 `./gradlew jobDb` 또는 `./gradlew mainDb`를 실행한다.
+
+## 업그레이드 작업 지시서
+
+부록 B의 'AI 에이전트로 업그레이드 실행하기' 절에서 안내하는 문서다.
+AI 에이전트에 컨텍스트로 바로 넘길 수 있게 작업 원칙, 검색 패턴, 체크리스트, 검수 포인트를 담았다.
+
+- [spring-batch-4-to-6.md](spring-batch-4-to-6.md): 스프링 배치 4 → 6 (스프링 부트 2.7 → 4)
+- [spring-batch-5-to-6.md](spring-batch-5-to-6.md): 스프링 배치 5 → 6 (스프링 부트 3 → 4)
