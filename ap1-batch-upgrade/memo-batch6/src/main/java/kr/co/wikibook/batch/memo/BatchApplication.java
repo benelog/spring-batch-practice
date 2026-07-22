@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class BatchApplication {
-  public static void main(String[] args) {
+  static void main(String[] args) {
     ApplicationContext context = SpringApplication.run(BatchApplication.class, args);
     int exitCode = SpringApplication.exit(context);
     System.exit(exitCode);
