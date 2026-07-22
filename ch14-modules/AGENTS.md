@@ -125,9 +125,10 @@
 
 ### 배치 모니터링
 
-- 커스텀 메트릭 이름은 'batch.settlement.amount'처럼 점(.)으로 구분해서 짓고, 'job' 태그를 붙인다.
+- 커스텀 메트릭 이름은 'batch.settlement.amount'처럼 점(.)으로 구분해서 짓고, 잡 이름은 'batch.job' 태그로 붙인다. 'job'은 프로메테우스가 수집 대상 이름으로 이미 쓰므로 태그 이름으로 쓰지 않는다.
 - (스프링 부트에 의존하지 않는 CLI 모듈이 있을 경우) 메트릭은 마이크로미터 전역 레지스트리(`Metrics.globalRegistry`)에 등록한다.
 - (웹 모듈의 경우) Actuator 엔드포인트는 필요한 것만 노출한다. `management.endpoints.web.exposure.include=*`를 쓰지 않는다.
+- 프로메테우스 경보 규칙 파일을 추가하면 'prometheus.yml'의 `rule_files`에 등록하고, 컨테이너로 실행할 때는 볼륨 마운트도 함께 추가한다.
 
 ## 모듈 구성과 의존 관계
 

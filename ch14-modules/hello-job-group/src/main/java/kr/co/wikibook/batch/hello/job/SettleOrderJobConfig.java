@@ -56,7 +56,7 @@ public class SettleOrderJobConfig {
 
   ItemWriter<Order> settlementWriter() {
     Counter amountCounter = Counter.builder("batch.settlement.amount")
-        .tag("job", "settleOrderJob")
+        .tag("batch.job", "settleOrderJob")
         .description("정산된 주문 금액 합계")
         .register(Metrics.globalRegistry);
     return chunk -> {
