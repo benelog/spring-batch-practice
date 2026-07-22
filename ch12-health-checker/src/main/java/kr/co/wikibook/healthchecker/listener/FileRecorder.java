@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.healthchecker.listener;
+package kr.co.wikibook.healthchecker.listener;
 
 import java.io.FileWriter;
 import java.io.IOException;

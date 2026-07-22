@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.healthchecker.util;
+package kr.co.wikibook.healthchecker.util;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

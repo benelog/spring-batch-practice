@@ -1,7 +1,7 @@
-package kr.co.wikibook.batch.healthchecker.listener;
+package kr.co.wikibook.healthchecker.listener;
 
 import java.util.List;
-import kr.co.wikibook.batch.healthchecker.util.Times;
+import kr.co.wikibook.healthchecker.util.Times;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;

@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.healthchecker.util;
+package kr.co.wikibook.healthchecker.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

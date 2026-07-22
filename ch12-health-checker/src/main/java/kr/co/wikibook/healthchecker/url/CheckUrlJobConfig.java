@@ -1,16 +1,16 @@
-package kr.co.wikibook.batch.healthchecker.url;
+package kr.co.wikibook.healthchecker.url;
 
 import java.net.http.HttpConnectTimeoutException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
-import kr.co.wikibook.batch.healthchecker.listener.EmailJobReporter;
-import kr.co.wikibook.batch.healthchecker.listener.LogResourceListener;
-import kr.co.wikibook.batch.healthchecker.listener.RetryItemRecorder;
-import kr.co.wikibook.batch.healthchecker.listener.RetryLogListener;
-import kr.co.wikibook.batch.healthchecker.listener.SkipItemRecorder;
-import kr.co.wikibook.batch.healthchecker.listener.StepLogListener;
-import kr.co.wikibook.batch.healthchecker.util.Configs;
+import kr.co.wikibook.healthchecker.listener.EmailJobReporter;
+import kr.co.wikibook.healthchecker.listener.LogResourceListener;
+import kr.co.wikibook.healthchecker.listener.RetryItemRecorder;
+import kr.co.wikibook.healthchecker.listener.RetryLogListener;
+import kr.co.wikibook.healthchecker.listener.SkipItemRecorder;
+import kr.co.wikibook.healthchecker.listener.StepLogListener;
+import kr.co.wikibook.healthchecker.util.Configs;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
@@ -18,8 +18,6 @@ import org.springframework.batch.core.job.parameters.DefaultJobParametersValidat
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
-import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
 import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
@@ -69,15 +67,6 @@ public class CheckUrlJobConfig {
   }
 
   @Bean
-  public Step logResourceMetaStep() {
-    return new StepBuilder("logResourceMetaStep", jobRepository)
-        .allowStartIfComplete(true)
-        .startLimit(5)
-        .tasklet(logResourceMetaTaslket(null))
-        .build();
-  }
-
-  @Bean
   public Step checkUrlStep() {
     var retryPolicy = RetryPolicy.builder()
         .maxRetries(3)
@@ -109,13 +98,6 @@ public class CheckUrlJobConfig {
         .retryListener(new RetryLogListener())
         .retryListener(retryItemRecorder)
         .build();
-  }
-
-  @Bean
-  @JobScope
-  public Tasklet logResourceMetaTaslket(@Value(INPUT_FILE_PARAM_EXP) FileSystemResource urlListFile) {
-    var task = new LogResourceMetaTask(urlListFile);
-    return new CallableTaskletAdapter(task);
   }
 
   @Bean

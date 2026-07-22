@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.healthchecker.url;
+package kr.co.wikibook.healthchecker.url;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,5 +33,22 @@ class CheckUrlJobTest {
     assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
     Path outputFile = Path.of(CheckUrlJobConfig.OUTPUT_FILE_PATH);
     assertThat(outputFile).isNotEmptyFile();
+  }
+
+  @Test
+  void executeWithEmptyFile(
+      @Autowired JobOperatorTestUtils testUtils,
+      @Autowired Job checkUrlJob
+  ) throws Exception {
+    testUtils.setJob(checkUrlJob);
+    var urls = new ClassPathResource("empty-urls.txt");
+    JobParameters params = testUtils.getUniqueJobParametersBuilder()
+        .addString(CheckUrlJobConfig.INPUT_FILE_PARAM, urls.getFile().getPath())
+        .toJobParameters();
+
+    JobExecution execution = testUtils.startJob(params);
+
+    assertThat(execution.getExitStatus().getExitCode()).isEqualTo("FAILED");
+    assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
   }
 }

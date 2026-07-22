@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.healthchecker.url;
+package kr.co.wikibook.healthchecker.url;
 
 import java.io.IOException;
 import java.net.URI;
@@ -9,8 +9,11 @@ import java.time.Duration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.listener.ItemProcessListener;
+import org.springframework.batch.core.annotation.AfterStep;
 import org.springframework.batch.core.annotation.BeforeStep;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 
 public class CallUrlProcessor implements
@@ -29,6 +32,14 @@ public class CallUrlProcessor implements
   @BeforeStep
   public void logRequestTimeout() {
     logger.info("requestTimeout : {} seconds", this.requestTimeout.getSeconds());
+  }
+
+  @AfterStep
+  public ExitStatus failWhenNoInput(StepExecution stepExecution) {
+    if (stepExecution.getReadCount() == 0) {
+      return ExitStatus.FAILED;
+    }
+    return null;
   }
 
   @Override

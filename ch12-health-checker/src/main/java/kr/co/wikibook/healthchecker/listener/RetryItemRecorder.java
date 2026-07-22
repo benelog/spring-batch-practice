@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.healthchecker.listener;
+package kr.co.wikibook.healthchecker.listener;
 
 import java.nio.file.Path;
 import org.jspecify.annotations.Nullable;

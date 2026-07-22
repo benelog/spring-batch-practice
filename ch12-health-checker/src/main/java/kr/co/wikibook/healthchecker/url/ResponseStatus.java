@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.healthchecker.url;
+package kr.co.wikibook.healthchecker.url;
 
 import java.net.URI;
 

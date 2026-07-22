@@ -1,4 +1,4 @@
-package kr.co.wikibook.batch.healthchecker;
+package kr.co.wikibook.healthchecker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
