@@ -6,7 +6,7 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
 @Configuration
-public class JobLauncherConfig {
+public class TaskExecutorConfig {
   @Bean
   public TaskExecutor taskExecutor() {
     var taskExecutor = new SimpleAsyncTaskExecutor();

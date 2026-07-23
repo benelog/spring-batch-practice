@@ -38,7 +38,7 @@ public class AccessLogComponents {
     FlatFileItemWriter<AccessLog> delegate = buildDelegateToWrite(resource);
     delegate.afterPropertiesSet();
     return new MultiResourceItemWriterBuilder<AccessLog>()
-        .name("accessLogJsonMultiWriter")
+        .name("accessLogCsvMultiWriter")
         .resource(resource) // <1>
         .delegate(delegate) // <2>
         .itemCountLimitPerResource(itemsPerResource) // <3>

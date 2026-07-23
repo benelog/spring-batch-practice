@@ -7,3 +7,11 @@ groups:
           severity: critical
         annotations:
           summary: "배치 잡 실패 감지"
+      - alert: SettleOrderJobNotCompleted
+        expr: >-
+          increase(spring_batch_job_seconds_count{spring_batch_job_name="settleOrderJob",spring_batch_job_status="COMPLETED"}[6h]) == 0
+          or absent_over_time(spring_batch_job_seconds_count{spring_batch_job_name="settleOrderJob",spring_batch_job_status="COMPLETED"}[6h])
+        labels:
+          severity: warning
+        annotations:
+          summary: "settleOrderJob이 6시간 동안 성공하지 못함"

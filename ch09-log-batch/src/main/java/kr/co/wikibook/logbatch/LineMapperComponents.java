@@ -9,8 +9,8 @@ public class LineMapperComponents {
   public static LineMapper<AccessLog> buildAccessLogLineMapper() {
     FixedLengthTokenizer tokenizer = new FixedLengthTokenizer();
     tokenizer.setColumns( // <1>
-        new Range(1, 20), // 예: "2020-06-20T12:14:16Z"
-        new Range(21, 36), // 예: "175.242.91.54  "
+        new Range(1, 20), // 예: "2026-07-28 12:14:16 "
+        new Range(21, 36), // 예: "175.242.91.54   "
         new Range(37, 46)  // 예: "benelog   "
     );
 
