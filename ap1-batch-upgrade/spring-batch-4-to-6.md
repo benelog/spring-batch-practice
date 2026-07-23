@@ -93,7 +93,7 @@ rg "BatchProperties\s*\.\s*class|properties\.getJdbc\(\)" src
 
 ### 4. `@EnableBatchProcessing` 역할 변화와 `BatchConfigurer` 제거
 
-Batch 4에서는 `@EnableBatchProcessing`이 기반 구성요소를 직접 등록했지만, Batch 6에서는 Spring Boot 자동 설정이 그 역할을 한다.
+Batch 4에서는 `@EnableBatchProcessing`이 기반 구성 요소를 직접 등록했지만, Batch 6에서는 Spring Boot 자동 설정이 그 역할을 한다.
 
 - `BatchConfigurer` 인터페이스와 `SimpleBatchConfiguration` 클래스 **삭제** (deprecated 단계 없이).
 - `MapJobRepositoryFactoryBean`, `MapJobExplorerFactoryBean` 삭제.
