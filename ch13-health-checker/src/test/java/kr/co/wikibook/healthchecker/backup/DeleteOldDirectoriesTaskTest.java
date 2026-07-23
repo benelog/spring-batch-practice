@@ -21,10 +21,10 @@ class DeleteOldDirectoriesTaskTest {
   @Test
   void deleteOldDirectories() throws IOException {
     // given
-    Path dir1 = createDirAndFile("dir1", "2024-06-11T11:14:16Z");
-    Path dir2 = createDirAndFile("dir2", "2024-06-12T11:14:16Z");
-    Path dir3 = createDirAndFile("dir3", "2024-06-13T11:14:16Z");
-    DeleteOldDirectoriesTask task = createTask("2024-06-16T11:14:16Z", 4);
+    Path dir1 = createDirAndFile("dir1", "2026-07-21T11:14:16Z");
+    Path dir2 = createDirAndFile("dir2", "2026-07-22T11:14:16Z");
+    Path dir3 = createDirAndFile("dir3", "2026-07-23T11:14:16Z");
+    DeleteOldDirectoriesTask task = createTask("2026-07-26T11:14:16Z", 4);
 
     // when
     RepeatStatus status = task.call();

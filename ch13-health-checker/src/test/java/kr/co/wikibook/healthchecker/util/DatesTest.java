@@ -24,18 +24,18 @@ public class DatesTest {
 
   static Stream<LocalDate> provideHolidays() {
     return Stream.of(
-        LocalDate.of(2024, 4, 6), // 토요일
-        LocalDate.of(2024, 4, 28), // 일요일
-        LocalDate.of(2024, 12, 25), // 크리스마스
-        LocalDate.of(2024, 5, 5) // 어린이날
+        LocalDate.of(2026, 7, 18), // 토요일
+        LocalDate.of(2026, 7, 19), // 일요일
+        LocalDate.of(2026, 12, 25), // 크리스마스
+        LocalDate.of(2026, 5, 5) // 어린이날
     );
   }
 
   static Stream<LocalDate> provideWorkingDays() {
     return Stream.of(
-        LocalDate.of(2024, 4, 8),
-        LocalDate.of(2024, 4, 15),
-        LocalDate.of(2024, 4, 22)
+        LocalDate.of(2026, 7, 6),
+        LocalDate.of(2026, 7, 13),
+        LocalDate.of(2026, 7, 20)
     );
   }
 }

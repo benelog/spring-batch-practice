@@ -27,7 +27,7 @@ public class RepeatSleepTasklet implements Tasklet {
 
     JobParameters jobParameters = stepExecution.getJobParameters();
     long limit = jobParameters.getLong("limit", 1L);
-    if  (count > limit) {
+    if (count > limit) {
       stepExecution.setTerminateOnly();
     }
     return RepeatStatus.CONTINUABLE;

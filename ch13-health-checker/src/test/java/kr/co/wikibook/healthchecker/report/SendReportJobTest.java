@@ -32,7 +32,7 @@ class SendReportJobTest {
   @Test
   void launchJobOnWorkday() throws Exception {
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addLocalDate("reportDate", LocalDate.of(2024, 5, 1))
+        .addLocalDate("reportDate", LocalDate.of(2026, 7, 22))
         .toJobParameters();
 
     JobExecution execution = testUtils.startJob(params);
@@ -42,7 +42,7 @@ class SendReportJobTest {
   @Test
   void launchJobOnHoliday() throws Exception {
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addLocalDate("reportDate", LocalDate.of(2024, 5, 5))
+        .addLocalDate("reportDate", LocalDate.of(2026, 5, 5))
         .toJobParameters();
 
     JobExecution execution = testUtils.startJob(params);

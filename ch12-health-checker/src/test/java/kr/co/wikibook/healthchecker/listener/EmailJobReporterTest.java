@@ -54,13 +54,13 @@ class EmailJobReporterTest {
 
       var jobExecution = new JobExecution(0L, jobInstance, new JobParameters());
       jobExecution.setJobInstance(jobInstance);
-      LocalDateTime startTime = LocalDateTime.parse("2024-03-02T16:02:00");
-      LocalDateTime endTime = LocalDateTime.parse("2024-03-02T18:08:45");
+      LocalDateTime startTime = LocalDateTime.parse("2026-07-22T16:02:00");
+      LocalDateTime endTime = LocalDateTime.parse("2026-07-22T18:08:45");
       jobExecution.setStatus(BatchStatus.COMPLETED);
       jobExecution.setStartTime(startTime);
       jobExecution.setEndTime(endTime);
 
-      var stepExecution = new StepExecution(0L,  "testStep", jobExecution);
+      var stepExecution = new StepExecution(0L, "testStep", jobExecution);
       stepExecution.setStartTime(startTime);
       stepExecution.setEndTime(endTime);
       jobExecution.addStepExecutions(List.of(stepExecution));

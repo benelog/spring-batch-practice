@@ -29,9 +29,9 @@ class ReportFormatDeciderTest {
 
   static Stream<Arguments> provideDateAndReportFormat() {
     return Stream.of(
-        Arguments.of(LocalDate.of(2024, 3, 13), ReportFormat.DAILY),
-        Arguments.of(LocalDate.of(2024, 3, 18), ReportFormat.WEEKLY),
-        Arguments.of(LocalDate.of(2024, 4, 1), ReportFormat.MONTHLY)
+        Arguments.of(LocalDate.of(2026, 7, 15), ReportFormat.DAILY),
+        Arguments.of(LocalDate.of(2026, 7, 20), ReportFormat.WEEKLY),
+        Arguments.of(LocalDate.of(2026, 7, 1), ReportFormat.MONTHLY)
     );
   }
 }

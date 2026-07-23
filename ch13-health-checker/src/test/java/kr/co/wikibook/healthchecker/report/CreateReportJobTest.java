@@ -33,7 +33,7 @@ class CreateReportJobTest {
   @Test
   void startJobForDailyReport() throws Exception {
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addLocalDate("reportDate", LocalDate.of(2024, 3, 13))
+        .addLocalDate("reportDate", LocalDate.of(2026, 7, 15))
         .toJobParameters();
 
     JobExecution execution = testUtils.startJob(params);
@@ -43,7 +43,7 @@ class CreateReportJobTest {
   @Test
   void startJobForWeeklyReport() throws Exception {
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addLocalDate("reportDate", LocalDate.of(2024, 3, 18))
+        .addLocalDate("reportDate", LocalDate.of(2026, 7, 20))
         .toJobParameters();
 
     JobExecution execution = testUtils.startJob(params);
@@ -53,7 +53,7 @@ class CreateReportJobTest {
   @Test
   void startJobForMonthlyReport() throws Exception {
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addLocalDate("reportDate", LocalDate.of(2024, 4, 1))
+        .addLocalDate("reportDate", LocalDate.of(2026, 7, 1))
         .toJobParameters();
 
     JobExecution execution = testUtils.startJob(params);
