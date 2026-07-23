@@ -31,7 +31,8 @@ class ReportFormatDeciderTest {
     return Stream.of(
         Arguments.of(LocalDate.of(2026, 7, 15), ReportFormat.DAILY),
         Arguments.of(LocalDate.of(2026, 7, 20), ReportFormat.WEEKLY),
-        Arguments.of(LocalDate.of(2026, 7, 1), ReportFormat.MONTHLY)
+        Arguments.of(LocalDate.of(2026, 7, 1), ReportFormat.MONTHLY),
+        Arguments.of(LocalDate.of(2026, 6, 1), ReportFormat.MONTHLY) // 1일이면서 월요일
     );
   }
 }
