@@ -1,7 +1,6 @@
 package kr.co.wikibook.logbatch;
 
 import java.util.LinkedList;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +27,7 @@ public class AccessLogCsvToDbTask implements CommandLineRunner {
       AccessLog item = this.reader.read();
 
       if (item == null) {
-        if (chunk.size() > 0) {
+        if (!chunk.isEmpty()) {
           this.writer.write(chunk);
         }
         break;

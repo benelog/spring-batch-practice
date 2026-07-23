@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 class AccessLogCsvToDbTaskTest {
 
   @Test
-  public void runTask(@Autowired DataSource dataSource) throws Exception {
+  void runTask(@Autowired DataSource dataSource) throws Exception {
     // given
     CommandLineRunner task = new AccessLogJobConfig(
         LocalDate.of(2026, 7, 28),

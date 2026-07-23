@@ -8,7 +8,7 @@ import org.springframework.batch.infrastructure.item.support.PassThroughItemProc
 
 class ClassifierCompositeItemProcessorTest {
   @Test
-  public void oddEvenProcessor() throws Exception {
+  void oddEvenProcessor() throws Exception {
     var compositeProcessor = new ClassifierCompositeItemProcessor<Integer, Integer>();
     compositeProcessor.setClassifier(new OddEvenClassifier<>(
         (Integer item) -> item * 2,
