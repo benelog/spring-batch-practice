@@ -3,7 +3,7 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.test.JobOperatorTestUtils;
@@ -20,6 +20,6 @@ class HelloJobTest {
       @Autowired Job helloJob) throws Exception {
     testUtils.setJob(helloJob);
     JobExecution execution = testUtils.startJob();
-    assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+    assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
   }
 }
