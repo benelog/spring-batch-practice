@@ -23,7 +23,6 @@ class HelloChunkJobTest {
   ) throws Exception {
     testUtils.setJob(job);
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addLong("chunkSize", 5L)
         .toJobParameters();
     JobExecution execution = testUtils.startJob(params);
     assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
@@ -36,7 +35,6 @@ class HelloChunkJobTest {
   ) throws Exception {
     testUtils.setJob(job);
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
-        .addLong("chunkSize", 5L)
         .toJobParameters();
     JobExecution execution = testUtils.startJob(params);
     assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);

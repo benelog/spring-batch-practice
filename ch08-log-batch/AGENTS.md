@@ -66,5 +66,5 @@
 - 직접 구현하기 전에 스프링 배치가 제공하는 ItemReader, ItemProcessor, ItemWriter 구현체가 있는지 먼저 확인하고, 있으면 그것을 쓴다.
 - 타입 변환, 필터링, 검증은 ItemReader나 ItemWriter에 섞지 말고 ItemProcessor에 두고, 그 클래스만 따로 테스트한다.
 - DB에 쓰는 스텝을 `StepBuilder`로 구성할 때는 `transactionManager(...)`로 `JdbcTransactionManager` 같은 실제 트랜잭션 관리자를 지정한다.
-- `@JobScope` / `@StepScope`가 붙은 `@Bean` 메서드의 반환형은 인터페이스가 아니라 구체적인 클래스로 선언한다.
+- ItemReader, ItemProcessor, ItemWriter를 반환하면서 `@JobScope` / `@StepScope`가 붙은 `@Bean` 메서드의 반환형은 인터페이스가 아니라 구체적인 클래스로 선언한다. Step을 반환하는 메서드는 예외다.
 - 청크 크기는 임의로 정하지 말고, 지시에 없으면 사람에게 묻는다.
