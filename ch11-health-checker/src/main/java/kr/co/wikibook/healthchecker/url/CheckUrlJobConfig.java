@@ -103,7 +103,7 @@ public class CheckUrlJobConfig {
     return new CallUrlProcessor(requestTimeout);
   }
   private FlatFileItemWriter<ResponseStatus> buildResponseStatusFileWriter() { // <6>
-    var outputFile = new FileSystemResource("status.csv");
+    var outputFile = new FileSystemResource(OUTPUT_FILE_PATH);
     var writer =  new FlatFileItemWriterBuilder<ResponseStatus>()
         .name("responseStatusFileWriter")
         .resource(outputFile)
