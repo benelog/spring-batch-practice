@@ -107,7 +107,6 @@
 - `@JobScope`, `@StepScope`가 붙은 `@Bean` 메서드는 인터페이스가 아니라 구현 클래스 타입을 반환한다.
 - `RetryListener`는 스텝 구성에서 `listener()`가 아니라 전용 메서드인 `retryListener()`로 등록한다. `listener()`에 넘기면 에러 없이 무시된다.
 - `SkipListener`와 `RetryListener`의 콜백은 `faultTolerant()`와 스킵·재시도 정책이 선언된 스텝에서만 호출된다.
-- 청크 에러 콜백은 `@OnChunkError`, `@AfterChunkError` 애너테이션으로 등록되지 않는다. `ChunkListener` 인터페이스를 구현한다.
 - `@BeforeStep`, `@AfterStep`만 붙인 리스너는 `chunk()` 앞에서, 청크·아이템 수준 애너테이션만 붙인 리스너는 `chunk()` 뒤에서 `listener()`로 등록한다. 위치가 어긋나면 에러 없이 무시된다.
 - 파일처럼 열고 닫아야 하는 자원을 쓰는 리스너는 `ItemStream`도 구현하고 `stream()`으로 함께 등록한다.
 - `afterWrite()`와 에러 콜백은 청크 트랜잭션 안에서 호출된다. 롤백되면 안 되는 DB 변경은 이 콜백 안에서 하지 않거나 `PROPAGATION_REQUIRES_NEW`로 트랜잭션을 분리한다.
@@ -127,7 +126,6 @@
 - 커스텀 메트릭 이름은 'batch.settlement.amount'처럼 점(.)으로 구분해서 짓고, 잡 이름은 'batch.job' 태그로 붙인다. 'job'은 프로메테우스가 수집 대상 이름으로 이미 쓰므로 태그 이름으로 쓰지 않는다.
 - (스프링 부트에 의존하지 않는 CLI 모듈이 있을 경우) 메트릭은 마이크로미터 전역 레지스트리(`Metrics.globalRegistry`)에 등록한다.
 - (웹 모듈의 경우) Actuator 엔드포인트는 필요한 것만 노출한다. `management.endpoints.web.exposure.include=*`를 쓰지 않는다.
-- 프로메테우스 경보 규칙 파일을 추가하면 'prometheus.yml'의 `rule_files`에 등록하고, 컨테이너로 실행할 때는 볼륨 마운트도 함께 추가한다.
 
 ## 모듈 구성과 의존 관계
 
