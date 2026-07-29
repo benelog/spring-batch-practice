@@ -104,7 +104,7 @@
 ### 이벤트 리스너
 
 - 콜백 메서드에서 `JobExecution`, `StepExecution` 객체가 필요하면 애너테이션 방식 대신 리스너 인터페이스를 구현한다.
-- `@JobScope`, `@StepScope`가 붙은 `@Bean` 메서드는 인터페이스가 아니라 구현 클래스 타입을 반환한다.
+- `@JobScope`, `@StepScope`가 붙은 `@Bean` 메서드는 인터페이스가 아니라 구현체 타입을 반환한다.
 - `RetryListener`는 스텝 구성에서 `listener()`가 아니라 전용 메서드인 `retryListener()`로 등록한다. `listener()`에 넘기면 에러 없이 무시된다.
 - `SkipListener`와 `RetryListener`의 콜백은 `faultTolerant()`와 스킵·재시도 정책이 선언된 스텝에서만 호출된다.
 - `@BeforeStep`, `@AfterStep`만 붙인 리스너는 `chunk()` 앞에서, 청크·아이템 수준 애너테이션만 붙인 리스너는 `chunk()` 뒤에서 `listener()`로 등록한다. 위치가 어긋나면 에러 없이 무시된다.
