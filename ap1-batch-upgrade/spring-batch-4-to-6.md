@@ -193,7 +193,7 @@ new StepBuilder("step", jobRepository).tasklet(t, transactionManager).build();
 new StepBuilder("step", jobRepository).tasklet(t).build();
 ```
 
-**청크 기반 스텝**: Batch 5 세대의 `.chunk(int, TransactionManager)` 2-인자 오버로드는 **Batch 6에서 deprecated**. `.chunk(int)` 뒤에 `.transactionManager(...)`를 체이닝한다. Batch 4에서 직접 가는 독자는 중간 형태를 거치지 말고 바로 이 형태로 간다.
+**청크 지향 스텝**: Batch 5 세대의 `.chunk(int, TransactionManager)` 2-인자 오버로드는 **Batch 6에서 deprecated**. `.chunk(int)` 뒤에 `.transactionManager(...)`를 체이닝한다. Batch 4에서 직접 가는 독자는 중간 형태를 거치지 말고 바로 이 형태로 간다.
 
 ```java
 // Batch 4

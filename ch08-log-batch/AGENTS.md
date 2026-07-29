@@ -60,9 +60,9 @@
 - 잡 파라미터용 `Converter`는 클래스나 익명 클래스로 구현한다. 람다 표현식으로 바꾸지 않는다.
 - ExecutionContext에는 건수나 시각처럼 직렬화할 수 있는 작은 값만 담는다. 처리 대상 데이터 자체를 담지 않는다.
 
-### 청크 기반 스텝
+### 청크 지향 스텝
 
-- 반복해서 읽고 가공하고 쓰는 작업은 Tasklet 하나로 구현하지 말고, ItemReader, ItemProcessor, ItemWriter를 나눈 청크 기반 스텝으로 만든다.
+- 반복해서 읽고 가공하고 쓰는 작업은 Tasklet 하나로 구현하지 말고, ItemReader, ItemProcessor, ItemWriter를 나눈 청크 지향 스텝으로 만든다.
 - 직접 구현하기 전에 스프링 배치가 제공하는 ItemReader, ItemProcessor, ItemWriter 구현체가 있는지 먼저 확인하고, 있으면 그것을 쓴다.
 - 타입 변환, 필터링, 검증은 ItemReader나 ItemWriter에 섞지 말고 ItemProcessor에 두고, 그 클래스만 따로 테스트한다.
 - DB에 쓰는 스텝을 `StepBuilder`로 구성할 때는 `transactionManager(...)`로 `JdbcTransactionManager` 같은 실제 트랜잭션 관리자를 지정한다.
