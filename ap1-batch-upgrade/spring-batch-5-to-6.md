@@ -114,7 +114,7 @@ Batch 6.0부터 `JobRepository extends JobExplorer`. 두 인터페이스를 각�
 |---|---|
 | `spring-boot-starter-batch` | 배치 코어. 메타 저장소 구현체 미포함 |
 | `spring-boot-starter-batch-jdbc` | JDBC 메타 저장소 |
-| `spring-boot-starter-batch-data-mongodb` | 몽고DB 메타 저장소 (Spring Boot 4 신규) |
+| `spring-boot-starter-batch-data-mongodb` | 몽고DB 메타 저장소 (Spring Boot 4.1 신규) |
 
 `JobLauncherApplicationRunner` 생성자가 `(JobLauncher, JobExplorer, JobRepository)` 3-인자에서 `(JobOperator)` 단일 인자로 단순화됐다.
 
@@ -169,9 +169,9 @@ rg "@EnableBatchProcessing|@EnableJdbcJobRepository|@EnableMongoJobRepository" s
 | `spring.batch.schema` | `spring.batch.jdbc.schema` | Boot 2.5 |
 | `spring.batch.table-prefix` | `spring.batch.jdbc.table-prefix` | Boot 2.5 |
 | `spring.batch.isolation-level-for-create` | `spring.batch.jdbc.isolation-level-for-create` | Boot 2.5 |
-| `spring.batch.job.name` (단일) | `spring.batch.job.names` (콤마 구분) | Boot 2.3~ |
+| `spring.batch.job.names` (콤마 구분) | `spring.batch.job.name` (단일 값) | Boot 3.0 |
 | `spring.redis.*` | `spring.data.redis.*` | Boot 3.0 |
-| _(없음)_ | `spring.batch.data.mongodb.*` | Boot 4.0 신규 |
+| _(없음)_ | `spring.batch.data.mongodb.*` | Boot 4.1 신규 |
 
 일괄 진단에는 `spring-boot-properties-migrator` 모듈이 유용하다. `build.gradle`에 런타임 의존성으로 추가하면 부팅 시 옛 속성명과 권장 대체를 로그로 출력한다.
 
@@ -238,7 +238,7 @@ rg "\.backOffPolicy\(" src
 | `ChunkListener.beforeChunk(ChunkContext)` | `beforeChunk(Chunk<I>)` (제네릭) |
 | `ChunkListener.afterChunk(ChunkContext)` | `afterChunk(Chunk<O>)` |
 | `ChunkListener.afterChunkError(ChunkContext)` | `onChunkError(Exception, Chunk<O>)` |
-| `@AfterChunkError` | `@OnChunkError` |
+| `@AfterChunkError` | 애너테이션으로는 등록 불가. `ChunkListener`를 구현해 `onChunkError(Exception, Chunk<O>)` 재정의 |
 | `ChunkListener.ROLLBACK_EXCEPTION_KEY` | deprecated (6.2 이후 제거) |
 | `extends JobExecutionListenerSupport` | `implements JobExecutionListener` |
 | `extends StepExecutionListenerSupport` | `implements StepExecutionListener` |
