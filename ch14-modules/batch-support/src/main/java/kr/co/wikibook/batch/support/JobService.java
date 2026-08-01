@@ -12,6 +12,7 @@ import org.springframework.batch.core.job.JobExecutionException;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.batch.core.repository.JobRepository;
+import org.jspecify.annotations.Nullable;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
@@ -30,10 +31,11 @@ public class JobService {
     this.repository = repository;
   }
 
-  public long start(String jobName, Properties parameters) {
+  public long start(String jobName, @Nullable Properties parameters) {
     try {
       Job job = registry.getJob(jobName);
-      JobParameters jobParameters = converter.getJobParameters(parameters);
+      Properties params = (parameters != null) ? parameters : new Properties();
+      JobParameters jobParameters = converter.getJobParameters(params);
       JobExecution execution = operator.start(job, jobParameters);
       return execution.getId();
     } catch (JobExecutionException ex) {
