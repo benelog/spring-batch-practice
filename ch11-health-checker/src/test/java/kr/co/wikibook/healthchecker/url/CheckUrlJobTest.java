@@ -24,8 +24,6 @@ class CheckUrlJobTest {
   ) throws Exception {
     testUtils.setJob(checkUrlJob);
     var urls = new ClassPathResource("ok-urls.txt");
-    System.out.println(urls.exists());
-    System.out.println(urls.getFile().getPath());
 
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
         .addString(CheckUrlJobConfig.INPUT_FILE_PARAM, urls.getFile().getPath())

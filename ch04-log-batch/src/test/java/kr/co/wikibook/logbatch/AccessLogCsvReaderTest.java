@@ -23,7 +23,7 @@ class AccessLogCsvReaderTest {
     AccessLog item;
     while ((item = reader.read()) != null) {
       itemCount++;
-      logger.debug("{}", item);
+      logger.info("{}", item);
     }
     reader.close();
 

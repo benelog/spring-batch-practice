@@ -53,7 +53,6 @@ class EmailJobReporterTest {
       var jobInstance = new JobInstance(0L, "testJob");
 
       var jobExecution = new JobExecution(0L, jobInstance, new JobParameters());
-      jobExecution.setJobInstance(jobInstance);
       LocalDateTime startTime = LocalDateTime.parse("2026-07-22T16:02:00");
       LocalDateTime endTime = LocalDateTime.parse("2026-07-22T18:08:45");
       jobExecution.setStatus(BatchStatus.COMPLETED);

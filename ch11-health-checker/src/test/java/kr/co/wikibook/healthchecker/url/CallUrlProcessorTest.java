@@ -26,7 +26,7 @@ class CallUrlProcessorTest {
   }
 
   @Test
-  @DisplayName("타입아웃 예외가 발생한다")
+  @DisplayName("타임아웃 예외가 발생한다")
   void processWhenTimeout() {
     CallUrlProcessor processor = new CallUrlProcessor(Duration.ofMillis(1));
     assertThatExceptionOfType(HttpConnectTimeoutException.class)

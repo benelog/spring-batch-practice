@@ -13,7 +13,7 @@ class UserAccessSummaryCsvWriterTest {
   @Test
   void write(@TempDir Path tempPath) throws Exception {
     // given
-    String outputPath = tempPath.toString() + "/user-access-summary.csv";
+    Path outputPath = tempPath.resolve("user-access-summary.csv");
     var resource = new FileSystemResource(outputPath);
     var writer = new UserAccessSummaryCsvWriter(resource);
     var items = List.of(
@@ -27,7 +27,7 @@ class UserAccessSummaryCsvWriterTest {
     writer.close();
 
     // then
-    List<String> written = Files.readAllLines(Path.of(outputPath));
+    List<String> written = Files.readAllLines(outputPath);
     assertThat(written).isEqualTo(List.of("benelog,32", "jojoldu,42"));
   }
 }

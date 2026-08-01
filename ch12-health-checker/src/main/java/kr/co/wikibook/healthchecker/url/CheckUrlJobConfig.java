@@ -80,7 +80,7 @@ public class CheckUrlJobConfig {
         new SkipItemRecorder<>(Path.of("skipped-url.txt"));
 
     var retryItemRecorder =
-        new RetryItemRecorder(Path.of("retied.txt"));
+        new RetryItemRecorder(Path.of("retried.txt"));
 
     return new StepBuilder("checkUrlStep", jobRepository)
         .listener(new StepLogListener<>())

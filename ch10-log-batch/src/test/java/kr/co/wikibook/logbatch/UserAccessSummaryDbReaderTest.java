@@ -25,7 +25,7 @@ class UserAccessSummaryDbReaderTest {
       INSERT + "('2026-07-28 11:16', '192.168.0.3', 'jojoldu')"
   })
     // <3>
-  void read(@Autowired DataSource dataSource) throws Exception {
+  void readItems(@Autowired DataSource dataSource) throws Exception {
     // given
     var date = LocalDate.of(2026, 7, 28);
     JdbcCursorItemReader<UserAccessSummary> reader = UserAccessSummaryComponents.buildDbCursorReader(

@@ -19,7 +19,7 @@ public class DeleteOldAccessLogTasklet implements Tasklet {
   private final LocalDate endDay;
 
   public DeleteOldAccessLogTasklet(DataSource dataSource, LocalDate startDay, LocalDate endDay) {
-    Assert.isTrue(!startDay.isAfter(endDay), "시작일은 종료일보다 같거나 작아야 한다.");
+    Assert.isTrue(!startDay.isAfter(endDay), "시작일은 종료일과 같거나 그보다 앞서야 한다.");
     this.jdbc = new NamedParameterJdbcTemplate(dataSource);
     this.indexDay = startDay;
     this.endDay = endDay;

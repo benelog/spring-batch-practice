@@ -24,7 +24,7 @@ public class UserAccessSummaryDbReader {
 
   private final DataSource dataSource;
   private final LocalDate date;
-  private PreparedStatement stmt;
+  private PreparedStatement statement;
   private Connection con;
   private ResultSet resultSet;
   private int rowCount = 0;
@@ -36,14 +36,14 @@ public class UserAccessSummaryDbReader {
 
   public void open() throws SQLException { // <2>
     this.con = DataSourceUtils.getConnection(dataSource);
-    this.stmt =
+    this.statement =
         con.prepareStatement(AccessLogSql.COUNT_GROUP_BY_USERNAME, ResultSet.TYPE_FORWARD_ONLY,
             ResultSet.CONCUR_READ_ONLY); // <3>
     Instant from = date.atStartOfDay().toInstant(ZoneOffset.UTC);
     Instant to = from.plus(1, ChronoUnit.DAYS);
-    this.stmt.setObject(1, from);
-    this.stmt.setObject(2, to);
-    this.resultSet = stmt.executeQuery();
+    this.statement.setObject(1, from);
+    this.statement.setObject(2, to);
+    this.resultSet = statement.executeQuery();
   }
 
   @Nullable
@@ -59,7 +59,7 @@ public class UserAccessSummaryDbReader {
   public void close() { // <5>
     this.rowCount = 0;
     JdbcUtils.closeResultSet(this.resultSet);
-    JdbcUtils.closeStatement(this.stmt);
+    JdbcUtils.closeStatement(this.statement);
     JdbcUtils.closeConnection(this.con);
   }
 }
