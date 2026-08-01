@@ -57,16 +57,16 @@ public class UserAccessSummaryComponents {
       return new JdbcPagingItemReaderBuilder<UserAccessSummary>()
           .name("accessLogDbReader")
           .dataSource(dataSource)
-          .selectClause("username, COUNT(1) AS access_count")
+          .selectClause("username, COUNT(1) AS access_count") // <1>
           .fromClause("access_log")
           .whereClause("access_date_time BETWEEN :from AND :to")
           .groupClause("username")
           .sortKeys(Map.of("username", Order.ASCENDING))
           .parameterValues(queryParams)
           .pageSize(pageSize)
-          .dataRowMapper(UserAccessSummary.class) // <1>
+          .dataRowMapper(UserAccessSummary.class) // <2>
           .build();
-    } catch (Exception ex) {
+    } catch (Exception ex) { // <3>
       throw new RuntimeException(ex);
     }
   }

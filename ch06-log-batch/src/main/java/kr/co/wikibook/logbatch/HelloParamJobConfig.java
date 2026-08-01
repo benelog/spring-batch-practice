@@ -3,7 +3,6 @@ package kr.co.wikibook.logbatch;
 import java.time.LocalDate;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.parameters.DefaultJobParametersValidator;
-import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
