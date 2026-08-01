@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation project(':batch-support')
+    api project(':batch-support')
 }
 
 jar {

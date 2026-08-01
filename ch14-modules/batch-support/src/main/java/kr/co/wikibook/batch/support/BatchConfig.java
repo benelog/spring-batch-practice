@@ -10,6 +10,7 @@ import org.springframework.batch.core.configuration.annotation.EnableJdbcJobRepo
 import org.springframework.batch.core.configuration.support.MapJobRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -18,6 +19,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
+@Configuration
 @EnableBatchProcessing
 @EnableJdbcJobRepository(
     dataSourceRef = "jobMetaDataSource",

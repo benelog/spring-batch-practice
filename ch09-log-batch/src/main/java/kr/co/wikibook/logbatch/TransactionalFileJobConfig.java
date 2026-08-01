@@ -59,7 +59,7 @@ public class TransactionalFileJobConfig {
 
   FlatFileItemWriter<Integer> buildFlatFileItemWriter(WritableResource resource) {
     return new FlatFileItemWriterBuilder<Integer>()
-        .name("userAccessSummaryCsvWriter")
+        .name("numberFileWriter")
         .resource(resource)
         .transactional(true) // <7>
         .delimited()

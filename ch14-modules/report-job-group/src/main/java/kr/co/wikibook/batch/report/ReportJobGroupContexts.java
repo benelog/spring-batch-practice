@@ -5,10 +5,8 @@ import kr.co.wikibook.batch.report.job.CreateReportJobConfig;
 import kr.co.wikibook.batch.report.job.DeleteReportJobConfig;
 import kr.co.wikibook.batch.report.job.SendReportJobConfig;
 import kr.co.wikibook.batch.report.job.UserRankingJobConfig;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-@Configuration
 @Import({
     UserRankingJobConfig.class,
     DeleteReportJobConfig.class,

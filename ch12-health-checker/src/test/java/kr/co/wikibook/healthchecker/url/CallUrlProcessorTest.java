@@ -38,7 +38,7 @@ class CallUrlProcessorTest {
 
   @Test
   @DisplayName("부적절한 URI 형식이라 예외가 발생한다")
-  void processWhenInValidUriFormat() {
+  void processWhenInvalidUriFormat() {
     CallUrlProcessor processor = new CallUrlProcessor(Duration.ofMillis(2000));
     assertThatExceptionOfType(IllegalArgumentException.class)
         .isThrownBy(() ->

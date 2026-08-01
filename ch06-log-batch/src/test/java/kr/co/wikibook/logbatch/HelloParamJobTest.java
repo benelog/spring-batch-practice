@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.InvalidJobParametersException;
@@ -34,7 +34,7 @@ class HelloParamJobTest {
         .addLocalDate("helloDate", LocalDate.of(2026, 7, 28))
         .toJobParameters();
     JobExecution execution = testUtils.startJob(params);
-    assertThat(execution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+    assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
   }
 
   @Test

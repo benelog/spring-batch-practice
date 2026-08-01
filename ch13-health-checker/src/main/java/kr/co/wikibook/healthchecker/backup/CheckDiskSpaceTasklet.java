@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -36,10 +37,12 @@ public class CheckDiskSpaceTasklet implements Tasklet {
   }
 
   private long getDirectorySize(Path directory) throws IOException {
-    return Files.walk(directory)
-        .map(Path::toFile)
-        .filter(File::isFile)
-        .mapToLong(File::length)
-        .sum();
+    try (Stream<Path> files = Files.walk(directory)) {
+      return files
+          .map(Path::toFile)
+          .filter(File::isFile)
+          .mapToLong(File::length)
+          .sum();
+    }
   }
 }

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.file.LineMapper;
 
-class FixLengthLineMapperTest {
+class FixedLengthLineMapperTest {
   @Test
   void mapLine() throws Exception {
     var line = "2026-07-28 12:14:16 175.242.91.54   benelog   ";
