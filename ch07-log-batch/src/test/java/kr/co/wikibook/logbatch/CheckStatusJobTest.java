@@ -56,10 +56,7 @@ class CheckStatusJobTest {
 
   @Test
   void startLogDiskSpaceStep() {
-    JobParameters jobParameters = testUtils.getUniqueJobParametersBuilder()
-        .addString("directory", "/")
-        .addLong("minUsablePercentage", 10L)
-        .toJobParameters();
+    JobParameters jobParameters = testUtils.getUniqueJobParameters();
     var jobExecutionContext = new ExecutionContext();
     jobExecutionContext.putLong("usablePercentage", 50L);
 
