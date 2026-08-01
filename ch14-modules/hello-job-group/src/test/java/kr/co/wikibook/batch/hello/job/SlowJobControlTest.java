@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.fail;
 
 import java.util.UUID;
 import kr.co.wikibook.batch.hello.HelloJobGroupRunner;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.configuration.JobRegistry;
@@ -18,7 +16,7 @@ import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.batch.core.launch.support.TaskExecutorJobOperator;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 @SpringJUnitConfig(HelloJobGroupRunner.class)
@@ -32,21 +30,6 @@ class SlowJobControlTest {
 
   @Autowired
   JobRepository jobRepository;
-
-  ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-
-  @BeforeEach
-  void initTaskExecutor() {
-    taskExecutor.setCorePoolSize(2);
-    taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
-    taskExecutor.setAwaitTerminationSeconds(10);
-    taskExecutor.initialize();
-  }
-
-  @AfterEach
-  void shutDownTaskExecutor() {
-    taskExecutor.shutdown();
-  }
 
   @Test
   void stopAndRestart() throws Exception {
@@ -76,7 +59,7 @@ class SlowJobControlTest {
     var operator = new TaskExecutorJobOperator();
     operator.setJobRepository(jobRepository);
     operator.setJobRegistry(registry);
-    operator.setTaskExecutor(taskExecutor);
+    operator.setTaskExecutor(new SimpleAsyncTaskExecutor());
     operator.afterPropertiesSet();
     return operator;
   }
