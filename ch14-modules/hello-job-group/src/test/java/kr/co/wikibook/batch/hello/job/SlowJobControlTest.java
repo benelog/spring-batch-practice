@@ -25,6 +25,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 class SlowJobControlTest {
 
   @Autowired
+  Job slowJob;
+
+  @Autowired
   JobRegistry registry;
 
   @Autowired
@@ -48,13 +51,12 @@ class SlowJobControlTest {
   @Test
   void stopAndRestart() throws Exception {
     JobOperator operator = asyncJobOperator();
-    Job job = registry.getJob("slowJob");
     JobParameters params = new JobParametersBuilder()
         .addString("id", UUID.randomUUID().toString())
         .addLong("limit", 60L)
         .toJobParameters();
 
-    JobExecution execution = operator.start(job, params);
+    JobExecution execution = operator.start(slowJob, params);
     awaitStepRunning(execution.getId());
 
     boolean stopping = operator.stop(execution);
