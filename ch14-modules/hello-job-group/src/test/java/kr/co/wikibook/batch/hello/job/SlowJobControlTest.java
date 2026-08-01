@@ -23,16 +23,13 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 class SlowJobControlTest {
 
   @Autowired
-  Job slowJob;
-
-  @Autowired
   JobRegistry registry;
 
   @Autowired
   JobRepository jobRepository;
 
   @Test
-  void stopAndRestart() throws Exception {
+  void stopAndRestart(@Autowired Job slowJob) throws Exception {
     JobOperator operator = asyncJobOperator();
     JobParameters params = new JobParametersBuilder()
         .addString("id", UUID.randomUUID().toString())
