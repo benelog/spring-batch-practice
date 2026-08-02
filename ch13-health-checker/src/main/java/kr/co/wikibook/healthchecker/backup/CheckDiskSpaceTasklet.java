@@ -1,10 +1,11 @@
 package kr.co.wikibook.healthchecker.backup;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.stream.Stream;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.step.StepContribution;
@@ -40,10 +41,17 @@ public class CheckDiskSpaceTasklet implements Tasklet {
   private long getDirectorySize(Path directory) throws IOException {
     try (Stream<Path> files = Files.walk(directory, FileVisitOption.FOLLOW_LINKS)) {
       return files
-          .map(Path::toFile)
-          .filter(File::isFile)
-          .mapToLong(File::length)
+          .mapToLong(this::sizeIfRegularFile)
           .sum();
+    }
+  }
+
+  private long sizeIfRegularFile(Path path) {
+    try {
+      BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
+      return attributes.isRegularFile() ? attributes.size() : 0;
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
     }
   }
 }
