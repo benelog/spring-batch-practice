@@ -29,6 +29,8 @@ public class UserAccessSummaryCsvWriter {
   }
 
   public void close() throws IOException {
-    this.lineWriter.close();
+    if (this.lineWriter != null) {
+      this.lineWriter.close();
+    }
   }
 }

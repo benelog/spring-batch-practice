@@ -25,11 +25,11 @@ public class UserAccessSummaryDbToCsvTask implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     int totalItems = 0;
-    this.reader.open();
-    this.writer.open();
-    var chunk = new LinkedList<UserAccessSummary>();
-
     try {
+      this.reader.open();
+      this.writer.open();
+      var chunk = new LinkedList<UserAccessSummary>();
+
       while (true) {
         UserAccessSummary item = this.reader.read();
 

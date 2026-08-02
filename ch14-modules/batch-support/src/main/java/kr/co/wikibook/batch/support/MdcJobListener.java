@@ -14,6 +14,7 @@ public class MdcJobListener implements JobExecutionListener {
 
   @Override
   public void afterJob(JobExecution jobExecution) {
-    MDC.clear();
+    MDC.remove("jobName");
+    MDC.remove("jobExecutionId");
   }
 }
