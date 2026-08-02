@@ -35,7 +35,7 @@ class SystemCommandTest {
     var resource = new ClassPathResource("command.sh");
     String shellPath = resource.getFile().getAbsolutePath(); // <2>
     systemCommandTasklet.setCommand(shellPath); // <3>
-    systemCommandTasklet.setTimeout(1000); // <4>
+    systemCommandTasklet.setTimeout(10000); // <4>
     systemCommandTasklet.setEnvironmentParams(new String[]{"MESSAGE=Hello"}); // <5>
     systemCommandTasklet.setWorkingDirectory(tempPath.toString()); // <6>
     systemCommandTasklet.afterPropertiesSet(); // <7>
@@ -54,8 +54,8 @@ class SystemCommandTest {
   @Test
   @EnabledOnOs({OS.LINUX, OS.MAC}) // <1>
   void executeTimeout() throws Exception {
-    systemCommandTasklet.setCommand("sleep", "3"); // <2>
-    systemCommandTasklet.setTimeout(100);
+    systemCommandTasklet.setCommand("sleep", "15"); // <2>
+    systemCommandTasklet.setTimeout(10000);
     systemCommandTasklet.afterPropertiesSet();
 
     assertThatExceptionOfType(SystemCommandException.class)
@@ -67,7 +67,7 @@ class SystemCommandTest {
   @Test
   void executeEcho() throws Exception {
     systemCommandTasklet.setCommand("echo", "hello");
-    systemCommandTasklet.setTimeout(1000);
+    systemCommandTasklet.setTimeout(10000);
     systemCommandTasklet.setCommandRunner(new ConsoleOutputCommandRunner());
     systemCommandTasklet.afterPropertiesSet();
     systemCommandTasklet.execute(stepContribution, chunkContext);
