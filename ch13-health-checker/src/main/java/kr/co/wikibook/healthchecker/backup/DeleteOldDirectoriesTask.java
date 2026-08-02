@@ -1,6 +1,7 @@
 package kr.co.wikibook.healthchecker.backup;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
@@ -25,7 +26,7 @@ public class DeleteOldDirectoriesTask implements Callable<RepeatStatus> {
   }
 
   @Override
-  public RepeatStatus call() {
+  public RepeatStatus call() throws IOException {
     Instant now = this.clock.instant();
     Instant baseInstant = now.minus(daysOfKeeping, ChronoUnit.DAYS);
     long baseEpochMilli = baseInstant.toEpochMilli();
@@ -36,7 +37,10 @@ public class DeleteOldDirectoriesTask implements Callable<RepeatStatus> {
         continue;
       }
       if (file.lastModified() < baseEpochMilli) {
-        FileSystemUtils.deleteRecursively(file);
+        boolean deleted = FileSystemUtils.deleteRecursively(file.toPath());
+        if (!deleted) {
+          throw new IOException("Failed to delete: " + file);
+        }
         logger.info("Deleted : {}", file);
       }
     }

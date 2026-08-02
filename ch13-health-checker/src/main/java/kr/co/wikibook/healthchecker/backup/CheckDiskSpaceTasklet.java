@@ -2,6 +2,7 @@ package kr.co.wikibook.healthchecker.backup;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -37,7 +38,7 @@ public class CheckDiskSpaceTasklet implements Tasklet {
   }
 
   private long getDirectorySize(Path directory) throws IOException {
-    try (Stream<Path> files = Files.walk(directory)) {
+    try (Stream<Path> files = Files.walk(directory, FileVisitOption.FOLLOW_LINKS)) {
       return files
           .map(Path::toFile)
           .filter(File::isFile)
