@@ -34,8 +34,8 @@ public class UserRankingJobConfig {
   @Bean
   public Flow processAccessLogFlow() {
     return new FlowBuilder<SimpleFlow>("접근 기록 처리")
-        .start(buildStep("access log 전처리"))
-        .next(buildStep("access 로그 분석"))
+        .start(buildStep("액세스 로그 전처리"))
+        .next(buildStep("액세스 로그 분석"))
         .build();
   }
 
