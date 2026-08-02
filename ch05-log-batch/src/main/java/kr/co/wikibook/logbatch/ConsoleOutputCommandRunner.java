@@ -26,7 +26,7 @@ public class ConsoleOutputCommandRunner implements CommandRunner {
   private static Map<String, String> toMap(String[] source) {
     Map<String, String> dest = new HashMap<>();
     for (String pair : source) {
-      String[] keyValue = pair.split("=");
+      String[] keyValue = pair.split("=", 2); // <4>
       dest.put(keyValue[0], keyValue[1]);
     }
     return dest;
