@@ -3,12 +3,14 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.sql.DataSource;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 class CountAccessLogTaskTest {
 
+  @DisplayName("access_log 테이블의 건수를 알림으로 보낸다")
   @Test
   void countAccessLog() {
     // given

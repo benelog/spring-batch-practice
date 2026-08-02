@@ -18,14 +18,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest("spring.batch.job.enabled=false")
 @SpringBatchTest
-class CreateReportTaskletJobTest {
+class CreateReportByListenerJobTest {
 
   JobOperatorTestUtils testUtils;
 
   @BeforeEach
   void setUp(
       @Autowired JobOperatorTestUtils testUtils,
-      @Autowired @Qualifier("createReportTaskletJob") Job job) {
+      @Autowired @Qualifier("createReportByListenerJob") Job job) {
     testUtils.setJob(job);
     this.testUtils = testUtils;
   }

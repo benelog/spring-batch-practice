@@ -2,9 +2,11 @@ package kr.co.wikibook.logbatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class AccessLogLineMapperTest {
+  @DisplayName("CSV 한 줄을 AccessLog 객체로 변환한다")
   @Test
   void mapLine() {
     // given
