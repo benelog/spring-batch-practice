@@ -21,8 +21,9 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 주문 정산을 흉내 낸 잡.
- * 정산한 금액을 커스텀 메트릭으로 남기는 예제로, 마이크로미터의 전역 레지스트리에 등록하므로
- * admin-web 같은 스프링 부트 모듈뿐 아니라 부트를 쓰지 않는 CLI 모듈에서도 그대로 동작한다.
+ * 정산한 금액을 커스텀 메트릭으로 남기는 예제로, 마이크로미터의 전역 레지스트리에 등록한다.
+ * admin-web처럼 부트로 실행하는 모듈에서는 자동 구성된 MeterRegistry가 전역 레지스트리에 연결되어 기록되고,
+ * 부트를 쓰지 않는 CLI 모듈에서는 Metrics.addRegistry(...)로 실제 레지스트리를 연결해야 기록된다.
  */
 @Configuration
 public class SettleOrderJobConfig {

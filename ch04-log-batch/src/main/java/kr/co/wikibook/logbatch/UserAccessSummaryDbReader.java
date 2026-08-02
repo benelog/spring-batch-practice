@@ -20,7 +20,7 @@ public class UserAccessSummaryDbReader {
       new UserAccessSummary(
           resultSet.getString("username"),
           resultSet.getInt("access_count")
-      );
+      ); // <1>
 
   private final DataSource dataSource;
   private final LocalDate date;
@@ -40,14 +40,14 @@ public class UserAccessSummaryDbReader {
         con.prepareStatement(AccessLogSql.COUNT_GROUP_BY_USERNAME, ResultSet.TYPE_FORWARD_ONLY,
             ResultSet.CONCUR_READ_ONLY); // <3>
     Instant from = date.atStartOfDay().toInstant(ZoneOffset.UTC);
-    Instant to = from.plus(1, ChronoUnit.DAYS);
-    this.statement.setObject(1, from);
-    this.statement.setObject(2, to);
+    Instant to = from.plus(1, ChronoUnit.DAYS); // <4>
+    this.statement.setObject(1, from); // <5>
+    this.statement.setObject(2, to); // <6>
     this.resultSet = statement.executeQuery();
   }
 
   @Nullable
-  public UserAccessSummary read() throws SQLException { // <4>
+  public UserAccessSummary read() throws SQLException { // <7>
     if (resultSet.next()) {
       UserAccessSummary item = this.rowMapper.mapRow(resultSet, rowCount);
       rowCount++;
@@ -56,10 +56,10 @@ public class UserAccessSummaryDbReader {
     return null;
   }
 
-  public void close() { // <5>
+  public void close() { // <8>
     this.rowCount = 0;
     JdbcUtils.closeResultSet(this.resultSet);
     JdbcUtils.closeStatement(this.statement);
-    DataSourceUtils.releaseConnection(this.con, this.dataSource);
+    DataSourceUtils.releaseConnection(this.con, this.dataSource); // <9>
   }
 }

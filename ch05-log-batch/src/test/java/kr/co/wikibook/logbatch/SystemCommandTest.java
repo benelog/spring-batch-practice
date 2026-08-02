@@ -54,8 +54,8 @@ class SystemCommandTest {
   @Test
   @EnabledOnOs({OS.LINUX, OS.MAC}) // <1>
   void executeTimeout() throws Exception {
-    systemCommandTasklet.setCommand("sleep", "15"); // <2>
-    systemCommandTasklet.setTimeout(10000);
+    systemCommandTasklet.setCommand("sleep", "3"); // <2>
+    systemCommandTasklet.setTimeout(10);
     systemCommandTasklet.afterPropertiesSet();
 
     assertThatExceptionOfType(SystemCommandException.class)

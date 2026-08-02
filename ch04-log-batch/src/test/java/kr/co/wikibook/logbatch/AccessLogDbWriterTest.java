@@ -13,19 +13,19 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringJUnitConfig(TestDbConfig.class)
-@Transactional
+@SpringJUnitConfig(TestDbConfig.class) // <1>
+@Transactional // <2>
 class AccessLogDbWriterTest {
 
   @DisplayName("AccessLog를 access_log 테이블에 입력한다")
   @Test
-  void write(@Autowired DataSource dataSource) {
+  void write(@Autowired DataSource dataSource) { // <3>
     // given
     var writer = new AccessLogDbWriter(dataSource);
     var item = new AccessLog(Instant.now(), "127.0.0.1", "benelog");
 
     // when
-    writer.write(List.of(item));
+    writer.write(List.of(item)); // <4>
 
     // then
     int count = JdbcTestUtils.countRowsInTableWhere(
