@@ -19,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest("spring.batch.job.enabled=false")
 @SpringBatchTest
-public class AccessLogJobTest {
+class AccessLogJobTest {
   @DisplayName("잡을 실행하면 첫 스텝이 세 건을 쓴다")
   @Test
   void launchJob(

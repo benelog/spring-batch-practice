@@ -19,7 +19,7 @@ import org.springframework.test.jdbc.JdbcTestUtils;
     "date=2026-07-28",
     "base-path=build/test-output/"
 })
-public class AccessLogJobTest {
+class AccessLogJobTest {
   static Path basePath = Path.of("build/test-output");
   static Path output = basePath.resolve("2026-07-28_summary.csv");
 
