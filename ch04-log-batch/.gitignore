@@ -40,3 +40,4 @@ out/
 db/
 user-access-summary.csv
 
+src/test/resources/*_summary.csv

@@ -44,3 +44,4 @@ blogPosts.xml
 posts.xml
 user-access-summary.csv
 
+logs/*_summary.csv

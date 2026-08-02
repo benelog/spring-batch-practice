@@ -2,9 +2,10 @@ package kr.co.wikibook.logbatch;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -16,14 +17,21 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 @SpringBootTest({
     "date=2026-07-28",
-    "base-path=src/test/resources/"
+    "base-path=build/test-output/"
 })
 public class AccessLogJobTest {
-  static File output = new File("src/test/resources/2026-07-28_summary.csv");
+  static Path basePath = Path.of("build/test-output");
+  static Path output = basePath.resolve("2026-07-28_summary.csv");
 
   @BeforeAll
-  static void deleteOutput() {
-    output.delete();
+  static void prepareBasePath() throws IOException {
+    Files.createDirectories(basePath);
+    Files.copy(
+        Path.of("src/test/resources/2026-07-28.csv"),
+        basePath.resolve("2026-07-28.csv"),
+        StandardCopyOption.REPLACE_EXISTING
+    );
+    Files.deleteIfExists(output);
   }
 
   @DisplayName("잡을 실행하면 DB 입력과 CSV 출력이 모두 끝난다")
@@ -31,7 +39,7 @@ public class AccessLogJobTest {
   void startJob(@Autowired DataSource dataSource) throws IOException {
     int count = JdbcTestUtils.countRowsInTable(new JdbcTemplate(dataSource), "access_log");
     assertThat(count).isGreaterThan(0);
-    assertThat(output.exists()).isTrue();
-    assertThat(Files.readAllLines(output.toPath())).isNotEmpty();
+    assertThat(Files.exists(output)).isTrue();
+    assertThat(Files.readAllLines(output)).isNotEmpty();
   }
 }

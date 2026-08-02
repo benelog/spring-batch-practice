@@ -38,3 +38,4 @@ out/
 
 .envrc
 db/
+logs/*_summary.csv
