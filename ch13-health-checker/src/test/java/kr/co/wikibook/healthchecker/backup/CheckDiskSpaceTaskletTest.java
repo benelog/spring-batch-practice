@@ -27,7 +27,7 @@ class CheckDiskSpaceTaskletTest {
 
     Path targetParentDir = baseDir.resolve("target");
     targetParentDir.toFile().mkdir();
-    long actualUsableSpace = targetParentDir.toFile().getUsableSpace();
+    long actualUsableSpace = Files.getFileStore(targetParentDir).getUsableSpace();
     var tasklet = new CheckDiskSpaceTasklet(new BackupRoute(source, targetParentDir));
 
     JobExecution jobExecution = MetaDataInstanceFactory.createJobExecution();

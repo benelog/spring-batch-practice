@@ -1,5 +1,6 @@
 package kr.co.wikibook.logbatch;
 
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.ILoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -15,7 +16,7 @@ public class CheckDiskSpaceTask implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) {
+  public void run(String... args) throws IOException {
     if (args.length < 2) {
       return;
     }

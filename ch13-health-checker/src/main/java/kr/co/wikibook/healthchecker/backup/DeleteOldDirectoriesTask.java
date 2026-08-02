@@ -1,8 +1,10 @@
 package kr.co.wikibook.healthchecker.backup;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -31,17 +33,19 @@ public class DeleteOldDirectoriesTask implements Callable<RepeatStatus> {
     Instant baseInstant = now.minus(daysOfKeeping, ChronoUnit.DAYS);
     long baseEpochMilli = baseInstant.toEpochMilli();
 
-    File[] files = parentDirectory.toFile().listFiles();
-    for (File file : files) {
-      if (!file.isDirectory()) {
-        continue;
-      }
-      if (file.lastModified() < baseEpochMilli) {
-        boolean deleted = FileSystemUtils.deleteRecursively(file.toPath());
-        if (!deleted) {
-          throw new IOException("Failed to delete: " + file);
+    try (DirectoryStream<Path> paths = Files.newDirectoryStream(parentDirectory)) {
+      for (Path path : paths) {
+        BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
+        if (!attributes.isDirectory()) {
+          continue;
         }
-        logger.info("Deleted : {}", file);
+        if (attributes.lastModifiedTime().toMillis() < baseEpochMilli) {
+          boolean deleted = FileSystemUtils.deleteRecursively(path);
+          if (!deleted) {
+            throw new IOException("Failed to delete: " + path);
+          }
+          logger.info("Deleted : {}", path);
+        }
       }
     }
     return RepeatStatus.FINISHED;

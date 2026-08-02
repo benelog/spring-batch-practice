@@ -1,5 +1,6 @@
 package kr.co.wikibook.logbatch;
 
+import java.io.IOException;
 import java.util.Map;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -13,7 +14,8 @@ public class CheckDiskSpaceTasklet implements Tasklet {
   private final DiskSpaceMeter diskSpaceMeter = new DiskSpaceMeter();
 
   @Override
-  public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
+  public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
+      throws IOException {
     Map<String, Object> jobParameters = chunkContext.getStepContext().getJobParameters();
     String directory = (String) jobParameters.get("directory");
     long minUsablePercentage = (long) jobParameters.get("minUsablePercentage");

@@ -3,6 +3,8 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,13 +15,13 @@ class CheckDiskSpaceTaskTest {
 
   @DisplayName("인자가 없으면 아무것도 하지 않는다")
   @Test
-  void doNothingWhenEmptyArgument() {
+  void doNothingWhenEmptyArgument() throws IOException {
     task.run();
   }
 
   @DisplayName("디스크 용량이 기대치보다 많다")
   @Test
-  void checkDiskSpaceWhenSufficient() {
+  void checkDiskSpaceWhenSufficient() throws IOException {
     task.run("/");
     String message = notificationService.getLastMessage();
     assertThat(message).matches("남은 용량 \\d{1,3}%");

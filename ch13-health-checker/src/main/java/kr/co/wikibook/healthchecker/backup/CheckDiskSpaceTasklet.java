@@ -28,7 +28,7 @@ public class CheckDiskSpaceTasklet implements Tasklet {
 
     long sourceSize = getDirectorySize(route.getSourceDirectory());
     executionContext.putLong("sourceSize", sourceSize);
-    long usableSpace = route.getTargetParentDirectory().toFile().getUsableSpace();
+    long usableSpace = Files.getFileStore(route.getTargetParentDirectory()).getUsableSpace();
     executionContext.putLong("usableSpace", usableSpace);
     int executionCount = executionContext.getInt("executionCount", 0);
     executionCount++;

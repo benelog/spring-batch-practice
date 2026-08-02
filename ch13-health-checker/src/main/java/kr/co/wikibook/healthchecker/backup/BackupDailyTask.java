@@ -23,10 +23,14 @@ public class BackupDailyTask implements Callable<RepeatStatus> {
 
   @Override
   public RepeatStatus call() throws IOException {
+    Path sourceDirectory = route.getSourceDirectory().toRealPath();
+    Path targetParentDirectory = route.getTargetParentDirectory().toRealPath();
+    if (targetParentDirectory.startsWith(sourceDirectory)) {
+      throw new IllegalArgumentException("'targetParentDirectory' must be outside 'sourceDirectory'.");
+    }
     LocalDate today = LocalDate.now(clock);
-    Path sourceDirectory = route.getSourceDirectory();
     String targetDirectoryName = sourceDirectory.getFileName() + "_" + today;
-    Path targetDirectory = route.getTargetParentDirectory().resolve(targetDirectoryName);
+    Path targetDirectory = targetParentDirectory.resolve(targetDirectoryName);
     targetDirectory.toFile().mkdir();
 
     FileSystemUtils.copyRecursively(sourceDirectory, targetDirectory);

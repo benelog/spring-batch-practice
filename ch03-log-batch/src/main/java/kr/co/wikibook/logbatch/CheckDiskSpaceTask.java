@@ -1,5 +1,6 @@
 package kr.co.wikibook.logbatch;
 
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,7 @@ public class CheckDiskSpaceTask implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) {
+  public void run(String... args) throws IOException {
     if (args.length < 1) {
       return;
     }
