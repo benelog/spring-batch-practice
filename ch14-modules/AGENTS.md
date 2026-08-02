@@ -120,12 +120,6 @@
 - 분기 판단 로직은 `JobExecutionDecider` 구현체로 분리하고, `@ParameterizedTest`로 모든 분기 경로를 검증하는 단위 테스트를 작성한다.
 - 분기 판단의 근거가 된 값은 잡의 `ExecutionContext`에 저장해서 실행 후에 추적할 수 있게 한다.
 
-### 배치 모니터링
-
-- 커스텀 메트릭 이름은 'batch.settlement.amount'처럼 점(.)으로 구분해서 짓고, 잡 이름은 'batch.job' 태그로 붙인다. 'job'은 프로메테우스가 수집 대상 이름으로 이미 쓰므로 태그 이름으로 쓰지 않는다.
-- (스프링 부트에 의존하지 않는 CLI 모듈이 있을 경우) 메트릭은 마이크로미터 전역 레지스트리(`Metrics.globalRegistry`)에 등록한다.
-- (웹 모듈의 경우) Actuator 엔드포인트는 필요한 것만 노출한다. `management.endpoints.web.exposure.include=*`를 쓰지 않는다.
-
 ## 모듈 구성과 의존 관계
 
 - 모듈 의존은 'admin-cli', 'admin-web' → 잡 그룹 모듈 → 'batch-support' 방향으로만 허용한다. 역방향이나 잡 그룹 모듈 사이의 의존은 추가하지 않는다.
