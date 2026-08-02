@@ -19,7 +19,7 @@ public class FileRecorder implements ItemStream {
   @Override
   public void open(ExecutionContext executionContext) throws ItemStreamException {
     try {
-      this.writer = new FileWriter(recordPath.toFile(), StandardCharsets.UTF_8);
+      this.writer = new FileWriter(recordPath.toFile(), StandardCharsets.UTF_8, true);
     } catch (IOException ex) {
       throw new ItemStreamException(ex);
     }

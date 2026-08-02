@@ -30,9 +30,9 @@ public class CallUrlProcessor implements ItemProcessor<String, ResponseStatus> {
         .timeout(this.requestTimeout)
         .build();
 
-    long startTimeMillis = System.currentTimeMillis();
+    long startNanos = System.nanoTime();
     HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
-    long responseTimeMillis = System.currentTimeMillis() - startTimeMillis;
+    long responseTimeMillis = Duration.ofNanos(System.nanoTime() - startNanos).toMillis();
     logger.info("응답 시간 : {}ms", responseTimeMillis); // <3>
     if (response.statusCode() == 404) { // <4>
       logger.warn("404 응답 : {}", rawUrl);

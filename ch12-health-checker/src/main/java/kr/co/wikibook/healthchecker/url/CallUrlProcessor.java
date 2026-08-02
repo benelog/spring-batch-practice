@@ -55,9 +55,9 @@ public class CallUrlProcessor implements
         .timeout(this.requestTimeout)
         .build();
 
-    long startTimeMillis = System.currentTimeMillis();
+    long startNanos = System.nanoTime();
     HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
-    long responseTimeMillis = System.currentTimeMillis() - startTimeMillis;
+    long responseTimeMillis = Duration.ofNanos(System.nanoTime() - startNanos).toMillis();
     return new ResponseStatus(uri, response.statusCode(), responseTimeMillis);
   }
 
