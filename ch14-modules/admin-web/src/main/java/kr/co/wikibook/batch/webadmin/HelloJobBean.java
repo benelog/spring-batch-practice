@@ -1,7 +1,5 @@
 package kr.co.wikibook.batch.webadmin;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Properties;
 import kr.co.wikibook.batch.support.JobService;
 import org.quartz.JobExecutionContext;
@@ -17,7 +15,7 @@ public class HelloJobBean extends QuartzJobBean {
   @Override
   protected void executeInternal(JobExecutionContext context) {
     var jobParameters = new Properties();
-    long scheduledTime = Instant.now().truncatedTo(ChronoUnit.MINUTES).toEpochMilli();
+    long scheduledTime = context.getScheduledFireTime().getTime();
     jobParameters.put("scheduledTime", scheduledTime + ",java.lang.Long,true");
     service.start("helloJob", jobParameters);
   }
