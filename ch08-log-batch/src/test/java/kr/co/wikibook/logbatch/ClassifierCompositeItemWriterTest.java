@@ -3,6 +3,7 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.support.ClassifierCompositeItemWriter;
@@ -10,6 +11,7 @@ import org.springframework.batch.infrastructure.item.support.ListItemWriter;
 
 class ClassifierCompositeItemWriterTest {
 
+  @DisplayName("아이템을 세 라이터에 번갈아 나눠 쓴다")
   @Test
   void compositeWrite() throws Exception {
     // given

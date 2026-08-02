@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.batch.infrastructure.item.Chunk;
@@ -12,6 +13,7 @@ import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.core.io.FileSystemResource;
 
 class UserAccessSummaryCsvWriterTest {
+  @DisplayName("집계 결과를 CSV 파일에 줄 단위로 쓴다")
   @Test
   void write(@TempDir Path tempPath) throws Exception {
     // given

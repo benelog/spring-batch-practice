@@ -3,6 +3,7 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.Job;
@@ -28,6 +29,7 @@ class CheckStatusJobTest {
     testUtils.setJob(checkStatusJob);
   }
 
+  @DisplayName("countAccessLogStep만 실행하면 집계 건수가 실행 컨텍스트에 저장된다")
   @Test
   void startCountAccessLogStep() {
     JobExecution jobExecution = testUtils.startStep("countAccessLogStep");
@@ -40,6 +42,7 @@ class CheckStatusJobTest {
     assertThat(count).isGreaterThanOrEqualTo(0L);
   }
 
+  @DisplayName("잡 파라미터를 넘겨 checkDiskSpaceStep만 실행한다")
   @Test
   void startCheckDiskSpaceStep() {
     JobParameters jobParameters = testUtils.getUniqueJobParametersBuilder()
@@ -54,6 +57,7 @@ class CheckStatusJobTest {
     assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
   }
 
+  @DisplayName("잡 실행 컨텍스트를 채워 logDiskSpaceStep만 실행한다")
   @Test
   void startLogDiskSpaceStep() {
     JobParameters jobParameters = testUtils.getUniqueJobParameters();

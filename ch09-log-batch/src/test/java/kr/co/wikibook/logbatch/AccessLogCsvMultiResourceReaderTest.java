@@ -2,6 +2,7 @@ package kr.co.wikibook.logbatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.batch.infrastructure.item.file.MultiResourceItemReade
 class AccessLogCsvMultiResourceReaderTest {
   Logger logger = LoggerFactory.getLogger(this.getClass());
 
+  @DisplayName("여러 CSV 파일을 이어서 한 건씩 읽는다")
   @Test
   void readItemsInMultiFile() throws Exception {
     // given

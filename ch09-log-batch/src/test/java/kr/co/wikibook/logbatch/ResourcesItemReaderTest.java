@@ -6,12 +6,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.file.ResourcesItemReader;
 
 class ResourcesItemReaderTest {
+  @DisplayName("패턴에 맞는 파일들을 리소스 한 건씩 읽는다")
   @Test
   void readResources(@TempDir Path tempPath) throws Exception {
     // given

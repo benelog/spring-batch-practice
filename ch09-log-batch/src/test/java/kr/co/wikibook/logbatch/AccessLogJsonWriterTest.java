@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.batch.infrastructure.item.Chunk;
@@ -14,6 +15,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.WritableResource;
 
 class AccessLogJsonWriterTest {
+  @DisplayName("AccessLog를 JSON 한 줄로 파일에 쓴다")
   @Test
   void write(@TempDir Path tempPath) throws Exception {
     // given

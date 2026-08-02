@@ -2,6 +2,7 @@ package kr.co.wikibook.logbatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.Job;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 })
 @SpringBatchTest
 class Hello2JobTest {
+  @DisplayName("hello2Job을 실행하면 COMPLETED 상태로 끝난다")
   @Test
   void startJob(
       @Autowired JobOperatorTestUtils testUtils,

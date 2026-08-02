@@ -3,12 +3,14 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.batch.infrastructure.item.support.CompositeItemProcessor;
 
 class CompositeItemProcessorTest {
 
+  @DisplayName("여러 프로세서를 순서대로 거쳐 아이템을 가공한다")
   @Test
   void compositeProcess() throws Exception {
     var compositeProcessor = new CompositeItemProcessor<Integer, Integer>();

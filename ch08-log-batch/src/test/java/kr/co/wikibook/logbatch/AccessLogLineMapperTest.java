@@ -2,12 +2,14 @@ package kr.co.wikibook.logbatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.file.LineMapper;
 import org.springframework.batch.infrastructure.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.infrastructure.item.file.transform.DelimitedLineTokenizer;
 
 class AccessLogLineMapperTest {
+  @DisplayName("CSV 한 줄을 AccessLog 객체로 변환한다")
   @Test
   void mapLine() throws Exception {
     // given

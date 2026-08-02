@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -26,6 +27,7 @@ class SystemCommandTest {
   StepContribution stepContribution = new StepContribution(stepExecution);
   ChunkContext chunkContext = new ChunkContext(new StepContext(stepExecution));
 
+  @DisplayName("셸 스크립트를 실행해서 작업 디렉터리에 결과 파일을 남긴다")
   @Test
   @EnabledOnOs({OS.LINUX, OS.MAC}) // <1>
   void execute(@TempDir Path tempPath) throws Exception {
@@ -48,6 +50,7 @@ class SystemCommandTest {
     assertThat(content).isEqualTo("Hello\n"); // <8>
   }
 
+  @DisplayName("명령이 타임아웃 안에 끝나지 않으면 SystemCommandException이 발생한다")
   @Test
   @EnabledOnOs({OS.LINUX, OS.MAC}) // <1>
   void executeTimeout() throws Exception {
@@ -60,6 +63,7 @@ class SystemCommandTest {
         .withMessageContaining("Execution of system command did not finish within the timeout");
   }
 
+  @DisplayName("커맨드 러너를 바꾸면 명령의 출력을 콘솔에 남긴다")
   @Test
   void executeEcho() throws Exception {
     systemCommandTasklet.setCommand("echo", "hello");

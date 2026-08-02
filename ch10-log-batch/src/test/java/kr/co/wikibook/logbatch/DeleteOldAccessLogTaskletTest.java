@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import java.time.Instant;
 import java.time.LocalDate;
 import javax.sql.DataSource;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
@@ -26,6 +27,7 @@ class DeleteOldAccessLogTaskletTest {
   @Autowired
   DataSource dataSource;
 
+  @DisplayName("시작일이 종료일보다 늦으면 태스클릿을 만들 때 예외를 던진다")
   @Test
   void invalidPeriod() { // <1>
     var startDay = LocalDate.of(2025, 4, 3);
@@ -36,6 +38,7 @@ class DeleteOldAccessLogTaskletTest {
     );
   }
 
+  @DisplayName("기간에 해당하는 로그를 여러 번에 나눠 모두 지운다")
   @Test
   void deleteAccessLogs() {
     // given

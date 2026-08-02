@@ -3,6 +3,7 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.support.CompositeItemWriter;
@@ -12,6 +13,7 @@ import org.springframework.batch.infrastructure.item.support.MappingItemWriter;
 class MappingItemWriterTest {
   record User(String name, int age) {}
 
+  @DisplayName("아이템을 변환한 뒤 다음 라이터에 넘긴다")
   @Test
   void mapAndWrite() throws Exception {
     var downstream = new ListItemWriter<String>();
@@ -22,6 +24,7 @@ class MappingItemWriterTest {
     assertThat(downstream.getWrittenItems()).isEqualTo(List.of("1", "2", "3"));
   }
 
+  @DisplayName("레코드의 필드별로 다른 라이터에 나눠 쓴다")
   @Test
   void deconstructAndWrite() throws Exception {
     var nameWriter = new ListItemWriter<String>();

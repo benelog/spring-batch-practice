@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.Job;
@@ -28,6 +29,7 @@ class HelloParamJobTest {
     testUtils.setJob(helloParamJob);
   }
 
+  @DisplayName("필수 파라미터를 넘기면 잡이 정상 종료된다")
   @Test
   void startJobWithValidParameter() throws Exception {
     JobParameters params = testUtils.getUniqueJobParametersBuilder()
@@ -37,6 +39,7 @@ class HelloParamJobTest {
     assertThat(execution.getStatus()).isSameAs(BatchStatus.COMPLETED);
   }
 
+  @DisplayName("필수 파라미터가 없으면 InvalidJobParametersException이 발생한다")
   @Test
   void startJobWithInvalidParameter() {
     JobParameters params = testUtils.getUniqueJobParametersBuilder()

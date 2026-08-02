@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Instant;
 import java.util.List;
 import javax.sql.DataSource;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.database.JdbcBatchItemWriter;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class AccessLogDbWriterTest {
 
+  @DisplayName("AccessLog를 access_log 테이블에 입력한다")
   @Test
   void write(@Autowired DataSource dataSource) throws Exception {
     // given

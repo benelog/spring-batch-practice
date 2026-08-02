@@ -3,6 +3,7 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ class AccessLogCsvReaderStepScopeTest {
 
   Logger logger = LoggerFactory.getLogger(this.getClass());
 
+  @DisplayName("스텝 스코프 리더가 잡 파라미터의 날짜로 파일을 읽는다")
   @Test
   void read(@Autowired FlatFileItemReader<AccessLog> reader) throws Exception {
     JobParameters jobParameters = new JobParametersBuilder()

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ class AccessLogCsvReaderTest {
 
   Logger logger = LoggerFactory.getLogger(this.getClass());
 
+  @DisplayName("CSV 파일의 모든 줄을 한 건씩 읽는다")
   @Test
   void read() throws Exception {
     // given
@@ -36,6 +38,7 @@ class AccessLogCsvReaderTest {
     assertThat(itemCount).isEqualTo(3);
   }
 
+  @DisplayName("빌더가 만든 리더는 ItemStream 타입이다")
   @Test
   void instanceOfItemStream() {
     var config = new AccessLogJobConfig(null, null, Path.of("src/test/resources"));

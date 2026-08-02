@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Instant;
 import java.time.LocalDate;
 import javax.sql.DataSource;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.database.JdbcPagingItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class UserAccessSummaryPagingDbReaderTest {
 
+  @DisplayName("페이징 리더로 집계 결과를 페이지 단위로 읽는다")
   @Test
   @Sql("classpath:/access-log.sql")
   void readItems(@Autowired DataSource dataSource) throws Exception {

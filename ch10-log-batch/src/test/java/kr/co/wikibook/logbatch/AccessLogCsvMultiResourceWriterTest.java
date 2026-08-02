@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.batch.infrastructure.item.Chunk;
@@ -13,6 +14,7 @@ import org.springframework.batch.infrastructure.item.file.MultiResourceItemWrite
 import org.springframework.core.io.FileSystemResource;
 
 public class AccessLogCsvMultiResourceWriterTest {
+  @DisplayName("청크마다 새 파일을 만들어 나눠 쓴다")
   @Test
   void writeMulti(@TempDir Path tempPath) throws Exception {
     // given

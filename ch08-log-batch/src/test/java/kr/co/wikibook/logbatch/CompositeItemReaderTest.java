@@ -1,5 +1,6 @@
 package kr.co.wikibook.logbatch;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemStreamReader;
@@ -12,6 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CompositeItemReaderTest {
+    @DisplayName("여러 리더를 앞에서부터 이어서 읽는다")
     @Test
     void read() throws Exception {
         ItemStreamReader<String> reader1 = stringReader("a", "b");

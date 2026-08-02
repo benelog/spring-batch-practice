@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import javax.sql.DataSource;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.database.JdbcCursorItemReader;
@@ -18,6 +19,7 @@ class UserAccessSummaryDbReaderTest {
 
   static final String INSERT = "INSERT INTO access_log (access_date_time, ip, username) VALUES ";
 
+  @DisplayName("사용자별 접속 건수를 집계해서 한 건씩 읽는다")
   @Test
   @Sql(statements = {
       INSERT + "('2026-07-28 11:14', '175.242.91.54', 'benelog')",

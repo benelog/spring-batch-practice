@@ -3,6 +3,7 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.sql.DataSource;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 @SpringJUnitConfig(TestDbConfig.class)
 class CountAccessLogTaskletTest {
 
+  @DisplayName("access_log 테이블의 건수를 세어 실행 컨텍스트에 저장한다")
   @Test
   void countAccessLog(@Autowired DataSource dataSource) throws Exception {
     // given

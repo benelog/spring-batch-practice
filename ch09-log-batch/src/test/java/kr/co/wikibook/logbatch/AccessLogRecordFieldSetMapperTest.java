@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.file.LineMapper;
 import org.springframework.batch.infrastructure.item.file.mapping.DefaultLineMapper;
@@ -15,6 +16,7 @@ import org.springframework.core.convert.support.DefaultConversionService;
 
 public class AccessLogRecordFieldSetMapperTest {
 
+  @DisplayName("RecordFieldSetMapper로 CSV 한 줄을 AccessLog 레코드로 변환한다")
   @Test
   void mapLine() throws Exception {
     // given

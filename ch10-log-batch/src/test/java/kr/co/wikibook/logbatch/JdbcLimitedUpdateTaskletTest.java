@@ -3,6 +3,7 @@ package kr.co.wikibook.logbatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.sql.DataSource;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 class JdbcLimitedUpdateTaskletTest {
   static final String INSERT = "INSERT INTO access_log (access_date_time, ip, username) VALUES ";
 
+  @DisplayName("한 번에 지울 건수를 제한해서 삭제한다")
   @Test
   @Sql(statements = {
       INSERT + "('2026-07-28 07:14', '175.242.91.54', 'benelog')",

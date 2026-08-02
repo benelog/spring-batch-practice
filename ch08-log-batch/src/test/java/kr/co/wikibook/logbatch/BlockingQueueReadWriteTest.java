@@ -1,5 +1,6 @@
 package kr.co.wikibook.logbatch;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.queue.BlockingQueueItemReader;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BlockingQueueReadWriteTest {
+  @DisplayName("큐에 쓴 아이템을 순서대로 읽고 큐가 비면 null을 반환한다")
   @Test
   void writeAndRead() throws Exception {
     var queue = new ArrayBlockingQueue<>(1000);

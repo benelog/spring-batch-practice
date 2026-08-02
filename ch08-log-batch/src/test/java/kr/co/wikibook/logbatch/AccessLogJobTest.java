@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.Job;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest("spring.batch.job.enabled=false")
 @SpringBatchTest
 public class AccessLogJobTest {
+  @DisplayName("잡을 실행하면 첫 스텝이 세 건을 쓴다")
   @Test
   void launchJob(
       @Autowired JobOperatorTestUtils testUtils,

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import javax.sql.DataSource;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
@@ -17,6 +18,7 @@ class UserAccessSummaryDrivingQueryTest {
 
   static final String INSERT = "INSERT INTO access_log (access_date_time, ip, username) VALUES ";
 
+  @DisplayName("드라이빙 쿼리로 사용자명을 읽고 프로세서에서 접속 건수를 조회한다")
   @Test
   @Sql(statements = {
       INSERT + "('2026-07-28 11:14', '175.242.91.54', 'benelog')",

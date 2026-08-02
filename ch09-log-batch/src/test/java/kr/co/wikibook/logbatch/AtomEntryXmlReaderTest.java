@@ -4,12 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
 import kr.co.wikibook.logbatch.atom.AtomEntry;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.xml.StaxEventItemReader;
 import org.springframework.core.io.ClassPathResource;
 
 class AtomEntryXmlReaderTest {
+  @DisplayName("아톰 XML에서 항목 하나를 AtomEntry 객체로 읽는다")
   @Test
   void read() throws Exception {
     // given
