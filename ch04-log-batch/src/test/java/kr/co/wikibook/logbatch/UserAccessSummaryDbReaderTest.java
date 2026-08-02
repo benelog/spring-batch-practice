@@ -5,11 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import javax.sql.DataSource;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringJUnitConfig(TestDbConfig.class) // <1>
@@ -44,7 +44,7 @@ class UserAccessSummaryDbReaderTest {
     assertThat(item3).isNull();
   }
 
-  @AfterTransaction
+  @AfterEach // <5>
   void close() {
     this.reader.close();
   }

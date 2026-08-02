@@ -64,6 +64,6 @@ public class UserAccessSummaryDbReader implements ItemStreamReader<UserAccessSum
     this.rowCount = 0;
     JdbcUtils.closeResultSet(this.resultSet);
     JdbcUtils.closeStatement(this.statement);
-    JdbcUtils.closeConnection(this.con);
+    DataSourceUtils.releaseConnection(this.con, this.dataSource);
   }
 }
