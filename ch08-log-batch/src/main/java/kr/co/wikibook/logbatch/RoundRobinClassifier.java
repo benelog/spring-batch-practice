@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.classify.Classifier;
 
 public class RoundRobinClassifier<C, T> implements Classifier<C, T> {
-  private int index = -1;
+  private int index = 0;
   private final int rounds;
   private final List<T> targets;
 
@@ -15,6 +15,8 @@ public class RoundRobinClassifier<C, T> implements Classifier<C, T> {
 
   @Override
   public T classify(C ignored) {
-    return targets.get(++index % rounds);
+    T target = targets.get(index);
+    index = (index + 1) % rounds;
+    return target;
   }
 }
