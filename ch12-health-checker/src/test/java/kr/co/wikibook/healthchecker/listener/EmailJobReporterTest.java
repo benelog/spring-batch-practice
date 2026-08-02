@@ -6,9 +6,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import com.dumbster.smtp.SimpleSmtpServer;
-import com.dumbster.smtp.SmtpMessage;
-import java.io.IOException;
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetup;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -43,12 +44,14 @@ class EmailJobReporterTest {
   }
 
   @Test
-  void sendEmail() throws IOException {
-    try (SimpleSmtpServer smtpServer = SimpleSmtpServer.start(SimpleSmtpServer.AUTO_SMTP_PORT)) {
+  void sendEmail() throws MessagingException {
+    var greenMail = new GreenMail(ServerSetup.SMTP.dynamicPort());
+    greenMail.start();
+    try {
       // given
       var mailSender = new JavaMailSenderImpl();
       mailSender.setHost("localhost");
-      mailSender.setPort(smtpServer.getPort());
+      mailSender.setPort(greenMail.getSmtp().getPort());
 
       var jobInstance = new JobInstance(0L, "testJob");
 
@@ -74,11 +77,13 @@ class EmailJobReporterTest {
       reporter.afterJob(jobExecution);
 
       // then
-      List<SmtpMessage> emails = smtpServer.getReceivedEmails();
+      MimeMessage[] emails = greenMail.getReceivedMessages();
       assertThat(emails).hasSize(1);
-      SmtpMessage email = emails.get(0);
-      assertThat(email.getHeaderValue("Subject")).isEqualTo("testJob : COMPLETED (2:06:45)");
-      assertThat(email.getHeaderValue("To")).isEqualTo("benelog@naver.com");
+      MimeMessage email = emails[0];
+      assertThat(email.getSubject()).isEqualTo("testJob : COMPLETED (2:06:45)");
+      assertThat(email.getHeader("To", null)).isEqualTo("benelog@naver.com");
+    } finally {
+      greenMail.stop();
     }
   }
 }

@@ -29,7 +29,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.batch:spring-batch-test'
-    testImplementation 'com.github.kirviq:dumbster:1.7.1'
+    testImplementation 'com.icegreen:greenmail:2.1.11'
 }
 
 tasks.named('test') {
