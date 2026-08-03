@@ -22,8 +22,8 @@ exactly as documented, produces no spans at all and makes the job fail.
 ./gradlew run
 ```
 
-The same two-step job runs twice. The first run registers the handler from the documentation,
-the second registers a `DefaultTracingObservationHandler`. Spans are collected with the
+The same two-step job runs three times: with the handler from the documentation, with a
+`DefaultTracingObservationHandler`, and with both handlers. Spans are collected with the
 OpenTelemetry SDK `InMemorySpanExporter`.
 
 ```java
@@ -70,7 +70,8 @@ Also asserted as tests:
 ./gradlew test
 ```
 
-`tracingObservationHandlerCreatesSpans` passes; `documentedExampleShouldCreateSpans` fails.
+`tracingObservationHandlerCreatesSpans` and `tracingAndMetricsHandlersBothWork` pass;
+`documentedExampleShouldCreateSpans` fails.
 
 ## Root cause
 
@@ -99,8 +100,9 @@ public ObservationRegistry observationRegistry(Tracer tracer) {
 }
 ```
 
-If the intent was to have both metrics and tracing, the example needs both handlers, with the
-tracing handler registered first, mirroring what Boot does:
+If the intent of the current example was to have both metrics and tracing (the metrics section
+right above registers a `DefaultMeterObservationHandler` on the same bean), the example needs
+both handlers, as Boot ends up doing:
 
 ```java
 observationRegistry.observationConfig()
@@ -108,6 +110,8 @@ observationRegistry.observationConfig()
 		.observationHandler(new TracingAwareMeterObservationHandler<>(
 				new DefaultMeterObservationHandler(meterRegistry), tracer));
 ```
+
+This is the third run of the reproducer: 3 spans and 6 `spring.batch.*` meters.
 
 ## Impact
 

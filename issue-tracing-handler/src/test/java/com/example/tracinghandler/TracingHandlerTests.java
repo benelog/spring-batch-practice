@@ -32,6 +32,16 @@ class TracingHandlerTests {
 			.allSatisfy(span -> assertThat(span.getParentSpanId()).isEqualTo(jobSpan(result).getSpanId()));
 	}
 
+	@Test
+	@DisplayName("registering both handlers yields spans and metrics (passes)")
+	void tracingAndMetricsHandlersBothWork() {
+		ScenarioResult result = TracingScenario.runTracingAndMetrics();
+
+		assertThat(result.exitStatus()).isEqualTo("COMPLETED");
+		assertThat(result.spans()).hasSize(3);
+		assertThat(result.batchMeterCount()).isPositive();
+	}
+
 	private SpanData jobSpan(ScenarioResult result) {
 		return result.spans()
 			.stream()

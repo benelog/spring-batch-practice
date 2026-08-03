@@ -55,6 +55,18 @@ public final class TracingScenario {
 			.observationHandler(new DefaultTracingObservationHandler(tracer)));
 	}
 
+	/**
+	 * Metrics and tracing together, with the tracing handler registered first. This is what
+	 * Spring Boot's {@code TracingAndMeterObservationHandlerGroup} ends up doing.
+	 */
+	public static ScenarioResult runTracingAndMetrics() {
+		return run("both", (observationRegistry, meterRegistry, tracer) -> observationRegistry.observationConfig()
+			.observationHandler(new DefaultTracingObservationHandler(tracer))
+			.observationHandler(
+					new TracingAwareMeterObservationHandler<>(new DefaultMeterObservationHandler(meterRegistry),
+							tracer)));
+	}
+
 	private static ScenarioResult run(String suffix, HandlerRegistrar registrar) {
 		InMemorySpanExporter spanExporter = InMemorySpanExporter.create();
 		Tracer tracer = otelTracer(spanExporter);

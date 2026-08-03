@@ -8,6 +8,8 @@ public final class TracingHandlerApplication {
 	public static void main(String[] args) {
 		TracingScenario.runDocumentedExample().print("TracingAwareMeterObservationHandler (reference documentation)");
 		TracingScenario.runTracingObservationHandler().print("DefaultTracingObservationHandler");
+		TracingScenario.runTracingAndMetrics()
+			.print("DefaultTracingObservationHandler + TracingAwareMeterObservationHandler");
 	}
 
 }
