@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<batch:job id="simpleTaskJob">
+		<batch:step id="printStep">
+			<batch:tasklet ref="printTask" method="run"/>
+		</batch:step>
+
+	</batch:job>
+	
+	<bean id="printTask" class="net.benelog.batch.PrintTask" p:message="#{jobParameters['message']}" scope="step"/>
+	
+	<!-- 
+	<bean id="printTask" class="net.benelog.batch.PrintTask" p:message="hello task"/>
+	-->
+	
+</beans>
