@@ -2,7 +2,6 @@ package kr.co.wikibook.batch.support;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import io.micrometer.observation.ObservationRegistry;
 import javax.sql.DataSource;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -65,10 +64,5 @@ public class BatchConfig {
   @Bean
   public JobRegistry jobRegistry() {
     return new MapJobRegistry();
-  }
-
-  @Bean
-  public ObservationRegistry observationRegistry() {
-    return ObservationRegistry.create();
   }
 }
