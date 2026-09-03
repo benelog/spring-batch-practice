@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.1.2-SNAPSHOT'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+group = 'probe'
+ext['spring-batch.version'] = System.getProperty('batchVersion', '6.0.6-SNAPSHOT')
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.spring.io/snapshot' }
+}
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation 'org.springframework.boot:spring-boot-starter-batch-jdbc'
+    runtimeOnly 'com.h2database:h2'
+}
