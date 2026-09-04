@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class AccessLogCsvToDbTaskTest {
 
-  @DisplayName("CSV 파일을 읽어 access_log 테이블에 입력한다")
+  @DisplayName("CSV 파일을 읽어 access_log 테이블에 쓴다")
   @Test
   void runTask(@Autowired DataSource dataSource) throws Exception {
     // given

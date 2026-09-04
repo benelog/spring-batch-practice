@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class AccessLogDbWriterTest {
 
-  @DisplayName("AccessLog를 access_log 테이블에 입력한다")
+  @DisplayName("AccessLog를 access_log 테이블에 쓴다")
   @Test
   void write(@Autowired DataSource dataSource) throws Exception {
     // given
