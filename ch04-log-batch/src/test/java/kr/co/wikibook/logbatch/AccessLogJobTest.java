@@ -34,7 +34,7 @@ class AccessLogJobTest {
     Files.deleteIfExists(output);
   }
 
-  @DisplayName("잡을 실행하면 DB 입력과 CSV 출력이 모두 끝난다")
+  @DisplayName("잡을 실행하면 DB 쓰기와 CSV 출력이 모두 끝난다")
   @Test
   void startJob(@Autowired DataSource dataSource) throws IOException {
     int count = JdbcTestUtils.countRowsInTable(new JdbcTemplate(dataSource), "access_log");
