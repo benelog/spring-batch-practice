@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 import kr.co.wikibook.batch.support.MdcJobListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
@@ -47,7 +47,7 @@ public class SettleOrderJobConfig {
   }
 
   @Bean
-  @JobScope
+  @StepScope
   public ItemReader<Order> orderReader() {
     List<Order> orders = IntStream.rangeClosed(1, 100)
         .mapToObj(seq -> new Order("ORD-" + seq, seq * 1_000L))

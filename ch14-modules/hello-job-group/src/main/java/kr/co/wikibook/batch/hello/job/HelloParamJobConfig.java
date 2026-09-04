@@ -3,7 +3,7 @@ package kr.co.wikibook.batch.hello.job;
 import java.time.LocalDate;
 import kr.co.wikibook.batch.hello.tasklet.HelloDate1Tasklet;
 import kr.co.wikibook.batch.hello.tasklet.HelloDate2Tasklet;
-import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.job.parameters.DefaultJobParametersValidator;
@@ -36,7 +36,7 @@ public class HelloParamJobConfig {
   }
 
   @Bean
-  @JobScope
+  @StepScope
   public HelloDate2Tasklet helloDate2Tasklet(
       @Value("#{jobParameters['helloDate']}") LocalDate date) {
     return new HelloDate2Tasklet(date);

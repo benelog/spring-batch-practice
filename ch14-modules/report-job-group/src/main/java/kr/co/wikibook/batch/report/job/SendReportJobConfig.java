@@ -3,7 +3,7 @@ package kr.co.wikibook.batch.report.job;
 import java.time.LocalDate;
 import kr.co.wikibook.batch.report.tasklet.HolidayCheckTask;
 import kr.co.wikibook.batch.report.tasklet.LoggingTasklet;
-import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
@@ -45,7 +45,7 @@ public class SendReportJobConfig {
   }
 
   @Bean
-  @JobScope
+  @StepScope
   public Tasklet checkHolidayTasklet(
       @Value("#{jobParameters['reportDate']}") LocalDate reportDate) {
     var task = new HolidayCheckTask(reportDate);

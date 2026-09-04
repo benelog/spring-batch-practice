@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
@@ -42,7 +42,7 @@ public class SpendTimeChunkJobConfig {
   }
 
   @Bean
-  @JobScope
+  @StepScope
   public ItemReader<Integer> millSecondsReader() {
     IntStream weightRange = IntStream.range(1, 300);
     List<Integer> weights = new ArrayList<>(weightRange.boxed().toList());

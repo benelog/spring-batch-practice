@@ -14,6 +14,7 @@ import kr.co.wikibook.healthchecker.util.Configs;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.parameters.DefaultJobParametersValidator;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
@@ -101,7 +102,7 @@ public class CheckUrlJobConfig {
   }
 
   @Bean
-  @JobScope
+  @StepScope
   public FlatFileItemReader<String> urlFileReader(
       @Value(INPUT_FILE_PARAM_EXP) FileSystemResource urlListFile) {
     return new FlatFileItemReaderBuilder<String>()

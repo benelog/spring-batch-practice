@@ -3,7 +3,7 @@ package kr.co.wikibook.healthchecker.url;
 import java.net.http.HttpConnectTimeoutException;
 import java.time.Duration;
 import kr.co.wikibook.healthchecker.util.Configs;
-import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.job.parameters.DefaultJobParametersValidator;
@@ -81,14 +81,14 @@ public class CheckUrlJobConfig {
   }
 
   @Bean
-  @JobScope
+  @StepScope
   public Tasklet logResourceMetaTasklet(@Value(INPUT_FILE_PARAM_EXP) FileSystemResource urlListFile) {
     var task = new LogResourceMetaTask(urlListFile);
     return new CallableTaskletAdapter(task);
   }
 
   @Bean
-  @JobScope
+  @StepScope
   public FlatFileItemReader<String> urlFileReader(
       @Value(INPUT_FILE_PARAM_EXP) FileSystemResource urlListFile) {
     return new FlatFileItemReaderBuilder<String>()

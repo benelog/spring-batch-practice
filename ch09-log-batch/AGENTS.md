@@ -59,7 +59,7 @@
 - 실행할 때마다 달라지는 값만 잡 파라미터로 전달한다. 환경별로만 달라지는 값은 application.properties 등 스프링의 속성 관리 체계로 참조한다.
 - `JobInstanceAlreadyCompleteException`이 나면 파라미터를 바꾸거나 메타데이터를 지워서 우회하지 말고 사람에게 보고한다. 재실행 허용 여부는 사람이 결정한다.
 - 메타데이터 테이블의 데이터를 임의로 DELETE, UPDATE 하지 않는다.
-- 잡 파라미터는 `@JobScope`나 `@StepScope`를 붙인 빈에 `@Value`와 SpEL 선언으로 주입받는 방식을 기본으로 한다.
+- 잡 파라미터는 `@StepScope`를 붙인 빈에 `@Value`와 SpEL 선언으로 주입받는 방식을 기본으로 한다. 스텝 실행 밖에서도 쓰이는 빈(`Step`을 반환하는 빈, 잡 리스너, 여러 스텝이 공유하는 객체)에는 `@JobScope`를 쓴다.
 - 모든 잡에 `DefaultJobParametersValidator`를 지정한다. 잡 파라미터를 추가하면 필수 키 목록도 함께 갱신한다.
 - 잡 파라미터용 `Converter`는 클래스나 익명 클래스로 구현한다. 람다 표현식으로 바꾸지 않는다.
 - ExecutionContext에는 건수나 시각처럼 직렬화할 수 있는 작은 값만 담는다. 처리 대상 데이터 자체를 담지 않는다.
