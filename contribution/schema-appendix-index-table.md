@@ -116,5 +116,5 @@ The foreign key columns discussed in #4551 are left to that issue.
 ## 남은 것
 
 - 리뷰 대응. NOTE 단락을 빼 달라고 하면 표만 남기고 다시 올린다.
-- 원고 6장에 넣었던 인덱스 안내(원고 저장소 커밋 `c706323`)는 2026-09-19에 되돌렸다(커밋 `9ab7118`).
+- 원고 6장에 넣었던 인덱스 안내(원고 저장소 커밋 `c706323`)는 2026-09-19에 되돌렸다(커밋 `9932139`).
   PR 결과가 나온 뒤 다시 넣을지를 포함한 후속 할 일은 https://github.com/benelog/personal-task/issues/393 에서 관리한다.
