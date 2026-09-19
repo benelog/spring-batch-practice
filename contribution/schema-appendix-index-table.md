@@ -24,8 +24,10 @@
   실행할 때 `getJobExecutions(jobInstance)`로 인스턴스의 모든 실행을 읽으므로 재시작 때 실행 수만큼 나간다.
   6.0.0~6.0.3에서는 `SimpleJobRepository.update(StepExecution)`이 청크마다 이 조회를 했고, 그것이 #5360이다.
   6.0.4의 커밋 `692acba43`이 청크 경로를 고쳤고, 커밋 `65e85d09f`(2026-05-26)가 오라클 DDL에만 `BATCH_JOB_EXEC_PARAMS_IDX`를 넣었다.
-- **`BATCH_STEP_EXECUTION`을 `JOB_EXECUTION_ID = ?`로 읽는 `GET_STEP_EXECUTIONS`는 표에 넣지 않았다.**
-  `main`에서 호출처가 `SimpleJobExplorer`뿐이라 빈도를 단정하기 어렵다. 조인 행의 조인 칼럼으로 이미 드러난다.
+- **`BATCH_STEP_EXECUTION`을 `JOB_EXECUTION_ID = ?`로 읽는 `GET_STEP_EXECUTIONS`는 처음에 표에 넣지 않았다가 두 번째 커밋으로 보탰다.**
+  처음에는 호출처가 `SimpleJobExplorer`뿐이라고 봤는데, `SimpleJobRepository`가 `SimpleJobExplorer`를 상속하므로
+  `getLastJobExecution`·`getJobExecutions`·`getJobExecution`이 모두 `fillJobExecutionDependencies`를 거쳐 이 조회를 한다.
+  잡 실행을 읽을 때마다 나가는 조회라 `BATCH_JOB_EXECUTION_PARAMS` 행과 같은 빈도로 적었다(커밋 `c2ea6f0a1`, 2026-09-19).
 - **중복 이슈 없음.** "Recommendations for Indexing" 검색 결과는 #4551(2024-02-15, open, 마일스톤 없음)과 그 PR #5419, #5425뿐이다.
   #4551은 외래 키 칼럼을 추가로 안내하자는 내용이고 표의 부정확성은 다루지 않는다. 두 PR(2026-06-09, 06-10, 같은 작성자)은
   외래 키 소절을 덧붙이는 내용이며 리뷰나 메인테이너 반응이 없다. 본문 끝에 'Generated with Claude Code'가 붙어 있다.
@@ -95,10 +97,12 @@ The foreign key columns discussed in #4551 are left to that issue.
 - `BATCH_JOB_EXECUTION_PARAMS`의 `JOB_EXECUTION_ID = ?` 행을 더했다.
 - `BATCH_STEP_EXECUTION`의 `VERSION = ?` 행을 지웠다.
 - `BATCH_STEP_EXECUTION`의 `STEP_NAME = ? and JOB_EXECUTION_ID = ?` 행을 `BATCH_JOB_EXECUTION`과의 조인 행으로 바꿨다.
+- (두 번째 커밋) `BATCH_STEP_EXECUTION`의 `JOB_EXECUTION_ID = ?` 행을 더했다. PR 댓글로 이유를 남겼다.
 - 표 아래에 유일성 제약과 오라클 인덱스를 알리는 NOTE를 넣었다.
 
 ## 남은 것
 
-- 리뷰 대응. NOTE 단락을 빼 달라고 하면 표만 남기고 커밋을 스쿼시해 다시 올린다.
+- 리뷰 대응. NOTE 단락을 빼 달라고 하면 표만 남기고 다시 올린다.
+- 리뷰가 끝나면 커밋 두 개를 하나로 스쿼시해 강제 푸시한다. 규칙은 커밋 하나인데, 두 번째 커밋을 올릴 때 자동 모드에서 강제 푸시가 막혀 미뤘다.
 - 원고 6장에 넣었던 인덱스 안내(원고 저장소 커밋 `c706323`)는 2026-09-19에 되돌렸다(커밋 `41d8688`).
   PR 결과가 나온 뒤 다시 넣을지를 포함한 후속 할 일은 https://github.com/benelog/personal-task/issues/393 에서 관리한다.
