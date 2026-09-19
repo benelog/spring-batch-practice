@@ -102,8 +102,19 @@ The foreign key columns discussed in #4551 are left to that issue.
 - `BATCH_STEP_EXECUTION`의 `JOB_EXECUTION_ID = ?` 행을 더했다.
 - 표 아래에 유일성 제약과 오라클 인덱스를 알리는 NOTE를 넣었다.
 
+## 포크 CI 실패(2026-09-19)
+
+- 포크 `benelog/spring-batch`의 GH-5549 브랜치 푸시 CI(run 35433275361)가 `spring-batch-samples`의
+  `JobOperatorFunctionalTests.testStartStopResumeJob`에서 `OptimisticLockingFailureException`
+  ("Attempt to update step execution id=1 with wrong version (2), where current version is 3")으로 실패했다.
+- 문서 파일 하나만 고친 커밋이라 변경과 무관하다. 같은 커밋의 업스트림 PR 체크(run 35433276800)는 통과했고,
+  포크의 직전 실행(run 35425152711)도 통과했다. `SimpleJobOperator.stop()`이 실행 중인 스텝의 `StepExecution`을
+  갱신할 때 스텝 스레드의 갱신과 경합하는 알려진 문제로, 이슈 #5308(`GracefulShutdownFunctionalTests` 간헐 실패)과
+  같은 원인이며 수정 PR #5442·#5448이 검토 중이다.
+- 실패한 잡만 다시 실행(attempt 2)해 통과했다. 따로 고칠 것은 없다.
+
 ## 남은 것
 
 - 리뷰 대응. NOTE 단락을 빼 달라고 하면 표만 남기고 다시 올린다.
-- 원고 6장에 넣었던 인덱스 안내(원고 저장소 커밋 `c706323`)는 2026-09-19에 되돌렸다(커밋 `41d8688`).
+- 원고 6장에 넣었던 인덱스 안내(원고 저장소 커밋 `c706323`)는 2026-09-19에 되돌렸다(커밋 `9ab7118`).
   PR 결과가 나온 뒤 다시 넣을지를 포함한 후속 할 일은 https://github.com/benelog/personal-task/issues/393 에서 관리한다.
