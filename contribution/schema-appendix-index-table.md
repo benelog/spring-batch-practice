@@ -6,7 +6,7 @@
 아래 본문이 실제로 등록한 이슈·PR 내용이다.
 
 - 이슈: https://github.com/spring-projects/spring-batch/issues/5549
-- 수정 PR: https://github.com/spring-projects/spring-batch/pull/5550 (브랜치 `GH-5549`, 커밋 `094ee41d5`, 로컬 클론 `~/source/benelog/spring-batch`)
+- 수정 PR: https://github.com/spring-projects/spring-batch/pull/5550 (브랜치 `GH-5549`, 커밋 `b9fde08df`, 로컬 클론 `~/source/benelog/spring-batch`)
 
 등록 절차와 규칙은 [spring-contribution.md](spring-contribution.md)를 따른다.
 
@@ -24,10 +24,12 @@
   실행할 때 `getJobExecutions(jobInstance)`로 인스턴스의 모든 실행을 읽으므로 재시작 때 실행 수만큼 나간다.
   6.0.0~6.0.3에서는 `SimpleJobRepository.update(StepExecution)`이 청크마다 이 조회를 했고, 그것이 #5360이다.
   6.0.4의 커밋 `692acba43`이 청크 경로를 고쳤고, 커밋 `65e85d09f`(2026-05-26)가 오라클 DDL에만 `BATCH_JOB_EXEC_PARAMS_IDX`를 넣었다.
-- **`BATCH_STEP_EXECUTION`을 `JOB_EXECUTION_ID = ?`로 읽는 `GET_STEP_EXECUTIONS`는 처음에 표에 넣지 않았다가 두 번째 커밋으로 보탰다.**
+- **`BATCH_STEP_EXECUTION`을 `JOB_EXECUTION_ID = ?`로 읽는 `GET_STEP_EXECUTIONS`는 처음에 표에 넣지 않았다가 뒤에 보탰다.**
   처음에는 호출처가 `SimpleJobExplorer`뿐이라고 봤는데, `SimpleJobRepository`가 `SimpleJobExplorer`를 상속하므로
   `getLastJobExecution`·`getJobExecutions`·`getJobExecution`이 모두 `fillJobExecutionDependencies`를 거쳐 이 조회를 한다.
-  잡 실행을 읽을 때마다 나가는 조회라 `BATCH_JOB_EXECUTION_PARAMS` 행과 같은 빈도로 적었다(커밋 `c2ea6f0a1`, 2026-09-19).
+  잡 실행을 읽을 때마다 나가는 조회라 `BATCH_JOB_EXECUTION_PARAMS` 행과 같은 빈도로 적었다.
+  처음 커밋 `094ee41d5`에 두 번째 커밋 `c2ea6f0a1`로 더했다가, 같은 날 리뷰 전에 하나로 스쿼시해 `b9fde08df`로 강제 푸시했다.
+  스쿼시 예고 댓글은 지우고, PR 본문에 이 행을 반영했다.
 - **중복 이슈 없음.** "Recommendations for Indexing" 검색 결과는 #4551(2024-02-15, open, 마일스톤 없음)과 그 PR #5419, #5425뿐이다.
   #4551은 외래 키 칼럼을 추가로 안내하자는 내용이고 표의 부정확성은 다루지 않는다. 두 PR(2026-06-09, 06-10, 같은 작성자)은
   외래 키 소절을 덧붙이는 내용이며 리뷰나 메인테이너 반응이 없다. 본문 끝에 'Generated with Claude Code'가 붙어 있다.
@@ -82,7 +84,7 @@ Still accurate for `GET_LAST_JOB_EXECUTION_ID` and `GET_JOB_EXECUTION_IDS_BY_INS
 ````markdown
 Resolves #5549
 
-The table now lists the clauses that `JdbcJobInstanceDao`, `JdbcJobExecutionDao` and `JdbcStepExecutionDao` run in 6.x. The `BATCH_STEP_EXECUTION` row with `STEP_NAME = ? and JOB_EXECUTION_ID = ?` is replaced by the join on `BATCH_JOB_EXECUTION` that `getLastStepExecution` and `countStepExecutions` use, the `VERSION = ?` row is removed because that clause always comes with the primary key, and a row for `BATCH_JOB_EXECUTION_PARAMS.JOB_EXECUTION_ID` is added.
+The table now lists the clauses that `JdbcJobInstanceDao`, `JdbcJobExecutionDao` and `JdbcStepExecutionDao` run in 6.x. The `BATCH_STEP_EXECUTION` row with `STEP_NAME = ? and JOB_EXECUTION_ID = ?` is replaced by the join on `BATCH_JOB_EXECUTION` that `getLastStepExecution` and `countStepExecutions` use, and the `VERSION = ?` row is removed because that clause always comes with the primary key. Two rows are added for the queries that run every time a job execution is loaded: `JdbcJobExecutionDao#getJobExecution(long)` reads `BATCH_JOB_EXECUTION_PARAMS` by `JOB_EXECUTION_ID`, and `SimpleJobExplorer#fillJobExecutionDependencies` reads `BATCH_STEP_EXECUTION` by the same column to attach the step executions.
 
 I also added a note that the unique constraint on `JOB_NAME` and `JOB_KEY` is usually backed by an index and that the Oracle script already creates one for `BATCH_JOB_EXECUTION_PARAMS`, so that readers do not create duplicate indexes. Happy to drop the note if you prefer the table alone.
 
@@ -91,18 +93,17 @@ The foreign key columns discussed in #4551 are left to that issue.
 
 ## PR에서 고친 것
 
-파일은 'spring-batch-docs/modules/ROOT/pages/schema-appendix.adoc' 하나다(+8 -4).
+파일은 'spring-batch-docs/modules/ROOT/pages/schema-appendix.adoc' 하나다(+9 -4).
 
 - `BATCH_JOB_EXECUTION` 행의 빈도를 "Every time a job is launched for an existing job instance (for example, a restart)"로 바꿨다.
 - `BATCH_JOB_EXECUTION_PARAMS`의 `JOB_EXECUTION_ID = ?` 행을 더했다.
 - `BATCH_STEP_EXECUTION`의 `VERSION = ?` 행을 지웠다.
 - `BATCH_STEP_EXECUTION`의 `STEP_NAME = ? and JOB_EXECUTION_ID = ?` 행을 `BATCH_JOB_EXECUTION`과의 조인 행으로 바꿨다.
-- (두 번째 커밋) `BATCH_STEP_EXECUTION`의 `JOB_EXECUTION_ID = ?` 행을 더했다. PR 댓글로 이유를 남겼다.
+- `BATCH_STEP_EXECUTION`의 `JOB_EXECUTION_ID = ?` 행을 더했다.
 - 표 아래에 유일성 제약과 오라클 인덱스를 알리는 NOTE를 넣었다.
 
 ## 남은 것
 
 - 리뷰 대응. NOTE 단락을 빼 달라고 하면 표만 남기고 다시 올린다.
-- 리뷰가 끝나면 커밋 두 개를 하나로 스쿼시해 강제 푸시한다. 규칙은 커밋 하나인데, 두 번째 커밋을 올릴 때 자동 모드에서 강제 푸시가 막혀 미뤘다.
 - 원고 6장에 넣었던 인덱스 안내(원고 저장소 커밋 `c706323`)는 2026-09-19에 되돌렸다(커밋 `41d8688`).
   PR 결과가 나온 뒤 다시 넣을지를 포함한 후속 할 일은 https://github.com/benelog/personal-task/issues/393 에서 관리한다.
