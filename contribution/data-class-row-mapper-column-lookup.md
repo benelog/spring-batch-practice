@@ -5,7 +5,7 @@
 프레임워크의 CONTRIBUTING.md는 이슈를 먼저 만들 필요 없이 PR 본문에 맥락을 적으라고 한다.
 
 - 수정 PR: https://github.com/spring-projects/spring-framework/pull/37329
-  (브랜치 `data-class-row-mapper-column-lookup`, 커밋 `4b5b6364ae`, 로컬 클론 `~/source/benelog/spring-framework`)
+  (브랜치 `data-class-row-mapper-column-lookup`, 커밋 `a6e92c94a0`, 로컬 클론 `~/source/benelog/spring-framework`)
 
 ## 문제
 
@@ -23,11 +23,21 @@
 
 ## 수정 방식
 
-- 행마다 칼럼 레이블(소문자)→인덱스 맵을 만들고(중복 레이블은 `findColumn`처럼 첫 번째 인덱스), 소문자 이름 → snake_case 순으로 찾는다. 기존 우선순위는 그대로다.
-- 맵에서 못 찾은 파라미터만 기존 try/catch `findColumn`으로 넘긴다. 칼럼이 없을 때의 예외와 드라이버 고유 매칭을 보존하려는 것이다.
+- `initialize()`에서 snake_case 이름 → 파라미터 인덱스, 소문자 이름 → 파라미터 인덱스 맵 두 개를 멤버로 만든다. `BeanPropertyRowMapper`의 `mappedProperties`와 같은 방향(이름 → 대상)이다.
+  행마다 칼럼 레이블을 돌며 두 맵을 조회하고, 파라미터별 매칭 결과는 `int[]` 두 개에 담는다. 중복 레이블은 `findColumn`처럼 첫 번째 칼럼을 쓴다.
+- 조회 순서는 gh-37297 이후의 `SimplePropertyRowMapper`에 맞춰 snake_case 먼저, 소문자 이름 다음이다.
+- 맵에서 못 찾은 파라미터만 try/catch `findColumn`(순서는 같게)으로 넘긴다. 칼럼이 없을 때의 예외와 드라이버 고유 매칭을 보존하려는 것이다.
+  이름이 겹치는 파라미터(예: `fooBar`와 `foo_bar`)는 `putIfAbsent`에서 밀린 쪽이 이 경로로 가므로 결과는 전과 같다.
 - 테스트 두 개를 `DataClassRowMapperTests`에 더했다. `findColumn`을 부르지 않는지 검증하는 테스트는 수정 전 `main`에서 `NeverWantedButInvoked`로 실패한다.
   `AbstractRowMapperTests.Mock`에 `getResultSet()` 접근자를 더했다.
-- PR 본문 끝에 gh-37297식 순서 뒤집기로 바꾸거나 `SimplePropertyRowMapper`에도 같은 방식을 적용할 수 있다고 적어 선택을 메인테이너에게 맡겼다.
+
+### 첫 구현에서 바꾼 것
+
+처음 올린 커밋(`4b5b6364ae`)은 행마다 칼럼 레이블 → 인덱스 `HashMap`을 새로 만들었고, 순서는 기존대로 소문자 이름이 먼저였다.
+칼럼 구성은 `ResultSet`마다 달라서 그 방향의 맵은 멤버로 둘 수 없다. 매퍼 하나를 여러 쿼리·스레드가 공유하기 때문이다.
+반면 이름 → 파라미터 맵은 매핑 대상 클래스에만 의존하므로 초기화 때 한 번 만들 수 있다. 그래서 맵 방향을 뒤집어 행마다 생기는 맵 생성을 없앴다.
+`initialize()`는 상위 클래스 생성자에서 불리므로 새 필드에 초기화 식을 붙이면 채운 값이 덮어써진다. 기존 필드처럼 초기화 식 없이 `@Nullable`로 두었다.
+PR 본문도 테스트 설명을 빼고 두 문단으로 줄였다.
 
 ## 빌드
 
