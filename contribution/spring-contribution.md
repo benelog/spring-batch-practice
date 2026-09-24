@@ -147,3 +147,4 @@ Signed-off-by: <실명> <이메일>
 - [resources-item-reader-builder.md](resources-item-reader-builder.md) — 이슈 #5487, PR #5488 (기능 제안, ResourcesItemReader 빌더)
 - [schema-appendix-index-table.md](schema-appendix-index-table.md) — 이슈 #5549, PR #5550 (레퍼런스 스키마 부록의 인덱스 권고 표 수정)
 - [data-class-row-mapper-column-lookup.md](data-class-row-mapper-column-lookup.md) — 스프링 프레임워크 PR #37329 (DataClassRowMapper의 칼럼 조회 예외 제거)
+- [named-parameter-trailing-comment-start.md](named-parameter-trailing-comment-start.md) — 스프링 프레임워크 PR #37330 (NamedParameterUtils의 끝 글자 범위 검사 누락)
