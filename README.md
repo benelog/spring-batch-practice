@@ -5,5 +5,6 @@
 책 『AI 에이전트와 함께하는 스프링 배치』의 장별 예제는 2026-09-12에 [wikibook/spring-batch-with-ai](https://github.com/wikibook/spring-batch-with-ai)로 옮겼다.
 
 - `issue-*`: 이슈별 재현 프로젝트. 각 디렉터리의 `README.md`가 이슈 본문이다.
+- `perf-*`: 업스트림 PR의 성능 개선을 확인하는 벤치마크 프로젝트. 각 디렉터리의 `README.md`에 측정 결과를 적는다.
 - `contribution/`: 이슈·PR 등록 규칙([spring-contribution.md](contribution/spring-contribution.md))과 보고한 건별 기록.
 - `xml-pojo-tasklet`: XML 설정과 POJO 태스클릿 확인용 프로젝트.

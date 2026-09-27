@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+// spring-jdbc under test. Without -PspringJdbcJar, the current snapshot of main is used.
+def springVersion = '7.1.0-SNAPSHOT'
+def springJdbcJar = findProperty('springJdbcJar')
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.spring.io/snapshot' }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+dependencies {
+    implementation "org.springframework:spring-core:${springVersion}"
+    implementation "org.springframework:spring-beans:${springVersion}"
+    implementation "org.springframework:spring-tx:${springVersion}"
+    if (springJdbcJar) {
+        implementation files(springJdbcJar)
+    }
+    else {
+        implementation "org.springframework:spring-jdbc:${springVersion}"
+    }
+
+    implementation 'com.h2database:h2:2.5.252'
+    implementation 'com.mysql:mysql-connector-j:26.7.0'
+
+    implementation 'org.openjdk.jmh:jmh-core:1.37'
+    annotationProcessor 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    // Keep constructor parameter names for DataClassRowMapper
+    options.compilerArgs << '-parameters'
+}
+
+application {
+    mainClass = 'org.openjdk.jmh.Main'
+}
+
+tasks.named('run') {
+    // Pass JMH options with --args, e.g. --args='-p db=h2 -rf json -rff build/result.json'
+    systemProperties System.getProperties().findAll { it.key.toString().startsWith('mysql.') }
+}
