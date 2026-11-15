@@ -100,6 +100,8 @@ ext['spring-batch.version'] = '6.0.5-SNAPSHOT'
 ## PR 올리기
 
 1. 이슈 번호로 토픽 브랜치를 만든다: `git checkout -b GH-1234 upstream/main`
+   오타 수정처럼 사소한 변경은 CONTRIBUTING.md에 따라 이슈 없이 PR만 내고, 브랜치 이름에는 이슈 번호 대신 고친 내용을 적는다
+   (예: `fix-testing-docs-start-step`). 이때 커밋 메시지와 PR 본문에는 `Resolves` 줄을 넣지 않는다.
 2. 코드 스타일은 스프링 프레임워크 코드 스타일을 따른다. 들여쓰기는 탭이다.
    `./mvnw -pl <모듈> spring-javaformat:validate`로 확인하고, 어긋나면 `spring-javaformat:apply`로 맞춘다.
 3. 새 파일에는 아파치 라이선스 헤더를 넣고, 고친 파일은 헤더의 연도 범위를 갱신한다
@@ -146,5 +148,6 @@ Signed-off-by: <실명> <이메일>
 - [tracing-handler-issue.md](tracing-handler-issue.md) — 이슈 #5475, PR #5476 (레퍼런스 문서 수정)
 - [resources-item-reader-builder.md](resources-item-reader-builder.md) — 이슈 #5487, PR #5488 (기능 제안, ResourcesItemReader 빌더)
 - [schema-appendix-index-table.md](schema-appendix-index-table.md) — 이슈 #5549, PR #5550 (레퍼런스 스키마 부록의 인덱스 권고 표 수정)
+- [testing-docs-start-step.md](testing-docs-start-step.md) — PR #5667, 이슈 없음 (레퍼런스 'Testing Individual Steps' 절의 메서드 이름 오타)
 - [data-class-row-mapper-column-lookup.md](data-class-row-mapper-column-lookup.md) — 스프링 프레임워크 PR #37329 (DataClassRowMapper의 칼럼 조회 예외 제거)
 - [named-parameter-trailing-comment-start.md](named-parameter-trailing-comment-start.md) — 스프링 프레임워크 PR #37330 (NamedParameterUtils의 끝 글자 범위 검사 누락)
